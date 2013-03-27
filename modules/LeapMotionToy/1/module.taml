@@ -1,0 +1,10 @@
+<ModuleDefinition
+	ModuleId="LeapMotionToy"
+	VersionId="1"
+	Description="Demonstrates Leap Motion input handling."
+	Dependencies="ToyAssets=1"
+	Type="toy"
+	ToyCategoryIndex="3"
+	ScriptFile="main.cs"
+	CreateFunction="create"
+	DestroyFunction="destroy"/>
