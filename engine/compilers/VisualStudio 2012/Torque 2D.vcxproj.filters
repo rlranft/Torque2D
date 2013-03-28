@@ -1344,6 +1344,9 @@
     <ClCompile Include="..\..\source\utilities\idGenerator.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\utilities\module.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\audio\audio.h">
@@ -2759,6 +2762,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\io\ioHelper.h">
       <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\utilities\module.h">
+      <Filter>utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

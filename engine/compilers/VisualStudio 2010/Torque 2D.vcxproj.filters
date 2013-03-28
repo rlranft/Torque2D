@@ -181,6 +181,12 @@
     <Filter Include="input\leapMotion">
       <UniqueIdentifier>{bf186ec7-076f-490a-a428-6b78b66632d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utilities">
+      <UniqueIdentifier>{bcbb6aee-5a34-4aab-81f5-8eac3859496a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="journal">
+      <UniqueIdentifier>{7748655e-6805-438f-a0b6-8ac5c44dfa56}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\audio\audio.cc">
@@ -1328,6 +1334,18 @@
     </ClCompile>
     <ClCompile Include="..\..\source\input\leapMotion\leapMotionFrameStore.cpp">
       <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\journal\journal.cpp">
+      <Filter>journal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\journal\process.cpp">
+      <Filter>journal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\utilities\idGenerator.cpp">
+      <Filter>utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\utilities\module.cpp">
+      <Filter>utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2729,6 +2747,27 @@
     </ClInclude>
     <ClInclude Include="..\..\source\memory\singleton.h">
       <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\io\ioHelper.h">
+      <Filter>io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\journal\journal.h">
+      <Filter>journal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\journal\journaledSignal.h">
+      <Filter>journal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\journal\process.h">
+      <Filter>journal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\utilities\idGenerator.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\utilities\module.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\utilities\returnType.h">
+      <Filter>utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

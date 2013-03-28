@@ -25,34 +25,36 @@
 #include "input/leapMotion/leapMotionFrameStore.h"
 #include "platform/platformInput.h"
 #include "platform/threads/mutex.h"
+#include "utilities/module.h"
 
-/*
+
 MODULE_BEGIN( LeapMotionDevice )
 
-   MODULE_INIT_AFTER( InputEventManager )
-   MODULE_SHUTDOWN_BEFORE( InputEventManager )
-
+   //MODULE_INIT_AFTER( InputEventManager )
+   //MODULE_SHUTDOWN_BEFORE( InputEventManager )
+   MODULE_INIT_AFTER( SIM )
+   MODULE_SHUTDOWN_BEFORE( SIM )
    MODULE_INIT
    {
       LeapMotionDevice::staticInit();
       ManagedSingleton< LeapMotionDevice >::createSingleton();
-      if (LeapMotionDevice::smEnableDevice)
+      if(LeapMotionDevice::smEnableDevice)
       {
          LEAPMOTIONDEV->enable();
       }
 
       // Register the device with the Input Event Manager
-      INPUTMGR->registerDevice(LEAPMOTIONDEV);
+      //INPUTMGR->registerDevice(LEAPMOTIONDEV);
    }
    
    MODULE_SHUTDOWN
    {
-      INPUTMGR->unregisterDevice(LEAPMOTIONDEV);
+      //INPUTMGR->unregisterDevice(LEAPMOTIONDEV);
       ManagedSingleton< LeapMotionDevice >::deleteSingleton();
    }
 
 MODULE_END;
-*/
+
 
 bool LeapMotionDevice::smEnableDevice = true;
 
@@ -372,19 +374,4 @@ ConsoleFunction(isLeapMotionActive, bool, 1, 1, "brief Used to determine if the 
     }
 
     return LEAPMOTIONDEV->getActive();
-}
-
-ConsoleFunction(initializeLeapMotion, bool, 1, 1, "() Initialize the Leap Motion manager.\n"
-                                                  "@return Whether the manager initialization was successful or not.")
-{
-    if(!ManagedSingleton<LeapMotionDevice>::instanceOrNull())
-    {
-        LeapMotionDevice::staticInit();
-        ManagedSingleton< LeapMotionDevice >::createSingleton();
-    }
-
-    if(LeapMotionDevice::smEnableDevice)
-        return LEAPMOTIONDEV->enable();
-    
-    return false;
 }

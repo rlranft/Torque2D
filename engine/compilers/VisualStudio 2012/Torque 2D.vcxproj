@@ -624,6 +624,7 @@
     <ClCompile Include="..\..\source\testing\tests\platformStringTests.cc" />
     <ClCompile Include="..\..\source\testing\unitTesting.cc" />
     <ClCompile Include="..\..\source\utilities\idGenerator.cpp" />
+    <ClCompile Include="..\..\source\utilities\module.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\2d\assets\AnimationAsset.h" />
@@ -1097,6 +1098,7 @@
     <ClInclude Include="..\..\source\testing\unitTesting.h" />
     <ClInclude Include="..\..\source\torqueConfig.h" />
     <ClInclude Include="..\..\source\utilities\idGenerator.h" />
+    <ClInclude Include="..\..\source\utilities\module.h" />
     <ClInclude Include="..\..\source\utilities\returnType.h" />
   </ItemGroup>
   <ItemGroup>

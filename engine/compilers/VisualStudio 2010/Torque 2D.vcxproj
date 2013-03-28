@@ -429,6 +429,8 @@
     <ClCompile Include="..\..\source\io\zip\zipObject.cc" />
     <ClCompile Include="..\..\source\io\zip\zipSubStream.cc" />
     <ClCompile Include="..\..\source\io\zip\zipTempStream.cc" />
+    <ClCompile Include="..\..\source\journal\journal.cpp" />
+    <ClCompile Include="..\..\source\journal\process.cpp" />
     <ClCompile Include="..\..\source\math\mAngAxis.cpp" />
     <ClCompile Include="..\..\source\math\mPoint.cpp" />
     <ClCompile Include="..\..\source\math\rectClipper.cpp" />
@@ -614,6 +616,8 @@
     <ClCompile Include="..\..\source\testing\tests\platformMemoryTests.cc" />
     <ClCompile Include="..\..\source\testing\tests\platformStringTests.cc" />
     <ClCompile Include="..\..\source\testing\unitTesting.cc" />
+    <ClCompile Include="..\..\source\utilities\idGenerator.cpp" />
+    <ClCompile Include="..\..\source\utilities\module.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\2d\assets\AnimationAsset.h" />
@@ -868,6 +872,7 @@
     <ClInclude Include="..\..\source\io\fileStream.h" />
     <ClInclude Include="..\..\source\io\fileStreamObject.h" />
     <ClInclude Include="..\..\source\io\filterStream.h" />
+    <ClInclude Include="..\..\source\io\ioHelper.h" />
     <ClInclude Include="..\..\source\io\memstream.h" />
     <ClInclude Include="..\..\source\io\resizeStream.h" />
     <ClInclude Include="..\..\source\io\resource\resourceManager.h" />
@@ -883,6 +888,9 @@
     <ClInclude Include="..\..\source\io\zip\zipStatFilter.h" />
     <ClInclude Include="..\..\source\io\zip\zipSubStream.h" />
     <ClInclude Include="..\..\source\io\zip\zipTempStream.h" />
+    <ClInclude Include="..\..\source\journal\journal.h" />
+    <ClInclude Include="..\..\source\journal\journaledSignal.h" />
+    <ClInclude Include="..\..\source\journal\process.h" />
     <ClInclude Include="..\..\source\math\mAngAxis.h" />
     <ClInclude Include="..\..\source\math\mTransform.h" />
     <ClInclude Include="..\..\source\math\rectClipper.h" />
@@ -1083,6 +1091,9 @@
     <ClInclude Include="..\..\source\gui\editor\guiSeparatorCtrl.h" />
     <ClInclude Include="..\..\source\testing\unitTesting.h" />
     <ClInclude Include="..\..\source\torqueConfig.h" />
+    <ClInclude Include="..\..\source\utilities\idGenerator.h" />
+    <ClInclude Include="..\..\source\utilities\module.h" />
+    <ClInclude Include="..\..\source\utilities\returnType.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\source\math\mMath_ASM.asm">

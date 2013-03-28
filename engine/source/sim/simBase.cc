@@ -32,6 +32,24 @@
 #include "debug/profiler.h"
 #include "console/consoleTypeValidators.h"
 #include "memory/frameAllocator.h"
+#include "utilities/module.h"
+
+MODULE_BEGIN( Sim )
+
+   // Note: tho the SceneGraphs are created after the Manager, delete them after, rather
+   //  than before to make sure that all the objects are removed from the graph.
+   
+   MODULE_INIT
+   {
+      Sim::init();
+   }
+   
+   MODULE_SHUTDOWN
+   {
+      Sim::shutdown();
+   }
+
+MODULE_END;
 
 namespace Sim
 {

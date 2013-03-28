@@ -122,7 +122,7 @@ public:
     /// @note Asserts when no singleton has been constructed.
     static void deleteSingleton()
     {
-        AssertFatal( smSingleton == NULL, avar( "%s::deleteSingleton() - The singleton doest not exist!", T::getSingletonName() ) );
+        AssertFatal( smSingleton, avar( "%s::deleteSingleton() - The singleton doest not exist!", T::getSingletonName() ) );
         delete smSingleton;
         smSingleton = NULL;
     }
@@ -131,7 +131,7 @@ public:
     /// @note Asserts when called before createSingleton().
     static T* instance() 
     { 
-        AssertFatal( smSingleton == NULL, avar( "%s::instance() - The singleton has not been created!", T::getSingletonName() ) );
+        AssertFatal( smSingleton, avar( "%s::instance() - The singleton has not been created!", T::getSingletonName() ) );
         return smSingleton; 
     }
 
