@@ -1305,6 +1305,12 @@
     <ClCompile Include="..\..\source\2d\core\ImageFrameProviderCore.cc">
       <Filter>2d\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\math\mAngAxis.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\math\mPoint.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\audio\audio.h">
@@ -2672,6 +2678,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\2d\core\ImageFrameProviderCore.h">
       <Filter>2d\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\mAngAxis.h">
+      <Filter>math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -424,6 +424,8 @@
     <ClCompile Include="..\..\source\io\zip\zipObject.cc" />
     <ClCompile Include="..\..\source\io\zip\zipSubStream.cc" />
     <ClCompile Include="..\..\source\io\zip\zipTempStream.cc" />
+    <ClCompile Include="..\..\source\math\mAngAxis.cpp" />
+    <ClCompile Include="..\..\source\math\mPoint.cpp" />
     <ClCompile Include="..\..\source\math\rectClipper.cpp" />
     <ClCompile Include="..\..\source\memory\dataChunker.cc" />
     <ClCompile Include="..\..\source\memory\frameAllocator.cc" />
@@ -869,6 +871,7 @@
     <ClInclude Include="..\..\source\io\zip\zipStatFilter.h" />
     <ClInclude Include="..\..\source\io\zip\zipSubStream.h" />
     <ClInclude Include="..\..\source\io\zip\zipTempStream.h" />
+    <ClInclude Include="..\..\source\math\mAngAxis.h" />
     <ClInclude Include="..\..\source\math\rectClipper.h" />
     <ClInclude Include="..\..\source\memory\dataChunker.h" />
     <ClInclude Include="..\..\source\memory\factoryCache.h" />

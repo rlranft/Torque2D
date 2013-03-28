@@ -38,6 +38,9 @@
 #ifndef _MMATRIX_H_
 #include "math/mMatrix.h"
 #endif
+#ifndef _MANGAXIS_H_
+#include "math/mAngAxis.h"
+#endif
 #ifndef _MQUAT_H_
 #include "math/mQuat.h"
 #endif

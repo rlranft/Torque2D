@@ -149,6 +149,27 @@ public:
    /// This is the 4th column of the matrix.
    void      setPosition( const Point3F &pos ){ setColumn( 3, pos ); }
 
+   /// Add the passed delta to the matrix position.
+   void displace( const Point3F &delta );
+
+   /// Get the x axis of the matrix.
+   ///
+   /// This is the 1st column of the matrix and is
+   /// normally considered the right vector.
+   VectorF getRightVector() const;
+
+   /// Get the y axis of the matrix.
+   ///
+   /// This is the 2nd column of the matrix and is
+   /// normally considered the forward vector.   
+   VectorF getForwardVector() const;   
+
+   /// Get the z axis of the matrix.
+   ///
+   /// This is the 3rd column of the matrix and is
+   /// normally considered the up vector.   
+   VectorF getUpVector() const;
+
    MatrixF&  mul(const MatrixF &a);                    ///< M * a -> M
    MatrixF&  mul(const MatrixF &a, const MatrixF &b);  ///< a * b -> M
 
@@ -169,6 +190,9 @@ public:
    F32& operator ()(S32 row, S32 col) { return m[idx(col,row)]; }
 
    void dumpMatrix(const char *caption=NULL) const;
+
+   // Static identity matrix
+   const static MatrixF Identity;
 } 
 #if defined(__VEC__)
 __attribute__ ((aligned (16)))
@@ -450,6 +474,34 @@ inline Point3F MatrixF::getPosition() const
    Point3F pos;
    getColumn( 3, &pos );
    return pos;
+}
+
+inline void MatrixF::displace( const Point3F &delta )
+{
+   m[3]   += delta.x;
+   m[3+4] += delta.y;
+   m[3+8] += delta.z;
+}
+
+inline VectorF MatrixF::getForwardVector() const
+{
+   VectorF vec;
+   getColumn( 1, &vec );
+   return vec;
+}
+
+inline VectorF MatrixF::getRightVector() const
+{
+   VectorF vec;
+   getColumn( 0, &vec );
+   return vec;
+}
+
+inline VectorF MatrixF::getUpVector() const
+{
+   VectorF vec;
+   getColumn( 2, &vec );
+   return vec;
 }
 
 #endif //_MMATRIX_H_
