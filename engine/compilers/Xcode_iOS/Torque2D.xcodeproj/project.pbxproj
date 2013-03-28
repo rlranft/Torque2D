@@ -454,6 +454,8 @@
 		867BB28116AECA110033868F /* jquant2.c in Sources */ = {isa = PBXBuildFile; fileRef = 867BB25316AECA110033868F /* jquant2.c */; };
 		867BB28216AECA110033868F /* jutils.c in Sources */ = {isa = PBXBuildFile; fileRef = 867BB25416AECA110033868F /* jutils.c */; };
 		867BB44416AED2850033868F /* iOSGL2ES.mm in Sources */ = {isa = PBXBuildFile; fileRef = 867BB44316AED2840033868F /* iOSGL2ES.mm */; };
+		8698EBE5170493E800AA7516 /* mAngAxis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8698EBE2170493E800AA7516 /* mAngAxis.cpp */; };
+		8698EBE6170493E800AA7516 /* mPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8698EBE4170493E800AA7516 /* mPoint.cpp */; };
 		869A879216C15A3A00AE96AE /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 869A879116C15A3A00AE96AE /* Default-Portrait~ipad.png */; };
 		869A879416C15A4300AE96AE /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 869A879316C15A4300AE96AE /* Default-Portrait@2x~ipad.png */; };
 		869A879616C15A4900AE96AE /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 869A879516C15A4900AE96AE /* Default-Landscape~ipad.png */; };
@@ -527,6 +529,9 @@
 		33230911303CCA4C673E1A22 /* guiSliderCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = guiSliderCtrl.h; sourceTree = "<group>"; };
 		8610F32D16AEEC670015BCEB /* main.cs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.cs; path = ../../../main.cs; sourceTree = "<group>"; };
 		8610F32E16AEEC670015BCEB /* modules */ = {isa = PBXFileReference; lastKnownFileType = folder; name = modules; path = ../../../modules; sourceTree = "<group>"; };
+		86176AA41704B1460050A743 /* mTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mTransform.h; sourceTree = "<group>"; };
+		86176AB61704B15A0050A743 /* IInputDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IInputDevice.h; sourceTree = "<group>"; };
+		86176AB71704B1620050A743 /* singleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = singleton.h; sourceTree = "<group>"; };
 		8652F2A116C1483B00639EFE /* torque2d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = torque2d.png; path = ../torque2d.png; sourceTree = "<group>"; };
 		8652F2A316C148CA00639EFE /* torque2d_retina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = torque2d_retina.png; path = ../torque2d_retina.png; sourceTree = "<group>"; };
 		8652F2A516C1493B00639EFE /* torque2d_ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = torque2d_ipad.png; path = ../torque2d_ipad.png; sourceTree = "<group>"; };
@@ -1389,6 +1394,9 @@
 		867BB25416AECA110033868F /* jutils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jutils.c; path = ../../lib/ljpeg/jutils.c; sourceTree = "<group>"; };
 		867BB44216AED2840033868F /* iOSGL2ES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iOSGL2ES.h; sourceTree = "<group>"; };
 		867BB44316AED2840033868F /* iOSGL2ES.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = iOSGL2ES.mm; sourceTree = "<group>"; };
+		8698EBE2170493E800AA7516 /* mAngAxis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mAngAxis.cpp; sourceTree = "<group>"; };
+		8698EBE3170493E800AA7516 /* mAngAxis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mAngAxis.h; sourceTree = "<group>"; };
+		8698EBE4170493E800AA7516 /* mPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mPoint.cpp; sourceTree = "<group>"; };
 		869A879116C15A3A00AE96AE /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		869A879316C15A4300AE96AE /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		869A879516C15A4900AE96AE /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
@@ -2161,6 +2169,7 @@
 		867BAEBB16AEC9050033868F /* input */ = {
 			isa = PBXGroup;
 			children = (
+				86176AB61704B15A0050A743 /* IInputDevice.h */,
 				867BAEBC16AEC9050033868F /* actionMap.cc */,
 				867BAEBD16AEC9050033868F /* actionMap.h */,
 			);
@@ -2240,6 +2249,10 @@
 		867BAEF316AEC9050033868F /* math */ = {
 			isa = PBXGroup;
 			children = (
+				86176AA41704B1460050A743 /* mTransform.h */,
+				8698EBE2170493E800AA7516 /* mAngAxis.cpp */,
+				8698EBE3170493E800AA7516 /* mAngAxis.h */,
+				8698EBE4170493E800AA7516 /* mPoint.cpp */,
 				867BAEF416AEC9050033868F /* mathIO.h */,
 				867BAEF516AEC9050033868F /* mathTypes.cc */,
 				867BAEF616AEC9050033868F /* mathTypes.h */,
@@ -2283,6 +2296,7 @@
 		867BAF1A16AEC9050033868F /* memory */ = {
 			isa = PBXGroup;
 			children = (
+				86176AB71704B1620050A743 /* singleton.h */,
 				867BAF1B16AEC9050033868F /* dataChunker.cc */,
 				867BAF1C16AEC9050033868F /* dataChunker.h */,
 				867BAF1D16AEC9050033868F /* factoryCache.h */,
@@ -3432,6 +3446,8 @@
 				2AE2938B16EF4C480015E200 /* WaveComposite.cc in Sources */,
 				2AA3655F16F3553E00E7A900 /* ImageFrameProvider.cc in Sources */,
 				2AA3656016F3553E00E7A900 /* ImageFrameProviderCore.cc in Sources */,
+				8698EBE5170493E800AA7516 /* mAngAxis.cpp in Sources */,
+				8698EBE6170493E800AA7516 /* mPoint.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3534,6 +3550,7 @@
 					../../lib/ljpeg,
 					../../lib/lungif,
 					"$(SYSTEM_LIBRARY_DIR)/Frameworks/OpenGL.framework/Headers",
+					../../lib/LeapSDK/include,
 				);
 				INFOPLIST_FILE = "Torque2D/Torque2D-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -3557,6 +3574,7 @@
 					../../lib/ljpeg,
 					../../lib/lungif,
 					"$(SYSTEM_LIBRARY_DIR)/Frameworks/OpenGL.framework/Headers",
+					../../lib/LeapSDK/include,
 				);
 				INFOPLIST_FILE = "Torque2D/Torque2D-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
