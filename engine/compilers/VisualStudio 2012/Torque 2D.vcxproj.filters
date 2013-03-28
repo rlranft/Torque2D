@@ -178,6 +178,9 @@
     <Filter Include="2d\experimental\composites">
       <UniqueIdentifier>{30e1ec13-118b-4d50-8e04-76e76fcfdc01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="input\leapMotion">
+      <UniqueIdentifier>{d1e595b5-753c-4109-bbf2-8184b0100c62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\audio\audio.cc">
@@ -1310,6 +1313,21 @@
     </ClCompile>
     <ClCompile Include="..\..\source\math\mPoint.cpp">
       <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionUtil.cpp">
+      <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionDevice.cpp">
+      <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionData.cpp">
+      <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionFrameStore.cpp">
+      <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionFrame.cpp">
+      <Filter>input\leapMotion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2681,6 +2699,33 @@
     </ClInclude>
     <ClInclude Include="..\..\source\math\mAngAxis.h">
       <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionConstants.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionUtil.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\IInputDevice.h">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionDevice.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionData.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionFrameStore.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionFrame.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\math\mTransform.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\memory\singleton.h">
+      <Filter>memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
