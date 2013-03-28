@@ -35,6 +35,10 @@
 		2AF1C54116B439BB00C1CF3A /* referencedAssets.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2AF1C53E16B439BB00C1CF3A /* referencedAssets.cc */; };
 		2AF3633916A9BBE0004ED7AA /* ParticleSystem.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2AF3633716A9BBE0004ED7AA /* ParticleSystem.cc */; };
 		86063A251654180000362D83 /* platformOSX.mm in Sources */ = {isa = PBXBuildFile; fileRef = 86063A241654180000362D83 /* platformOSX.mm */; };
+		86094DB01705028900EB910E /* journal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86094DA51705028900EB910E /* journal.cpp */; };
+		86094DB11705028900EB910E /* process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86094DA81705028900EB910E /* process.cpp */; };
+		86094DB21705028900EB910E /* idGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86094DAB1705028900EB910E /* idGenerator.cpp */; };
+		86094DB31705028900EB910E /* module.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86094DAD1705028900EB910E /* module.cpp */; };
 		8609FE2F16556DD2004662ED /* osxSemaphore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8609FE2E16556DD2004662ED /* osxSemaphore.mm */; };
 		8609FE3116556E5A004662ED /* osxThread.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8609FE3016556E5A004662ED /* osxThread.mm */; };
 		8609FE361655716E004662ED /* osxPopupMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8609FE351655716E004662ED /* osxPopupMenu.mm */; };
@@ -540,6 +544,17 @@
 		2AF80CFF16A80CB400CE13F1 /* ParticleAssetEmitter_ScriptBinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParticleAssetEmitter_ScriptBinding.h; sourceTree = "<group>"; };
 		86063A231654180000362D83 /* platformOSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platformOSX.h; sourceTree = "<group>"; };
 		86063A241654180000362D83 /* platformOSX.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = platformOSX.mm; sourceTree = "<group>"; };
+		86094DA51705028900EB910E /* journal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = journal.cpp; sourceTree = "<group>"; };
+		86094DA61705028900EB910E /* journal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = journal.h; sourceTree = "<group>"; };
+		86094DA71705028900EB910E /* journaledSignal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = journaledSignal.h; sourceTree = "<group>"; };
+		86094DA81705028900EB910E /* process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = process.cpp; sourceTree = "<group>"; };
+		86094DA91705028900EB910E /* process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = process.h; sourceTree = "<group>"; };
+		86094DAB1705028900EB910E /* idGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = idGenerator.cpp; sourceTree = "<group>"; };
+		86094DAC1705028900EB910E /* idGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = idGenerator.h; sourceTree = "<group>"; };
+		86094DAD1705028900EB910E /* module.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = module.cpp; sourceTree = "<group>"; };
+		86094DAE1705028900EB910E /* module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = module.h; sourceTree = "<group>"; };
+		86094DAF1705028900EB910E /* returnType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = returnType.h; sourceTree = "<group>"; };
+		86094DB41705029900EB910E /* ioHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioHelper.h; sourceTree = "<group>"; };
 		8609FE2E16556DD2004662ED /* osxSemaphore.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = osxSemaphore.mm; sourceTree = "<group>"; };
 		8609FE3016556E5A004662ED /* osxThread.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = osxThread.mm; sourceTree = "<group>"; };
 		8609FE3216556F22004662ED /* osxFileDialogs.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = osxFileDialogs.mm; sourceTree = "<group>"; };
@@ -1467,6 +1482,32 @@
 			name = composites;
 			sourceTree = "<group>";
 		};
+		86094DA41705028900EB910E /* journal */ = {
+			isa = PBXGroup;
+			children = (
+				86094DA51705028900EB910E /* journal.cpp */,
+				86094DA61705028900EB910E /* journal.h */,
+				86094DA71705028900EB910E /* journaledSignal.h */,
+				86094DA81705028900EB910E /* process.cpp */,
+				86094DA91705028900EB910E /* process.h */,
+			);
+			name = journal;
+			path = ../../../source/journal;
+			sourceTree = "<group>";
+		};
+		86094DAA1705028900EB910E /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				86094DAB1705028900EB910E /* idGenerator.cpp */,
+				86094DAC1705028900EB910E /* idGenerator.h */,
+				86094DAD1705028900EB910E /* module.cpp */,
+				86094DAE1705028900EB910E /* module.h */,
+				86094DAF1705028900EB910E /* returnType.h */,
+			);
+			name = utilities;
+			path = ../../../source/utilities;
+			sourceTree = "<group>";
+		};
 		86176A921704AF750050A743 /* leapMotion */ = {
 			isa = PBXGroup;
 			children = (
@@ -1839,7 +1880,6 @@
 		869FF8C21651518C002FE082 /* Torque2D */ = {
 			isa = PBXGroup;
 			children = (
-				86BC815516518D4600D96ADF /* torqueConfig.h */,
 				86BC7E7516518D4600D96ADF /* 2d */,
 				86BC7EE016518D4600D96ADF /* algorithm */,
 				86BC7EE716518D4600D96ADF /* assets */,
@@ -1854,6 +1894,7 @@
 				86BC7FD716518D4600D96ADF /* gui */,
 				86BC805816518D4600D96ADF /* input */,
 				86BC805B16518D4600D96ADF /* io */,
+				86094DA41705028900EB910E /* journal */,
 				86BC809116518D4600D96ADF /* math */,
 				86BC80B816518D4600D96ADF /* memory */,
 				86BC80BF16518D4600D96ADF /* messaging */,
@@ -1864,6 +1905,8 @@
 				86BC812C16518D4600D96ADF /* sim */,
 				86BC814816518D4600D96ADF /* string */,
 				2A033005165D1CB100E9CD70 /* testing */,
+				86BC815516518D4600D96ADF /* torqueConfig.h */,
+				86094DAA1705028900EB910E /* utilities */,
 			);
 			path = Torque2D;
 			sourceTree = "<group>";
@@ -2484,6 +2527,7 @@
 		86BC805B16518D4600D96ADF /* io */ = {
 			isa = PBXGroup;
 			children = (
+				86094DB41705029900EB910E /* ioHelper.h */,
 				86BC805C16518D4600D96ADF /* bitStream.cc */,
 				86BC805D16518D4600D96ADF /* bitStream.h */,
 				86BC805E16518D4600D96ADF /* bufferStream.cc */,
@@ -3371,6 +3415,10 @@
 				86176AA01704AF750050A743 /* leapMotionFrame.cpp in Sources */,
 				86176AA11704AF750050A743 /* leapMotionFrameStore.cpp in Sources */,
 				86176AA21704AF750050A743 /* leapMotionUtil.cpp in Sources */,
+				86094DB01705028900EB910E /* journal.cpp in Sources */,
+				86094DB11705028900EB910E /* process.cpp in Sources */,
+				86094DB21705028900EB910E /* idGenerator.cpp in Sources */,
+				86094DB31705028900EB910E /* module.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
