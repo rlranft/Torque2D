@@ -35,7 +35,7 @@
 #ifndef _MMATRIX_H_
 #include "math/mMatrix.h"
 #endif
-#ifndef _TSINGLETON_H_
+#ifndef _SINGLETON_H_
 #include "memory/singleton.h"
 #endif
 #ifndef __Leap_h__

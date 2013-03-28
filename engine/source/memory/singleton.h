@@ -20,8 +20,8 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
-#ifndef _TSINGLETON_H_
-#define _TSINGLETON_H_
+#ifndef _SINGLETON_H_
+#define _SINGLETON_H_
 
 #ifndef _PLATFORMASSERT_H_
 #include "platform/platformAssert.h"
@@ -147,5 +147,5 @@ template <typename T>
 T* ManagedSingleton<T>::smSingleton = NULL;
 
 
-#endif //_TSINGLETON_H_
+#endif //_SINGLETON_H_
 

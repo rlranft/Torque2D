@@ -181,6 +181,12 @@
     <Filter Include="input\leapMotion">
       <UniqueIdentifier>{d1e595b5-753c-4109-bbf2-8184b0100c62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="journal">
+      <UniqueIdentifier>{cfba3e35-aeba-4bfd-9ece-3eef5a832c19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utilities">
+      <UniqueIdentifier>{cb84c084-43cf-4953-b740-59ce3de4866b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\audio\audio.cc">
@@ -1328,6 +1334,15 @@
     </ClCompile>
     <ClCompile Include="..\..\source\input\leapMotion\leapMotionFrame.cpp">
       <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\journal\journal.cpp">
+      <Filter>journal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\journal\process.cpp">
+      <Filter>journal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\utilities\idGenerator.cpp">
+      <Filter>utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2726,6 +2741,24 @@
     </ClInclude>
     <ClInclude Include="..\..\source\memory\singleton.h">
       <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\journal\journal.h">
+      <Filter>journal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\journal\journaledSignal.h">
+      <Filter>journal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\journal\process.h">
+      <Filter>journal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\utilities\idGenerator.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\utilities\returnType.h">
+      <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\io\ioHelper.h">
+      <Filter>io</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
