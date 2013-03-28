@@ -25,7 +25,6 @@
 
 #include "input/IInputDevice.h"
 #include "platform/event.h"
-#include "platformWin32/platformWin32.h"
 #include "memory/singleton.h"
 #include "math/mQuat.h"
 #include "input/leapMotion/leapMotionConstants.h"

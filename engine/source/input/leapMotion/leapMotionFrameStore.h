@@ -23,7 +23,9 @@
 #ifndef _LEAPMOTIONFRAMESTORE_H_
 #define _LEAPMOTIONFRAMESTORE_H_
 
-#include "platformWin32/platformWin32.h"
+#ifndef _PLATFORM_H_
+#include "platform/platform.h"
+#endif
 
 #ifndef __Leap_h__
 #include "Leap.h"
