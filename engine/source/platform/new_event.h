@@ -275,6 +275,25 @@ enum InputObjectInstancesEnum
    XI_X              = 0x319,
    XI_Y              = 0x320,
 
+   SI_TOUCHDOWN      = 0x321,
+   SI_TOUCHUP        = 0x322,
+   SI_TOUCHMOVE      = 0x323,
+   SI_PINCH          = 0x324,
+   SI_SCALE          = 0x325,
+   SI_TAP            = 0x326,
+   SI_ACCELX         = 0x327,
+   SI_ACCELY         = 0x328,
+   SI_ACCELZ         = 0x329,
+   SI_GRAVX          = 0x32A,
+   SI_GRAVY          = 0x32B,
+   SI_GRAVZ          = 0x32C,
+   SI_GYROX          = 0x32D,
+   SI_GYROY          = 0x32E,
+   SI_GYROZ          = 0x32F,
+   SI_YAW            = 0x330,
+   SI_PITCH          = 0x331,
+   SI_ROLL           = 0x332,
+
    INPUT_DEVICE_PLUGIN_CODES_START = 0x400,
 };
 
@@ -288,6 +307,9 @@ enum InputDeviceTypesEnum
    JoystickDeviceType,
    GamepadDeviceType,
    XInputDeviceType,
+   ScreenTouchDeviceType,
+   AccelerometerDeviceType,
+   GyroscopeDeviceType,
 
    NUM_INPUT_DEVICE_TYPES,
 
@@ -325,6 +347,9 @@ enum InputEventType
    SI_INT     = 0x07,   // Integer value (S32)
    SI_FLOAT   = 0x08,   // Float value (F32)
    SI_KEY     = 0x0A,   // Keyboard key
+   SI_TOUCH   = 0x0B,   // Screen touch event
+   SI_GESTURE = 0x0C,   // Finger/hand gesture event
+   SI_MOTION  = 0x0D    // Accelerometer and gyroscope event
 };
 
 /// Wildcard match used by the input system.
