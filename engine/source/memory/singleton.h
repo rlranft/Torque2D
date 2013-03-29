@@ -52,41 +52,46 @@ class Singleton
 {
 private:
 
-   // This is the creator object which ensures that the
-   // singleton is created before main() begins.
-   struct SingletonCreator
-   {
-      SingletonCreator() { Singleton<T>::instance(); } 
+    // This is the creator object which ensures that the
+    // singleton is created before main() begins.
+    struct SingletonCreator
+    {
+        SingletonCreator()
+        {
+            Singleton<T>::instance();
+        }
 
-      // This dummy function is used below to force 
-      // singleton creation at startup.
-      inline void forceSafeCreate() const {}
-   };
+        // This dummy function is used below to force
+        // singleton creation at startup.
+        inline void forceSafeCreate() const
+        {
+        }
+    };
 
-   // The creator object instance.
-   static SingletonCreator smSingletonCreator;
-   
-   /// This is private on purpose.
-   Singleton();
+    // The creator object instance.
+    static SingletonCreator smSingletonCreator;
+
+    /// This is private on purpose.
+    Singleton();
 
 public:
 
-   /// Returns the singleton instance.
-   static T* instance()
-   {
-      // The singleton.
-      static T theSingleton;
+    /// Returns the singleton instance.
+    static T *instance()
+    {
+        // The singleton.
+        static T theSingleton;
 
-      // This is here to force the compiler to create
-      // the singleton before main() is called.
-      smSingletonCreator.forceSafeCreate();
+        // This is here to force the compiler to create
+        // the singleton before main() is called.
+        smSingletonCreator.forceSafeCreate();
 
-      return &theSingleton;
-   }
+        return &theSingleton;
+    }
 
 };
 
-template <typename T> 
+template <typename T>
 typename Singleton<T>::SingletonCreator Singleton<T>::smSingletonCreator;
 
 
@@ -112,39 +117,39 @@ public:
 
     /// Create the singleton instance.
     /// @note Asserts when the singleton instance has already been constructed.
-    static void createSingleton() 
+    static void createSingleton()
     {
-        AssertFatal( smSingleton == NULL, avar( "%s::createSingleton() - The singleton is already created!", T::getSingletonName() ) );
-        smSingleton = new T(); 
+        AssertFatal( smSingleton == NULL, avar("%s::createSingleton() - The singleton is already created!", T::getSingletonName()) );
+        smSingleton = new T();
     }
 
     /// Destroy the singleton instance.
     /// @note Asserts when no singleton has been constructed.
     static void deleteSingleton()
     {
-        AssertFatal( smSingleton, avar( "%s::deleteSingleton() - The singleton doest not exist!", T::getSingletonName() ) );
+        AssertFatal( smSingleton, avar("%s::deleteSingleton() - The singleton doest not exist!", T::getSingletonName()) );
         delete smSingleton;
         smSingleton = NULL;
     }
 
     /// Return the singleton instance.
     /// @note Asserts when called before createSingleton().
-    static T* instance() 
-    { 
-        AssertFatal( smSingleton, avar( "%s::instance() - The singleton has not been created!", T::getSingletonName() ) );
-        return smSingleton; 
+    static T *instance()
+    {
+        AssertFatal( smSingleton, avar("%s::instance() - The singleton has not been created!", T::getSingletonName()) );
+        return smSingleton;
     }
 
     /// Return the singleton instance or NULL if it has been deleted or not yet constructed.
-    static T* instanceOrNull()
+    static T *instanceOrNull()
     {
         return smSingleton;
     }
 };
 
 ///
-template <typename T> 
-T* ManagedSingleton<T>::smSingleton = NULL;
+template <typename T>
+T *ManagedSingleton<T>::smSingleton = NULL;
 
 
 #endif //_SINGLETON_H_
