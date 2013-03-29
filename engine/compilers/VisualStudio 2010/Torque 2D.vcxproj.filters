@@ -1347,6 +1347,9 @@
     <ClCompile Include="..\..\source\utilities\module.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\string\str.cpp">
+      <Filter>string</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\audio\audio.h">
@@ -2768,6 +2771,24 @@
     </ClInclude>
     <ClInclude Include="..\..\source\utilities\returnType.h">
       <Filter>utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\string\str.h">
+      <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\platform\platformIntrinsics.gcc.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\platform\platformIntrinsics.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\platform\platformIntrinsics.visualc.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\platform\typetraits.h">
+      <Filter>platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\memory\autoPtr.h">
+      <Filter>memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

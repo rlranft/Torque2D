@@ -577,6 +577,7 @@
     <ClCompile Include="..\..\source\sim\simSerialize.cpp" />
     <ClCompile Include="..\..\source\sim\simSet.cc" />
     <ClCompile Include="..\..\source\string\findMatch.cc" />
+    <ClCompile Include="..\..\source\string\str.cpp" />
     <ClCompile Include="..\..\source\string\stringBuffer.cc" />
     <ClCompile Include="..\..\source\string\stringStack.cc" />
     <ClCompile Include="..\..\source\string\stringTable.cc" />
@@ -894,6 +895,7 @@
     <ClInclude Include="..\..\source\math\mAngAxis.h" />
     <ClInclude Include="..\..\source\math\mTransform.h" />
     <ClInclude Include="..\..\source\math\rectClipper.h" />
+    <ClInclude Include="..\..\source\memory\autoPtr.h" />
     <ClInclude Include="..\..\source\memory\dataChunker.h" />
     <ClInclude Include="..\..\source\memory\factoryCache.h" />
     <ClInclude Include="..\..\source\memory\frameAllocator.h" />
@@ -995,6 +997,9 @@
     <ClInclude Include="..\..\source\platform\platformGL.h" />
     <ClInclude Include="..\..\source\platform\platformInput.h" />
     <ClInclude Include="..\..\source\platform\platformInput_ScriptBinding.h" />
+    <ClInclude Include="..\..\source\platform\platformIntrinsics.gcc.h" />
+    <ClInclude Include="..\..\source\platform\platformIntrinsics.h" />
+    <ClInclude Include="..\..\source\platform\platformIntrinsics.visualc.h" />
     <ClInclude Include="..\..\source\platform\platformMath.h" />
     <ClInclude Include="..\..\source\platform\platformMemory.h" />
     <ClInclude Include="..\..\source\platform\platformNetwork.h" />
@@ -1040,6 +1045,7 @@
     <ClInclude Include="..\..\source\platformWin32\winOGLVideo.h" />
     <ClInclude Include="..\..\source\platformWin32\winVideo.h" />
     <ClInclude Include="..\..\source\platformWin32\nativeDialogs\win32DirectoryResolver.h" />
+    <ClInclude Include="..\..\source\platform\typetraits.h" />
     <ClInclude Include="..\..\source\sim\scriptGroup.h" />
     <ClInclude Include="..\..\source\sim\scriptObject.h" />
     <ClInclude Include="..\..\source\sim\simBase.h" />
@@ -1056,6 +1062,7 @@
     <ClInclude Include="..\..\source\sim\simObjectTimerEvent.h" />
     <ClInclude Include="..\..\source\sim\simSet.h" />
     <ClInclude Include="..\..\source\string\findMatch.h" />
+    <ClInclude Include="..\..\source\string\str.h" />
     <ClInclude Include="..\..\source\string\stringBuffer.h" />
     <ClInclude Include="..\..\source\string\stringStack.h" />
     <ClInclude Include="..\..\source\string\stringTable.h" />
