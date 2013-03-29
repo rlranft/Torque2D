@@ -49,7 +49,7 @@ MODULE_END;
 
 S32 LeapMotionFrameStore::smMaximumFramesStored = 30;
 
-SimGroup* LeapMotionFrameStore::smFrameGroup = NULL;
+SimGroup *LeapMotionFrameStore::smFrameGroup = NULL;
 
 LeapMotionFrameStore::LeapMotionFrameStore()
 {
@@ -86,7 +86,7 @@ S32 LeapMotionFrameStore::generateNewFrame(const Leap::Frame& frame, const F32& 
     if (smFrameGroup->size() >= smMaximumFramesStored)
     {
         // Make the last frame the first and update
-        LeapMotionFrame* frameObj = static_cast<LeapMotionFrame*>(smFrameGroup->last());
+        LeapMotionFrame *frameObj = static_cast<LeapMotionFrame *>(smFrameGroup->last());
         smFrameGroup->bringObjectToFront(frameObj);
         frameObj->copyFromFrame(frame, maxHandAxisRadius);
         frameID = frameObj->getId();
@@ -94,7 +94,7 @@ S32 LeapMotionFrameStore::generateNewFrame(const Leap::Frame& frame, const F32& 
     else
     {
         // Create a new frame and add it to the front of the list
-        LeapMotionFrame* frameObj = new LeapMotionFrame();
+        LeapMotionFrame *frameObj = new LeapMotionFrame();
         frameObj->registerObject();
         smFrameGroup->addObject(frameObj);
         smFrameGroup->bringObjectToFront(frameObj);

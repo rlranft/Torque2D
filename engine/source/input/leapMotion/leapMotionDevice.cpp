@@ -30,30 +30,28 @@
 
 MODULE_BEGIN( LeapMotionDevice )
 
-   //MODULE_INIT_AFTER( InputEventManager )
-   //MODULE_SHUTDOWN_BEFORE( InputEventManager )
-   MODULE_INIT_AFTER( SIM )
-   MODULE_SHUTDOWN_BEFORE( SIM )
-   MODULE_INIT
-   {
-      LeapMotionDevice::staticInit();
-      ManagedSingleton< LeapMotionDevice >::createSingleton();
-      if(LeapMotionDevice::smEnableDevice)
-      {
-         LEAPMOTIONDEV->enable();
-      }
+                        //MODULE_INIT_AFTER( InputEventManager )
+                        //MODULE_SHUTDOWN_BEFORE( InputEventManager )
+                        MODULE_INIT_AFTER( SIM )
+                        MODULE_SHUTDOWN_BEFORE( SIM )
+                        MODULE_INIT{
+                    LeapMotionDevice::staticInit();
+                    ManagedSingleton< LeapMotionDevice >::createSingleton();
+                    if (LeapMotionDevice::smEnableDevice)
+                    {
+                        LEAPMOTIONDEV->enable();
+                    }
 
-      // Register the device with the Input Event Manager
-      //INPUTMGR->registerDevice(LEAPMOTIONDEV);
-   }
-   
-   MODULE_SHUTDOWN
-   {
-      //INPUTMGR->unregisterDevice(LEAPMOTIONDEV);
-      ManagedSingleton< LeapMotionDevice >::deleteSingleton();
-   }
+                    // Register the device with the Input Event Manager
+                    //INPUTMGR->registerDevice(LEAPMOTIONDEV);
+                }
 
-MODULE_END;
+                        MODULE_SHUTDOWN{
+                    //INPUTMGR->unregisterDevice(LEAPMOTIONDEV);
+                    ManagedSingleton< LeapMotionDevice >::deleteSingleton();
+                }
+
+                        MODULE_END;
 
 
 bool LeapMotionDevice::smEnableDevice = true;
@@ -93,7 +91,7 @@ LeapMotionDevice::LeapMotionDevice()
     mEnabled = false;
     mActive = false;
 
-    for(U32 i=0; i<2; ++i)
+    for (U32 i = 0; i < 2; ++i)
     {
         mDataBuffer[i] = new LeapMotionDeviceData();
     }
@@ -259,104 +257,104 @@ bool LeapMotionDevice::process()
 
     if (!getActive())
         return false;
-   
-   
-   //Build the maximum hand axis angle to be passed into the LeapMotionDeviceData::setData()
-   F32 maxHandAxisRadius = mSin(mDegToRad(smMaximumHandAxisAngle));
-   
-   // Get a frame of data
-   const Leap::Frame frame = mController->frame();
-   
-   //const Leap::HandList hands = frame.hands();
-   //Con::printf("Frame: %lld  Hands: %d  Fingers: %d  Tools: %d", (long long)frame.id(), hands.count(), frame.fingers().count(), frame.tools().count());
-   
-   // Store the current data
-   LeapMotionDeviceData* currentBuffer = (mPrevData == mDataBuffer[0]) ? mDataBuffer[1] : mDataBuffer[0];
-   currentBuffer->setData(frame, mPrevData, smKeepHandIndexPersistent, smKeepPointableIndexPersistent, maxHandAxisRadius);
-   U32 diff = mPrevData->compare(currentBuffer);
-   U32 metaDiff = mPrevData->compareMeta(currentBuffer);
-   
-   // Update the previous data pointers.  We do this here in case someone calls our
-   // console functions during one of the input events below.
-   mPrevData = currentBuffer;
-   /*
-   // Send out any meta data
-   if (metaDiff & LeapMotionDeviceData::METADIFF_FRAME_VALID_DATA)
-   {
-      // Frame valid change event
-      INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_BUTTON, LM_FRAMEVALIDDATA, currentBuffer->mHasTrackingData ? SI_MAKE : SI_BREAK, currentBuffer->mHasTrackingData ? 1.0f : 0.0f);
-   }
-   */
 
-   // Send out any valid data
-   if (currentBuffer->mDataSet && currentBuffer->mIsValid)
-   {
-      // Hands and their pointables
-      if (smGenerateIndividualEvents)
-      {
-         for(U32 i=0; i<LeapMotionConstants::MaxHands; ++i)
-         {
-            if (currentBuffer->mHandValid[i])
+
+    //Build the maximum hand axis angle to be passed into the LeapMotionDeviceData::setData()
+    F32 maxHandAxisRadius = mSin(mDegToRad(smMaximumHandAxisAngle));
+
+    // Get a frame of data
+    const Leap::Frame frame = mController->frame();
+
+    //const Leap::HandList hands = frame.hands();
+    //Con::printf("Frame: %lld  Hands: %d  Fingers: %d  Tools: %d", (long long)frame.id(), hands.count(), frame.fingers().count(), frame.tools().count());
+
+    // Store the current data
+    LeapMotionDeviceData *currentBuffer = (mPrevData == mDataBuffer[0]) ? mDataBuffer[1] : mDataBuffer[0];
+    currentBuffer->setData(frame, mPrevData, smKeepHandIndexPersistent, smKeepPointableIndexPersistent, maxHandAxisRadius);
+    U32 diff = mPrevData->compare(currentBuffer);
+    U32 metaDiff = mPrevData->compareMeta(currentBuffer);
+
+    // Update the previous data pointers.  We do this here in case someone calls our
+    // console functions during one of the input events below.
+    mPrevData = currentBuffer;
+    /*
+    // Send out any meta data
+    if (metaDiff & LeapMotionDeviceData::METADIFF_FRAME_VALID_DATA)
+    {
+       // Frame valid change event
+       INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_BUTTON, LM_FRAMEVALIDDATA, currentBuffer->mHasTrackingData ? SI_MAKE : SI_BREAK, currentBuffer->mHasTrackingData ? 1.0f : 0.0f);
+    }
+    */
+
+    // Send out any valid data
+    if (currentBuffer->mDataSet && currentBuffer->mIsValid)
+    {
+        // Hands and their pointables
+        if (smGenerateIndividualEvents)
+        {
+            for (U32 i = 0; i < LeapMotionConstants::MaxHands; ++i)
             {
-                /*
-               // Send out position
-               INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_POS, LM_HAND[i], SI_MOVE, currentBuffer->mHandPosPoint[i]);
+                if (currentBuffer->mHandValid[i])
+                {
+                    /*
+                   // Send out position
+                   INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_POS, LM_HAND[i], SI_MOVE, currentBuffer->mHandPosPoint[i]);
 
-               // Send out rotation
-               INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_ROT, LM_HANDROT[i], SI_MOVE, currentBuffer->mHandRotQuat[i]);
-               */
+                   // Send out rotation
+                   INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_ROT, LM_HANDROT[i], SI_MOVE, currentBuffer->mHandRotQuat[i]);
+                   */
 
-               // Pointables for hand
-               for(U32 j=0; j<LeapMotionConstants::MaxPointablesPerHand; ++j)
-               {
-                  if (currentBuffer->mPointableValid[i][j])
-                  {
-                      /*
-                     // Send out position
-                     INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_POS, LM_HANDPOINTABLE[i][j], SI_MOVE, currentBuffer->mPointablePosPoint[i][j]);
+                    // Pointables for hand
+                    for (U32 j = 0; j < LeapMotionConstants::MaxPointablesPerHand; ++j)
+                    {
+                        if (currentBuffer->mPointableValid[i][j])
+                        {
+                            /*
+                           // Send out position
+                           INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_POS, LM_HANDPOINTABLE[i][j], SI_MOVE, currentBuffer->mPointablePosPoint[i][j]);
 
-                     // Send out rotation
-                     INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_ROT, LM_HANDPOINTABLEROT[i][j], SI_MOVE, currentBuffer->mPointableRotQuat[i][j]);
-                     */
-                  }
-               }
+                           // Send out rotation
+                           INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_ROT, LM_HANDPOINTABLEROT[i][j], SI_MOVE, currentBuffer->mPointableRotQuat[i][j]);
+                           */
+                        }
+                    }
+                }
             }
-         }
-      }
+        }
 
-      /*
-      // Single Hand as axis rotation
-      if (smGenerateSingleHandRotationAsAxisEvents && diff & LeapMotionDeviceData::DIFF_HANDROTAXIS)
-      {
-         if (diff & LeapMotionDeviceData::DIFF_HANDROTAXISX)
-            INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_AXIS, LM_HANDAXISX, SI_MOVE, currentBuffer->mHandRotAxis[0]);
-         if (diff & LeapMotionDeviceData::DIFF_HANDROTAXISY)
-            INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_AXIS, LM_HANDAXISY, SI_MOVE, currentBuffer->mHandRotAxis[1]);
-      }
-      */
-   }
-   /*
-   // Send out whole frame event, but only if the special frame group is defined
-   if (smGenerateWholeFrameEvents && LeapMotionFrameStore::isFrameGroupDefined())
-   {
-      S32 id = LEAPMOTIONFS->generateNewFrame(frame, maxHandAxisRadius);
-      if (id != 0)
-      {
-         INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_INT, LM_FRAME, SI_VALUE, id);
-      }
-   }
-   */
-   return true;
+        /*
+        // Single Hand as axis rotation
+        if (smGenerateSingleHandRotationAsAxisEvents && diff & LeapMotionDeviceData::DIFF_HANDROTAXIS)
+        {
+           if (diff & LeapMotionDeviceData::DIFF_HANDROTAXISX)
+              INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_AXIS, LM_HANDAXISX, SI_MOVE, currentBuffer->mHandRotAxis[0]);
+           if (diff & LeapMotionDeviceData::DIFF_HANDROTAXISY)
+              INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_AXIS, LM_HANDAXISY, SI_MOVE, currentBuffer->mHandRotAxis[1]);
+        }
+        */
+    }
+    /*
+    // Send out whole frame event, but only if the special frame group is defined
+    if (smGenerateWholeFrameEvents && LeapMotionFrameStore::isFrameGroupDefined())
+    {
+       S32 id = LEAPMOTIONFS->generateNewFrame(frame, maxHandAxisRadius);
+       if (id != 0)
+       {
+          INPUTMGR->buildInputEvent(mDeviceType, DEFAULT_MOTION_UNIT, SI_INT, LM_FRAME, SI_VALUE, id);
+       }
+    }
+    */
+    return true;
 }
 
 //-----------------------------------------------------------------------------
 
-void LeapMotionDevice::MotionListener::onConnect (const Leap::Controller &controller)
+void LeapMotionDevice::MotionListener::onConnect(const Leap::Controller &controller)
 {
     LEAPMOTIONDEV->setActive(true);
 }
 
-void LeapMotionDevice::MotionListener::onDisconnect (const Leap::Controller &controller)
+void LeapMotionDevice::MotionListener::onDisconnect(const Leap::Controller &controller)
 {
     LEAPMOTIONDEV->setActive(false);
 }
@@ -364,11 +362,10 @@ void LeapMotionDevice::MotionListener::onDisconnect (const Leap::Controller &con
 //-----------------------------------------------------------------------------
 
 ConsoleFunction(isLeapMotionActive, bool, 1, 1, "brief Used to determine if the Leap Motion input device is active\n"
-                                                "The Leap Motion input device is considered active when the support library has been "
-                                                "loaded and the device has been found.\n\n"
-                                                "@return True if the Leap Motion input device is active.")
-{
-    if(!ManagedSingleton<LeapMotionDevice>::instanceOrNull())
+        "The Leap Motion input device is considered active when the support library has been "
+        "loaded and the device has been found.\n\n"
+        "@return True if the Leap Motion input device is active."){
+    if (!ManagedSingleton<LeapMotionDevice>::instanceOrNull())
     {
         return false;
     }

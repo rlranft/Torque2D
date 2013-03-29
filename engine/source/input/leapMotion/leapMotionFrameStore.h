@@ -24,11 +24,15 @@
 #define _LEAPMOTIONFRAMESTORE_H_
 
 #ifndef _PLATFORM_H_
+
 #include "platform/platform.h"
+
 #endif
 
 #ifndef __Leap_h__
+
 #include "Leap.h"
+
 #endif
 
 class SimGroup;
@@ -36,25 +40,35 @@ class SimGroup;
 class LeapMotionFrameStore
 {
 public:
-   // The maximum number of frames to keep
-   static S32 smMaximumFramesStored;
+    // The maximum number of frames to keep
+    static S32 smMaximumFramesStored;
 
-   static SimGroup* smFrameGroup;
-
-public:
-   LeapMotionFrameStore();
-   virtual ~LeapMotionFrameStore();
-
-   static void staticInit();
-
-   static bool isFrameGroupDefined() { return smFrameGroup != NULL; }
-   static SimGroup* getFrameGroup() { return smFrameGroup; }
-
-   S32 generateNewFrame(const Leap::Frame& frame, const F32& maxHandAxisRadius);
+    static SimGroup *smFrameGroup;
 
 public:
-   // For ManagedSingleton.
-   static const char* getSingletonName() { return "LeapMotionFrameStore"; }   
+    LeapMotionFrameStore();
+    virtual ~LeapMotionFrameStore();
+
+    static void staticInit();
+
+    static bool isFrameGroupDefined()
+    {
+        return smFrameGroup != NULL;
+    }
+
+    static SimGroup *getFrameGroup()
+    {
+        return smFrameGroup;
+    }
+
+    S32 generateNewFrame(const Leap::Frame& frame, const F32& maxHandAxisRadius);
+
+public:
+    // For ManagedSingleton.
+    static const char *getSingletonName()
+    {
+        return "LeapMotionFrameStore";
+    }
 };
 
 /// Returns the LeapMotionFrameStore singleton.

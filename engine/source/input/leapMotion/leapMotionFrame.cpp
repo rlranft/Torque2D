@@ -39,58 +39,58 @@ EndImplementEnumType;
 */
 LeapMotionFrame::LeapMotionFrame()
 {
-   clear();
+    clear();
 }
 
 LeapMotionFrame::~LeapMotionFrame()
 {
-   clear();
+    clear();
 }
 
 
 void LeapMotionFrame::initPersistFields()
 {
-   Parent::initPersistFields();
+    Parent::initPersistFields();
 }
 
 bool LeapMotionFrame::onAdd()
 {
-   if (!Parent::onAdd())
-      return false;
+    if (!Parent::onAdd())
+        return false;
 
-   return true;
+    return true;
 }
 
 void LeapMotionFrame::onRemove()
 {
-   Parent::onRemove();
+    Parent::onRemove();
 }
 
 void LeapMotionFrame::clear()
 {
-   mFrameValid = false;
+    mFrameValid = false;
 
-   mHandCount = 0;
-   mHandValid.clear();
-   mHandId.clear();
-   mHandRawPos.clear();
-   mHandPos.clear();
-   mHandRot.clear();
-   mHandRotQuat.clear();
-   mHandRotAxis.clear();
-   mHandPointablesCount.clear();
+    mHandCount = 0;
+    mHandValid.clear();
+    mHandId.clear();
+    mHandRawPos.clear();
+    mHandPos.clear();
+    mHandRot.clear();
+    mHandRotQuat.clear();
+    mHandRotAxis.clear();
+    mHandPointablesCount.clear();
 
-   mPointableCount = 0;
-   mPointableValid.clear();
-   mPointableId.clear();
-   mPointableHandIndex.clear();
-   mPointableType.clear();
-   mPointableRawPos.clear();
-   mPointablePos.clear();
-   mPointableRot.clear();
-   mPointableRotQuat.clear();
-   mPointableLength.clear();
-   mPointableWidth.clear();
+    mPointableCount = 0;
+    mPointableValid.clear();
+    mPointableId.clear();
+    mPointableHandIndex.clear();
+    mPointableType.clear();
+    mPointableRawPos.clear();
+    mPointablePos.clear();
+    mPointableRot.clear();
+    mPointableRotQuat.clear();
+    mPointableLength.clear();
+    mPointableWidth.clear();
 }
 
 void LeapMotionFrame::copyFromFrame(const Leap::Frame& frame, const F32& maxHandAxisRadius)
@@ -130,112 +130,112 @@ void LeapMotionFrame::copyFromFrame(const Leap::Frame& frame, const F32& maxHand
 
 void LeapMotionFrame::copyFromFrameHands(const Leap::HandList& hands, const F32& maxHandAxisRadius)
 {
-   // Set up Vectors
-   mHandValid.increment(mHandCount);
-   mHandId.increment(mHandCount);
-   mHandRawPos.increment(mHandCount);
-   mHandPos.increment(mHandCount);
-   mHandRot.increment(mHandCount);
-   mHandRotQuat.increment(mHandCount);
-   mHandRotAxis.increment(mHandCount);
-   mHandPointablesCount.increment(mHandCount);
+    // Set up Vectors
+    mHandValid.increment(mHandCount);
+    mHandId.increment(mHandCount);
+    mHandRawPos.increment(mHandCount);
+    mHandPos.increment(mHandCount);
+    mHandRot.increment(mHandCount);
+    mHandRotQuat.increment(mHandCount);
+    mHandRotAxis.increment(mHandCount);
+    mHandPointablesCount.increment(mHandCount);
 
-   // Copy data
-   for(U32 i=0; i<mHandCount; ++i)
-   {
-      const Leap::Hand& hand = hands[i];
+    // Copy data
+    for (U32 i = 0; i < mHandCount; ++i)
+    {
+        const Leap::Hand& hand = hands[i];
 
-      mHandValid[i] = hand.isValid();
-      mHandId[i] = hand.id();
-      
-      // Position
-      LeapMotionUtil::convertPosition(hand.palmPosition(), mHandRawPos[i]);
-      mHandPos[i].x = (S32)mFloor(mHandRawPos[i].x);
-      mHandPos[i].y = (S32)mFloor(mHandRawPos[i].y);
-      mHandPos[i].z = (S32)mFloor(mHandRawPos[i].z);
+        mHandValid[i] = hand.isValid();
+        mHandId[i] = hand.id();
 
-      // Rotation
-      LeapMotionUtil::convertHandRotation(hand, mHandRot[i]);
-      mHandRotQuat[i].set(mHandRot[i]);
+        // Position
+        LeapMotionUtil::convertPosition(hand.palmPosition(), mHandRawPos[i]);
+        mHandPos[i].x = (S32) mFloor(mHandRawPos[i].x);
+        mHandPos[i].y = (S32) mFloor(mHandRawPos[i].y);
+        mHandPos[i].z = (S32) mFloor(mHandRawPos[i].z);
 
-      // Thumb stick axis rotation
-      LeapMotionUtil::calculateHandAxisRotation(mHandRot[i], maxHandAxisRadius, mHandRotAxis[i]);
+        // Rotation
+        LeapMotionUtil::convertHandRotation(hand, mHandRot[i]);
+        mHandRotQuat[i].set(mHandRot[i]);
 
-      // Pointables
-      mHandPointablesCount[i] = hand.pointables().count();
-   }
+        // Thumb stick axis rotation
+        LeapMotionUtil::calculateHandAxisRotation(mHandRot[i], maxHandAxisRadius, mHandRotAxis[i]);
+
+        // Pointables
+        mHandPointablesCount[i] = hand.pointables().count();
+    }
 }
 
 void LeapMotionFrame::copyFromFramePointables(const Leap::PointableList& pointables)
 {
-   // Set up Vectors
-   mPointableValid.increment(mPointableCount);
-   mPointableId.increment(mPointableCount);
-   mPointableHandIndex.increment(mPointableCount);
-   mPointableType.increment(mPointableCount);
-   mPointableRawPos.increment(mPointableCount);
-   mPointablePos.increment(mPointableCount);
-   mPointableRot.increment(mPointableCount);
-   mPointableRotQuat.increment(mPointableCount);
-   mPointableLength.increment(mPointableCount);
-   mPointableWidth.increment(mPointableCount);
+    // Set up Vectors
+    mPointableValid.increment(mPointableCount);
+    mPointableId.increment(mPointableCount);
+    mPointableHandIndex.increment(mPointableCount);
+    mPointableType.increment(mPointableCount);
+    mPointableRawPos.increment(mPointableCount);
+    mPointablePos.increment(mPointableCount);
+    mPointableRot.increment(mPointableCount);
+    mPointableRotQuat.increment(mPointableCount);
+    mPointableLength.increment(mPointableCount);
+    mPointableWidth.increment(mPointableCount);
 
-   // Copy data
-   for(U32 i=0; i<mPointableCount; ++i)
-   {
-      const Leap::Pointable& pointable = pointables[i];
+    // Copy data
+    for (U32 i = 0; i < mPointableCount; ++i)
+    {
+        const Leap::Pointable& pointable = pointables[i];
 
-      mPointableValid[i] = pointable.isValid();
-      mPointableId[i] = pointable.id();
-      mPointableLength[i] = pointable.length();
-      mPointableWidth[i] = pointable.width();
+        mPointableValid[i] = pointable.isValid();
+        mPointableId[i] = pointable.id();
+        mPointableLength[i] = pointable.length();
+        mPointableWidth[i] = pointable.width();
 
-      mPointableType[i] = PT_UNKNOWN;
-      if (pointable.isFinger())
-      {
-         mPointableType[i] = PT_FINGER;
-      }
-      else if (pointable.isTool())
-      {
-         mPointableType[i] = PT_TOOL;
-      }
+        mPointableType[i] = PT_UNKNOWN;
+        if (pointable.isFinger())
+        {
+            mPointableType[i] = PT_FINGER;
+        }
+        else if (pointable.isTool())
+        {
+            mPointableType[i] = PT_TOOL;
+        }
 
-      // Which hand, if any
-      const Leap::Hand& hand = pointable.hand();
-      if (hand.isValid())
-      {
-         bool found = false;
-         S32 handId = hand.id();
-         for(U32 j=0; j<mHandCount; ++j)
-         {
-            if (mHandId[j] == handId)
+        // Which hand, if any
+        const Leap::Hand& hand = pointable.hand();
+        if (hand.isValid())
+        {
+            bool found = false;
+            S32 handId = hand.id();
+            for (U32 j = 0; j < mHandCount; ++j)
             {
-               mPointableHandIndex[i] = j;
-               found = true;
-               break;
+                if (mHandId[j] == handId)
+                {
+                    mPointableHandIndex[i] = j;
+                    found = true;
+                    break;
+                }
             }
-         }
 
-         if (!found)
-         {
+            if (!found)
+            {
+                mPointableHandIndex[i] = -1;
+            }
+        }
+        else
+        {
             mPointableHandIndex[i] = -1;
-         }
-      }
-      else
-      {
-         mPointableHandIndex[i] = -1;
-      }
+        }
 
-      // Position
-      LeapMotionUtil::convertPosition(pointable.tipPosition(), mPointableRawPos[i]);
-      mPointablePos[i].x = (S32)mFloor(mPointableRawPos[i].x);
-      mPointablePos[i].y = (S32)mFloor(mPointableRawPos[i].y);
-      mPointablePos[i].z = (S32)mFloor(mPointableRawPos[i].z);
+        // Position
+        LeapMotionUtil::convertPosition(pointable.tipPosition(), mPointableRawPos[i]);
+        mPointablePos[i].x = (S32) mFloor(mPointableRawPos[i].x);
+        mPointablePos[i].y = (S32) mFloor(mPointableRawPos[i].y);
+        mPointablePos[i].z = (S32) mFloor(mPointableRawPos[i].z);
 
-      // Rotation
-      LeapMotionUtil::convertPointableRotation(pointable, mPointableRot[i]);
-      mPointableRotQuat[i].set(mPointableRot[i]);
-   }
+        // Rotation
+        LeapMotionUtil::convertPointableRotation(pointable, mPointableRot[i]);
+        mPointableRotQuat[i].set(mPointableRot[i]);
+    }
 }
 
 //-----------------------------------------------------------------------------
