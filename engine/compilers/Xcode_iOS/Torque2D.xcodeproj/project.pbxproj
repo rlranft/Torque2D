@@ -484,6 +484,7 @@
 		86A9A3FE16AEC836003F01E6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A9A3E416AEC817003F01E6 /* OpenAL.framework */; };
 		86A9A3FF16AEC836003F01E6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A9A3E516AEC817003F01E6 /* OpenGLES.framework */; };
 		86A9A40016AEC836003F01E6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86A9A3E616AEC817003F01E6 /* QuartzCore.framework */; };
+		86E68A691705ED00004935C8 /* str.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86E68A671705ED00004935C8 /* str.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1439,6 +1440,11 @@
 		86A9A3E416AEC817003F01E6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		86A9A3E516AEC817003F01E6 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		86A9A3E616AEC817003F01E6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		86E68A641705ECDF004935C8 /* autoPtr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autoPtr.h; sourceTree = "<group>"; };
+		86E68A651705ECF1004935C8 /* platformIntrinsics.gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platformIntrinsics.gcc.h; sourceTree = "<group>"; };
+		86E68A661705ECF1004935C8 /* platformIntrinsics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platformIntrinsics.h; sourceTree = "<group>"; };
+		86E68A671705ED00004935C8 /* str.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = str.cpp; sourceTree = "<group>"; };
+		86E68A681705ED00004935C8 /* str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2338,6 +2344,7 @@
 		867BAF1A16AEC9050033868F /* memory */ = {
 			isa = PBXGroup;
 			children = (
+				86E68A641705ECDF004935C8 /* autoPtr.h */,
 				86176AB71704B1620050A743 /* singleton.h */,
 				867BAF1B16AEC9050033868F /* dataChunker.cc */,
 				867BAF1C16AEC9050033868F /* dataChunker.h */,
@@ -2476,6 +2483,8 @@
 		867BAF7216AEC9050033868F /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				86E68A651705ECF1004935C8 /* platformIntrinsics.gcc.h */,
+				86E68A661705ECF1004935C8 /* platformIntrinsics.h */,
 				867BAF7316AEC9050033868F /* CursorManager.cc */,
 				867BAF7416AEC9050033868F /* eaxtypes.h */,
 				867BAF7516AEC9050033868F /* event.h */,
@@ -2606,6 +2615,8 @@
 		867BAFD116AEC9050033868F /* string */ = {
 			isa = PBXGroup;
 			children = (
+				86E68A671705ED00004935C8 /* str.cpp */,
+				86E68A681705ED00004935C8 /* str.h */,
 				867BAFD216AEC9050033868F /* findMatch.cc */,
 				867BAFD316AEC9050033868F /* findMatch.h */,
 				867BAFD416AEC9050033868F /* stringBuffer.cc */,
@@ -2923,8 +2934,6 @@
 		86A9A3BA16AEC786003F01E6 /* Torque2D */ = {
 			isa = PBXGroup;
 			children = (
-				86094DB5170502D000EB910E /* journal */,
-				86094DBB170502D000EB910E /* utilities */,
 				867BACF816AEC9050033868F /* 2d */,
 				867BAD6916AEC9050033868F /* algorithm */,
 				867BAD7016AEC9050033868F /* assets */,
@@ -2939,6 +2948,7 @@
 				867BAE3A16AEC9050033868F /* gui */,
 				867BAEBB16AEC9050033868F /* input */,
 				867BAEBE16AEC9050033868F /* io */,
+				86094DB5170502D000EB910E /* journal */,
 				867BAEF316AEC9050033868F /* math */,
 				867BAF1A16AEC9050033868F /* memory */,
 				867BAF2116AEC9050033868F /* messaging */,
@@ -2949,6 +2959,7 @@
 				867BAFB516AEC9050033868F /* sim */,
 				867BAFD116AEC9050033868F /* string */,
 				867BAFDE16AEC9050033868F /* torqueConfig.h */,
+				86094DBB170502D000EB910E /* utilities */,
 			);
 			path = Torque2D;
 			sourceTree = "<group>";
@@ -3496,6 +3507,7 @@
 				86094DC2170502D000EB910E /* process.cpp in Sources */,
 				86094DC3170502D000EB910E /* idGenerator.cpp in Sources */,
 				86094DC4170502D000EB910E /* module.cpp in Sources */,
+				86E68A691705ED00004935C8 /* str.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

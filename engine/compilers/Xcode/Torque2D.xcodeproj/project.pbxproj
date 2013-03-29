@@ -458,6 +458,7 @@
 		86D770BB1656873C0046D71F /* stringUnit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86BC815116518D4600D96ADF /* stringUnit.cpp */; };
 		86D770BC1656873C0046D71F /* unicode.cc in Sources */ = {isa = PBXBuildFile; fileRef = 86BC815316518D4600D96ADF /* unicode.cc */; };
 		86D770C3165687450046D71F /* osxFileDialogs.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8609FE3216556F22004662ED /* osxFileDialogs.mm */; };
+		86E68A611705EBE6004935C8 /* str.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 86E68A5F1705EBE6004935C8 /* str.cpp */; };
 		86EA5B401678C7C700598E68 /* osxCocoaUtilities.mm in Sources */ = {isa = PBXBuildFile; fileRef = 86EA5B3F1678C7C700598E68 /* osxCocoaUtilities.mm */; };
 		86EC5AC7165C1E0100757872 /* osxTorqueView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 86EC5AC6165C1E0100757872 /* osxTorqueView.mm */; };
 /* End PBXBuildFile section */
@@ -1387,6 +1388,11 @@
 		86D76F74165682BF0046D71F /* platformGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platformGL.h; sourceTree = "<group>"; };
 		86D76F76165683240046D71F /* osxOutlineGL.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = osxOutlineGL.cc; sourceTree = "<group>"; };
 		86D76F77165683240046D71F /* osxOutlineGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osxOutlineGL.h; sourceTree = "<group>"; };
+		86E68A5E1705EBDB004935C8 /* autoPtr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autoPtr.h; sourceTree = "<group>"; };
+		86E68A5F1705EBE6004935C8 /* str.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = str.cpp; sourceTree = "<group>"; };
+		86E68A601705EBE6004935C8 /* str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str.h; sourceTree = "<group>"; };
+		86E68A621705EBFF004935C8 /* platformIntrinsics.gcc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platformIntrinsics.gcc.h; sourceTree = "<group>"; };
+		86E68A631705EBFF004935C8 /* platformIntrinsics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platformIntrinsics.h; sourceTree = "<group>"; };
 		86EA5B3E1678C7C700598E68 /* osxCocoaUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osxCocoaUtilities.h; sourceTree = "<group>"; };
 		86EA5B3F1678C7C700598E68 /* osxCocoaUtilities.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = osxCocoaUtilities.mm; sourceTree = "<group>"; };
 		86EC5AC5165C1E0100757872 /* osxTorqueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osxTorqueView.h; sourceTree = "<group>"; };
@@ -2642,6 +2648,7 @@
 		86BC80B816518D4600D96ADF /* memory */ = {
 			isa = PBXGroup;
 			children = (
+				86E68A5E1705EBDB004935C8 /* autoPtr.h */,
 				86176A911704AF5D0050A743 /* singleton.h */,
 				86BC80B916518D4600D96ADF /* dataChunker.cc */,
 				86BC80BA16518D4600D96ADF /* dataChunker.h */,
@@ -2816,6 +2823,8 @@
 		86BC814816518D4600D96ADF /* string */ = {
 			isa = PBXGroup;
 			children = (
+				86E68A5F1705EBE6004935C8 /* str.cpp */,
+				86E68A601705EBE6004935C8 /* str.h */,
 				86BC814916518D4600D96ADF /* findMatch.cc */,
 				86BC814A16518D4600D96ADF /* findMatch.h */,
 				86BC814B16518D4600D96ADF /* stringBuffer.cc */,
@@ -2836,6 +2845,8 @@
 		86BC82ED16518F6800D96ADF /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				86E68A621705EBFF004935C8 /* platformIntrinsics.gcc.h */,
+				86E68A631705EBFF004935C8 /* platformIntrinsics.h */,
 				86BC834C16518FE800D96ADF /* CursorManager.cc */,
 				86BC835516518FE800D96ADF /* event.h */,
 				86CEFC76166FE17500DAF75D /* platformInput_ScriptBinding.h */,
@@ -3419,6 +3430,7 @@
 				86094DB11705028900EB910E /* process.cpp in Sources */,
 				86094DB21705028900EB910E /* idGenerator.cpp in Sources */,
 				86094DB31705028900EB910E /* module.cpp in Sources */,
+				86E68A611705EBE6004935C8 /* str.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
