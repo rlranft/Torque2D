@@ -29,7 +29,9 @@
 #ifndef _VECTOR_H_
    #include "collection/vector.h"
 #endif
-
+#ifndef _TORQUE_STRING_H_
+    #include "string/str.h"
+#endif
 
 /// @file
 /// A system for keeping initialization and shutdown modular while
@@ -350,7 +352,7 @@ struct SourceModuleManager
 private:
 
     static Module *_findOverrideFor(Module *module);
-    static char *_moduleListToString(Vector< Module * >& moduleList);
+    static String _moduleListToString(Vector< Module * >& moduleList);
     static void _printModuleList(Vector< Module * >& moduleList);
     static void _insertIntoModuleList(Module::Mode mode, Vector< Module * >& moduleList, Module *module);
     static S32 _getIndexOfModuleInList(Vector< Module * >& moduleList, Module *module);

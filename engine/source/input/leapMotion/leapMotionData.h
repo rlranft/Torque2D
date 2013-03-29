@@ -30,6 +30,8 @@
 #include "input/leapMotion/leapMotionConstants.h"
 #include "Leap.h"
 
+//------------------------------------------------------------------------------
+
 struct LeapMotionDeviceData
 {
     enum DataDifferences

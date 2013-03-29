@@ -25,6 +25,8 @@
 #include "sim/simSet.h"
 #include "console/consoleTypes.h"
 
+//------------------------------------------------------------------------------
+
 /*
 MODULE_BEGIN( LeapMotionFrameStore )
 
@@ -47,9 +49,12 @@ MODULE_BEGIN( LeapMotionFrameStore )
 MODULE_END;
 */
 
-S32 LeapMotionFrameStore::smMaximumFramesStored = 30;
+//------------------------------------------------------------------------------
 
+S32 LeapMotionFrameStore::smMaximumFramesStored = 30;
 SimGroup *LeapMotionFrameStore::smFrameGroup = NULL;
+
+//------------------------------------------------------------------------------
 
 LeapMotionFrameStore::LeapMotionFrameStore()
 {
@@ -60,6 +65,8 @@ LeapMotionFrameStore::LeapMotionFrameStore()
     Sim::getRootGroup()->addObject(smFrameGroup);
 }
 
+//------------------------------------------------------------------------------
+
 LeapMotionFrameStore::~LeapMotionFrameStore()
 {
     if (smFrameGroup)
@@ -69,11 +76,15 @@ LeapMotionFrameStore::~LeapMotionFrameStore()
     }
 }
 
+//------------------------------------------------------------------------------
+
 void LeapMotionFrameStore::staticInit()
 {
     // The maximum number of frames to keep when $LeapMotion::GenerateWholeFrameEvents is true.
     Con::addVariable("LeapMotion::MaximumFramesStored", TypeS32, &smMaximumFramesStored);
 }
+
+//------------------------------------------------------------------------------
 
 S32 LeapMotionFrameStore::generateNewFrame(const Leap::Frame& frame, const F32& maxHandAxisRadius)
 {

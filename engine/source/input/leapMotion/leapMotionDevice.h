@@ -30,6 +30,8 @@
 #include "input/leapMotion/leapMotionConstants.h"
 #include "Leap.h"
 
+//------------------------------------------------------------------------------
+
 #define DEFAULT_MOTION_UNIT 0
 
 struct LeapMotionDeviceData;

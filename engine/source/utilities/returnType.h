@@ -23,6 +23,7 @@
 #ifndef _UTIL_RETURNTYPE_H_
 #define _UTIL_RETURNTYPE_H_
 
+//------------------------------------------------------------------------------
 /// @file
 ///
 /// Helper templates to determine the return type of functions.

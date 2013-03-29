@@ -22,7 +22,6 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-
 #include "platform/platform.h"
 #include "string/str.h"
 #include "collection/hashTable.h"
@@ -33,14 +32,13 @@
 #include "collection/vector.h"
 #include "memory/dataChunker.h"
 #include "console/console.h"
-
 #include "math/mMathFn.h"
-
 #include "platform/platform.h"
 #include "debug/profiler.h"
 #include "platform/platformIntrinsics.h"
 #include "platform/threads/mutex.h"
 
+//------------------------------------------------------------------------------
 
 // Sigh... guess what compiler needs this...
 namespace DictHash
@@ -63,6 +61,8 @@ namespace KeyCmp
 const String::SizeType String::NPos = U32(~0);
 const String String::EmptyString;
 
+//------------------------------------------------------------------------------
+
 /// A delete policy for the AutoPtr class
 struct DeleteString
 {
@@ -75,7 +75,6 @@ struct DeleteString
 
 
 //-----------------------------------------------------------------------------
-
 /// Search for a character.
 /// Search for the position of the needle in the haystack.
 /// Default mode is StrCase | StrLeft, mode also accepts StrNoCase and StrRight.
@@ -137,6 +136,7 @@ static const char *StrFind(const char *hay, char needle, S32 pos, U32 mode)
     }
 }
 
+//------------------------------------------------------------------------------
 /// Search for a StringData.
 /// Search for the position of the needle in the haystack.
 /// Default mode is StrCase | StrLeft, mode also accepts StrNoCase and StrRight.
@@ -234,8 +234,7 @@ static const char *StrFind(const char *hay, const char *needle, S32 pos, U32 mod
     return 0;
 }
 
-//-----------------------------------------------------------------------------
-
+//------------------------------------------------------------------------------
 /// Struct with String::StringData's field so we can initialize
 /// this without a constructor.
 struct StringDataImpl
@@ -254,7 +253,8 @@ struct StringDataImpl
     StringChar mData[1];      ///< Start of string data
 };
 
-///
+//------------------------------------------------------------------------------
+
 class String::StringData : protected StringDataImpl
 {
 public:
@@ -431,7 +431,7 @@ public:
     }
 };
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 namespace DictHash
 {
@@ -449,6 +449,7 @@ namespace KeyCmp
     }
 }
 
+//------------------------------------------------------------------------------
 /// Type for the intern string table.  We don't want String instances directly
 /// on the table so that destructors don't run when the table is destroyed.  This
 /// is because we really shouldn't depend on dtor ordering within this file and thus
@@ -460,7 +461,11 @@ struct StringInternTable : public HashTable< String::StringData *, String::Strin
     DataChunker mChunker;
 };
 
+//------------------------------------------------------------------------------
+
 static StringInternTable *sInternTable;
+
+//------------------------------------------------------------------------------
 
 struct KillInternTable
 {
@@ -470,9 +475,12 @@ struct KillInternTable
             delete sInternTable;
     }
 };
+
+//------------------------------------------------------------------------------
+
 static KillInternTable sKillInternTable;
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #ifdef TORQUE_DEBUG
 
@@ -509,6 +517,8 @@ void *String::StringData::operator new(size_t size, U32 len)
     return str;
 }
 
+//------------------------------------------------------------------------------
+
 void String::StringData::operator delete(void *ptr)
 {
     StringData *sub = static_cast<StringData *>(ptr);
@@ -521,6 +531,8 @@ void String::StringData::operator delete(void *ptr)
 
     dFree(ptr);
 }
+
+//------------------------------------------------------------------------------
 
 void *String::StringData::operator new(size_t size, U32 len, DataChunker& chunker)
 {
@@ -545,12 +557,16 @@ String::String()
     _string = StringData::Empty();
 }
 
+//------------------------------------------------------------------------------
+
 String::String(const String &str)
 {
     PROFILE_SCOPE(String_String_constructor);
     _string = str._string;
     _string->addRef();
 }
+
+//------------------------------------------------------------------------------
 
 String::String(const StringChar *str)
 {
@@ -564,6 +580,8 @@ String::String(const StringChar *str)
         _string = StringData::Empty();
 }
 
+//------------------------------------------------------------------------------
+
 String::String(const StringChar *str, SizeType len)
 {
     PROFILE_SCOPE(String_char_len_constructor);
@@ -575,6 +593,8 @@ String::String(const StringChar *str, SizeType len)
     else
         _string = StringData::Empty();
 }
+
+//------------------------------------------------------------------------------
 
 String::String(const UTF16 *str)
 {
@@ -591,12 +611,14 @@ String::String(const UTF16 *str)
         _string = StringData::Empty();
 }
 
+//------------------------------------------------------------------------------
+
 String::~String()
 {
     _string->release();
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String String::intern() const
 {
@@ -634,74 +656,98 @@ const StringChar *String::c_str() const
     return _string->utf8();
 }
 
+//------------------------------------------------------------------------------
+
 const UTF16 *String::utf16() const
 {
     return _string->utf16();
 }
+
+//------------------------------------------------------------------------------
 
 String::SizeType String::length() const
 {
     return _string->getLength();
 }
 
+//------------------------------------------------------------------------------
+
 String::SizeType String::size() const
 {
     return _string->getDataSize();
 }
+
+//------------------------------------------------------------------------------
 
 String::SizeType String::numChars() const
 {
     return _string->getNumChars();
 }
 
+//------------------------------------------------------------------------------
+
 bool String::isEmpty() const
 {
     return (_string == StringData::Empty());
 }
+
+//------------------------------------------------------------------------------
 
 bool String::isShared() const
 {
     return _string->isShared();
 }
 
+//------------------------------------------------------------------------------
+
 bool String::isSame(const String& str) const
 {
     return (_string == str._string);
 }
+
+//------------------------------------------------------------------------------
 
 bool String::isInterned() const
 {
     return (_string->isInterned());
 }
 
+//------------------------------------------------------------------------------
+
 U32 String::getHashCaseSensitive() const
 {
     return _string->getOrCreateHashCase();
 }
+
+//------------------------------------------------------------------------------
 
 U32 String::getHashCaseInsensitive() const
 {
     return _string->getOrCreateHashNoCase();
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String::SizeType String::find(const String &str, SizeType pos, U32 mode) const
 {
     return find(str._string->utf8(), pos, mode);
 }
 
+//------------------------------------------------------------------------------
+
 String& String::insert(SizeType pos, const String &str)
 {
     return insert(pos, str._string->utf8());
 }
+
+//------------------------------------------------------------------------------
 
 String& String::replace(SizeType pos, SizeType len, const String &str)
 {
     return replace(pos, len, str._string->utf8());
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String& String::operator = (StringChar c)
 {
@@ -713,6 +759,8 @@ String& String::operator = (StringChar c)
 
     return *this;
 }
+
+//------------------------------------------------------------------------------
 
 String& String::operator += (StringChar c)
 {
@@ -730,7 +778,7 @@ String& String::operator += (StringChar c)
     return *this;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String& String::operator = (const StringChar *str)
 {
@@ -753,6 +801,8 @@ String& String::operator = (const StringChar *str)
     return *this;
 }
 
+//------------------------------------------------------------------------------
+
 String& String::operator = (const String &src)
 {
     // Inc src first to avoid assignment to self problems.
@@ -763,6 +813,8 @@ String& String::operator = (const String &src)
 
     return *this;
 }
+
+//------------------------------------------------------------------------------
 
 String& String::operator += (const StringChar *src)
 {
@@ -791,6 +843,8 @@ String& String::operator += (const StringChar *src)
     return *this;
 }
 
+//------------------------------------------------------------------------------
+
 String& String::operator += (const String &src)
 {
     if (src.isEmpty())
@@ -818,7 +872,7 @@ String& String::operator += (const String &src)
     return *this;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String operator +(const String &a, const String &b)
 {
@@ -840,6 +894,8 @@ String operator +(const String &a, const String &b)
     return String(sub);
 }
 
+//------------------------------------------------------------------------------
+
 String operator +(const String &a, StringChar c)
 {
     //PROFILE_SCOPE( String_String_plus_Char );
@@ -855,6 +911,8 @@ String operator +(const String &a, StringChar c)
     return String(sub);
 }
 
+//------------------------------------------------------------------------------
+
 String operator +(StringChar c, const String &a)
 {
     //PROFILE_SCOPE( String_Char_plus_String );
@@ -867,6 +925,8 @@ String operator +(StringChar c, const String &a)
 
     return String(sub);
 }
+
+//------------------------------------------------------------------------------
 
 String operator +(const String &a, const StringChar *b)
 {
@@ -891,6 +951,8 @@ String operator +(const String &a, const StringChar *b)
     return String(sub);
 }
 
+//------------------------------------------------------------------------------
+
 String operator +(const StringChar *a, const String &b)
 {
     //PROFILE_SCOPE( String_CString_plus_String );
@@ -913,6 +975,8 @@ String operator +(const StringChar *a, const String &b)
     return String(sub);
 }
 
+//------------------------------------------------------------------------------
+
 bool String::operator ==(const String &str) const
 {
     //PROFILE_SCOPE( String_op_equal );
@@ -931,6 +995,8 @@ bool String::operator ==(const String &str) const
         return (dMemcmp(str._string->utf8(), _string->utf8(), _string->getLength()) == 0);
 }
 
+//------------------------------------------------------------------------------
+
 bool String::operator ==(StringChar c) const
 {
     if (!_string || _string->getLength() != 1)
@@ -939,20 +1005,28 @@ bool String::operator ==(StringChar c) const
         return (_string->utf8()[0] == c);
 }
 
+//------------------------------------------------------------------------------
+
 bool String::operator <(const String &str) const
 {
     return (dStrnatcmp(_string->utf8(), str._string->utf8()) < 0);
 }
+
+//------------------------------------------------------------------------------
 
 bool String::operator >(const String &str) const
 {
     return (dStrnatcmp(_string->utf8(), str._string->utf8()) > 0);
 }
 
+//------------------------------------------------------------------------------
+
 bool String::operator <=(const String &str) const
 {
     return (dStrnatcmp(_string->utf8(), str._string->utf8()) <= 0);
 }
+
+//------------------------------------------------------------------------------
 
 bool String::operator >=(const String &str) const
 {
@@ -961,7 +1035,6 @@ bool String::operator >=(const String &str) const
 
 //-----------------------------------------------------------------------------
 // Base functions for string comparison
-
 S32 String::compare(const StringChar *str, SizeType len, U32 mode) const
 {
     PROFILE_SCOPE( String_compare );
@@ -1018,6 +1091,8 @@ S32 String::compare(const StringChar *str, SizeType len, U32 mode) const
     return *p1 - *p2;
 }
 
+//------------------------------------------------------------------------------
+
 S32 String::compare(const String &str, SizeType len, U32 mode) const
 {
     if (str._string == _string)
@@ -1025,6 +1100,8 @@ S32 String::compare(const String &str, SizeType len, U32 mode) const
 
     return compare(str.c_str(), len, mode);
 }
+
+//------------------------------------------------------------------------------
 
 bool String::equal(const String &str, U32 mode) const
 {
@@ -1047,7 +1124,7 @@ bool String::equal(const String &str, U32 mode) const
     }
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String::SizeType String::find(StringChar c, SizeType pos, U32 mode) const
 {
@@ -1055,6 +1132,8 @@ String::SizeType String::find(StringChar c, SizeType pos, U32 mode) const
 
     return ptr ? SizeType(ptr - _string->utf8()) : NPos;
 }
+
+//------------------------------------------------------------------------------
 
 String::SizeType String::find(const StringChar *str, SizeType pos, U32 mode) const
 {
@@ -1065,8 +1144,7 @@ String::SizeType String::find(const StringChar *str, SizeType pos, U32 mode) con
     return ptr ? SizeType(ptr - _string->utf8()) : NPos;
 }
 
-
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String& String::insert(SizeType pos, const StringChar *str)
 {
@@ -1075,6 +1153,8 @@ String& String::insert(SizeType pos, const StringChar *str)
     return insert(pos, str, dStrlen(str));
 }
 
+
+//------------------------------------------------------------------------------
 ///@todo review for error checking
 String& String::insert(SizeType pos, const StringChar *str, SizeType len)
 {
@@ -1104,6 +1184,9 @@ String& String::insert(SizeType pos, const StringChar *str, SizeType len)
 
     return *this;
 }
+
+
+//------------------------------------------------------------------------------
 
 String& String::erase(SizeType pos, SizeType len)
 {
@@ -1135,6 +1218,7 @@ String& String::erase(SizeType pos, SizeType len)
     return *this;
 }
 
+//------------------------------------------------------------------------------
 ///@todo review for error checking
 String& String::replace(SizeType pos, SizeType len, const StringChar *str)
 {
@@ -1163,6 +1247,8 @@ String& String::replace(SizeType pos, SizeType len, const StringChar *str)
 
     return *this;
 }
+
+//------------------------------------------------------------------------------
 
 String& String::replace(StringChar c1, StringChar c2)
 {
@@ -1201,6 +1287,8 @@ String& String::replace(StringChar c1, StringChar c2)
 
     return *this;
 }
+
+//------------------------------------------------------------------------------
 
 String &String::replace(const String &s1, const String &s2)
 {
@@ -1285,7 +1373,7 @@ String &String::replace(const String &s1, const String &s2)
     return *this;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String String::substr(SizeType pos, SizeType len) const
 {
@@ -1307,7 +1395,7 @@ String String::substr(SizeType pos, SizeType len) const
     return sub;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String String::trim() const
 {
@@ -1336,7 +1424,7 @@ String String::trim() const
     return sub;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String String::expandEscapes() const
 {
@@ -1347,7 +1435,7 @@ String String::expandEscapes() const
     return str;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String String::collapseEscapes() const
 {
@@ -1358,7 +1446,7 @@ String String::collapseEscapes() const
     return str;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void String::split(const char *delimiter, Vector< String >& outElements) const
 {
@@ -1402,33 +1490,35 @@ void String::split(const char *delimiter, Vector< String >& outElements) const
         outElements.push_back(start);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool String::startsWith(const char *text) const
 {
     return dStrStartsWith(_string->utf8(), text);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool String::endsWith(const char *text) const
 {
     return dStrEndsWith(_string->utf8(), text);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void String::copy(StringChar *dst, const StringChar *src, U32 len)
 {
     dMemcpy(dst, src, len * sizeof(StringChar));
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #if defined(TORQUE_OS_WIN32) || defined(TORQUE_OS_XBOX) || defined(TORQUE_OS_XENON)
 // This standard function is not defined when compiling with VC7...
 #define vsnprintf	_vsnprintf
 #endif
+
+//------------------------------------------------------------------------------
 
 String::StrFormat::~StrFormat()
 {
@@ -1436,11 +1526,15 @@ String::StrFormat::~StrFormat()
         dFree(_dynamicBuffer);
 }
 
+//------------------------------------------------------------------------------
+
 S32 String::StrFormat::format(const char *format, void *args)
 {
     _len = 0;
     return formatAppend(format, args);
 }
+
+//------------------------------------------------------------------------------
 
 S32 String::StrFormat::formatAppend(const char *format, void *args)
 {
@@ -1473,6 +1567,8 @@ S32 String::StrFormat::formatAppend(const char *format, void *args)
     return _len;
 }
 
+//------------------------------------------------------------------------------
+
 S32 String::StrFormat::append(const char *str, S32 len)
 {
     if (_dynamicBuffer == NULL)
@@ -1502,10 +1598,14 @@ S32 String::StrFormat::append(const char *str, S32 len)
     return _len;
 }
 
+//------------------------------------------------------------------------------
+
 S32 String::StrFormat::append(const char *str)
 {
     return append(str, dStrlen(str));
 }
+
+//------------------------------------------------------------------------------
 
 char *String::StrFormat::copy(char *buffer) const
 {
@@ -1513,7 +1613,7 @@ char *String::StrFormat::copy(char *buffer) const
     return buffer;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 String String::ToString(bool value)
 {
@@ -1524,6 +1624,8 @@ String String::ToString(bool value)
         return sTrue;
     return sFalse;
 }
+
+//------------------------------------------------------------------------------
 
 String String::ToString(const char *str, ...)
 {
@@ -1536,6 +1638,8 @@ String String::ToString(const char *str, ...)
     va_end(args);
     return ret;
 }
+
+//------------------------------------------------------------------------------
 
 String String::VToString(const char *str, void *args)
 {
@@ -1557,6 +1661,8 @@ String String::VToString(const char *str, void *args)
     return sub;
 }
 
+//------------------------------------------------------------------------------
+
 String   String::SpanToString(const char *start, const char *end)
 {
     if (end == start)
@@ -1570,6 +1676,8 @@ String   String::SpanToString(const char *start, const char *end)
     return sub;
 }
 
+//------------------------------------------------------------------------------
+
 String String::ToLower(const String &string)
 {
     if (string.isEmpty())
@@ -1581,6 +1689,8 @@ String String::ToLower(const String &string)
     return sub;
 }
 
+//------------------------------------------------------------------------------
+
 String String::ToUpper(const String &string)
 {
     if (string.isEmpty())
@@ -1591,6 +1701,8 @@ String String::ToUpper(const String &string)
 
     return sub;
 }
+
+//------------------------------------------------------------------------------
 
 String String::GetTrailingNumber(const char *str, S32& number)
 {

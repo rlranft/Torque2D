@@ -22,8 +22,12 @@
 
 #include "input/leapMotion/leapMotionUtil.h"
 
+//------------------------------------------------------------------------------
+
 namespace LeapMotionUtil
 {
+    
+    //------------------------------------------------------------------------------
 
     void convertPosition(const Leap::Vector& inPosition, F32& x, F32& y, F32& z)
     {
@@ -35,6 +39,8 @@ namespace LeapMotionUtil
         y = -inPosition.z;   // y = -z
         z = inPosition.y;    // z = y;
     }
+    
+    //------------------------------------------------------------------------------
 
     void convertPosition(const Leap::Vector& inPosition, Point3F& outPosition)
     {
@@ -46,6 +52,8 @@ namespace LeapMotionUtil
         outPosition.y = -inPosition.z;   // y = -z
         outPosition.z = inPosition.y;    // z = y;
     }
+    
+    //------------------------------------------------------------------------------
 
     void convertHandRotation(const Leap::Hand& hand, MatrixF& outRotation)
     {
@@ -67,6 +75,8 @@ namespace LeapMotionUtil
         outRotation.setColumn(2, Point4F(handUp.x, -handUp.z, handUp.y, 0.0f));
         outRotation.setPosition(Point3F::Zero);
     }
+    
+    //------------------------------------------------------------------------------
 
     void calculateHandAxisRotation(const MatrixF& handRotation, const F32& maxHandAxisRadius, Point2F& outRotation)
     {
@@ -86,6 +96,8 @@ namespace LeapMotionUtil
             outRotation /= maxHandAxisRadius;
         }
     }
+    
+    //------------------------------------------------------------------------------
 
     void convertPointableRotation(const Leap::Pointable& pointable, MatrixF& outRotation)
     {
@@ -105,5 +117,4 @@ namespace LeapMotionUtil
         outRotation.setColumn(2, Point4F(pointableUp.x, -pointableUp.z, pointableUp.y, 0.0f));
         outRotation.setPosition(Point3F::Zero);
     }
-
 }

@@ -22,6 +22,8 @@
 
 #include "utilities/idGenerator.h"
 
+//------------------------------------------------------------------------------
+
 void IdGenerator::reclaim()
 {
     // attempt to keep the pool vector as small as possible by reclaiming

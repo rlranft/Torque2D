@@ -26,9 +26,16 @@
 #include "math/mAngAxis.h"
 #include "math/mTransform.h"
 
+//------------------------------------------------------------------------------
+
 U32 LeapMotionFrame::smNextInternalFrameId = 0;
 
+//------------------------------------------------------------------------------
+
 IMPLEMENT_CONOBJECT(LeapMotionFrame);
+
+//------------------------------------------------------------------------------
+
 /*
 ImplementEnumType( LeapMotionFramePointableType,
    "Leap Motion pointable type.\n\n")
@@ -42,16 +49,21 @@ LeapMotionFrame::LeapMotionFrame()
     clear();
 }
 
+//------------------------------------------------------------------------------
+
 LeapMotionFrame::~LeapMotionFrame()
 {
     clear();
 }
 
+//------------------------------------------------------------------------------
 
 void LeapMotionFrame::initPersistFields()
 {
     Parent::initPersistFields();
 }
+
+//------------------------------------------------------------------------------
 
 bool LeapMotionFrame::onAdd()
 {
@@ -61,10 +73,14 @@ bool LeapMotionFrame::onAdd()
     return true;
 }
 
+//------------------------------------------------------------------------------
+
 void LeapMotionFrame::onRemove()
 {
     Parent::onRemove();
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionFrame::clear()
 {
@@ -92,6 +108,8 @@ void LeapMotionFrame::clear()
     mPointableLength.clear();
     mPointableWidth.clear();
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionFrame::copyFromFrame(const Leap::Frame& frame, const F32& maxHandAxisRadius)
 {
@@ -127,6 +145,8 @@ void LeapMotionFrame::copyFromFrame(const Leap::Frame& frame, const F32& maxHand
         copyFromFramePointables(frame.pointables());
     }
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionFrame::copyFromFrameHands(const Leap::HandList& hands, const F32& maxHandAxisRadius)
 {
@@ -165,6 +185,8 @@ void LeapMotionFrame::copyFromFrameHands(const Leap::HandList& hands, const F32&
         mHandPointablesCount[i] = hand.pointables().count();
     }
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionFrame::copyFromFramePointables(const Leap::PointableList& pointables)
 {
@@ -238,7 +260,8 @@ void LeapMotionFrame::copyFromFramePointables(const Leap::PointableList& pointab
     }
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
 /*
 ConsoleMethod( LeapMotionFrame, isFrameValid, bool, ( ),,
    "@brief Checks if this frame is valid.\n\n"

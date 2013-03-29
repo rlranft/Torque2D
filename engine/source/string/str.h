@@ -29,13 +29,11 @@
 #include "platform/types.h"
 #endif
 
-
+//------------------------------------------------------------------------------
 template< class T > class Vector;
-
-
 typedef UTF8 StringChar;
 
-
+//------------------------------------------------------------------------------
 /// The String class represents a 0-terminated array of characters.
 class String
 {

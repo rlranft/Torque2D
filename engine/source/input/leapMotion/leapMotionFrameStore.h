@@ -24,16 +24,15 @@
 #define _LEAPMOTIONFRAMESTORE_H_
 
 #ifndef _PLATFORM_H_
-
-#include "platform/platform.h"
-
+    #include "platform/platform.h"
 #endif
 
 #ifndef __Leap_h__
-
-#include "Leap.h"
-
+    #include "Leap.h"
 #endif
+
+
+//------------------------------------------------------------------------------
 
 class SimGroup;
 

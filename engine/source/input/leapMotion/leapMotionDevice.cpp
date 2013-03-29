@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // Copyright (c) 2012 GarageGames, LLC
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,7 +18,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #include "input/leapMotion/leapMotionDevice.h"
 #include "input/leapMotion/leapMotionData.h"
@@ -75,7 +75,7 @@ U32 LeapMotionDevice::LM_HANDPOINTABLE[LeapMotionConstants::MaxHands][LeapMotion
 U32 LeapMotionDevice::LM_HANDPOINTABLEROT[LeapMotionConstants::MaxHands][LeapMotionConstants::MaxPointablesPerHand] = {0};
 U32 LeapMotionDevice::LM_FRAME = 0;
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 LeapMotionDevice::LeapMotionDevice()
 {
@@ -100,7 +100,7 @@ LeapMotionDevice::LeapMotionDevice()
     buildCodeTable();
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 LeapMotionDevice::~LeapMotionDevice()
 {
@@ -109,7 +109,7 @@ LeapMotionDevice::~LeapMotionDevice()
     Mutex::destroyMutex(mActiveMutex);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void LeapMotionDevice::staticInit()
 {
@@ -135,7 +135,7 @@ void LeapMotionDevice::staticInit()
     Con::addVariable("LeapMotion::GenerateWholeFrameEvents", TypeBool, &smGenerateWholeFrameEvents);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void LeapMotionDevice::buildCodeTable()
 {
@@ -191,7 +191,7 @@ void LeapMotionDevice::buildCodeTable()
    */
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool LeapMotionDevice::enable()
 {
@@ -208,7 +208,7 @@ bool LeapMotionDevice::enable()
     return false;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void LeapMotionDevice::disable()
 {
@@ -228,7 +228,7 @@ void LeapMotionDevice::disable()
     mEnabled = false;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool LeapMotionDevice::getActive()
 {
@@ -239,7 +239,7 @@ bool LeapMotionDevice::getActive()
     return active;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void LeapMotionDevice::setActive(bool state)
 {
@@ -248,7 +248,7 @@ void LeapMotionDevice::setActive(bool state)
     Mutex::unlockMutex(mActiveMutex);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool LeapMotionDevice::process()
 {
@@ -347,7 +347,7 @@ bool LeapMotionDevice::process()
     return true;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void LeapMotionDevice::MotionListener::onConnect(const Leap::Controller &controller)
 {
@@ -359,7 +359,7 @@ void LeapMotionDevice::MotionListener::onDisconnect(const Leap::Controller &cont
     LEAPMOTIONDEV->setActive(false);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 ConsoleFunction(isLeapMotionActive, bool, 1, 1, "brief Used to determine if the Leap Motion input device is active\n"
         "The Leap Motion input device is considered active when the support library has been "

@@ -23,10 +23,14 @@
 #include "input/leapMotion/leapMotionData.h"
 #include "input/leapMotion/leapMotionUtil.h"
 
+//------------------------------------------------------------------------------
+
 LeapMotionDeviceData::LeapMotionDeviceData()
 {
     reset();
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionDeviceData::reset()
 {
@@ -46,6 +50,8 @@ void LeapMotionDeviceData::reset()
         }
     }
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionDeviceData::setData(const Leap::Frame& frame, LeapMotionDeviceData *prevData, bool keepHandIndexPersistent, bool keepPointableIndexPersistent, const F32& maxHandAxisRadius)
 {
@@ -90,6 +96,8 @@ void LeapMotionDeviceData::setData(const Leap::Frame& frame, LeapMotionDeviceDat
 
     mDataSet = true;
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionDeviceData::processPersistentHands(const Leap::HandList& hands, bool keepPointableIndexPersistent, LeapMotionDeviceData *prevData)
 {
@@ -166,6 +174,8 @@ void LeapMotionDeviceData::processPersistentHands(const Leap::HandList& hands, b
     }
 }
 
+//------------------------------------------------------------------------------
+
 void LeapMotionDeviceData::processHands(const Leap::HandList& hands)
 {
     S32 numHands = hands.count();
@@ -183,6 +193,8 @@ void LeapMotionDeviceData::processHands(const Leap::HandList& hands)
         mHandValid[i] = false;
     }
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionDeviceData::processHand(const Leap::Hand& hand, U32 handIndex, bool keepPointableIndexPersistent, LeapMotionDeviceData *prevData)
 {
@@ -212,6 +224,8 @@ void LeapMotionDeviceData::processHand(const Leap::Hand& hand, U32 handIndex, bo
         processHandPointables(hand.pointables(), handIndex);
     }
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionDeviceData::processPersistentHandPointables(const Leap::PointableList& pointables, U32 handIndex, LeapMotionDeviceData *prevData)
 {
@@ -287,6 +301,8 @@ void LeapMotionDeviceData::processPersistentHandPointables(const Leap::Pointable
     }
 }
 
+//------------------------------------------------------------------------------
+
 void LeapMotionDeviceData::processHandPointables(const Leap::PointableList& pointables, U32 handIndex)
 {
     // Process all pointables attached to the hand
@@ -303,6 +319,8 @@ void LeapMotionDeviceData::processHandPointables(const Leap::PointableList& poin
         mPointableValid[handIndex][i] = false;
     }
 }
+
+//------------------------------------------------------------------------------
 
 void LeapMotionDeviceData::processHandPointable(const Leap::Pointable& pointable, U32 handIndex, U32 handPointableIndex)
 {
@@ -325,6 +343,8 @@ void LeapMotionDeviceData::processHandPointable(const Leap::Pointable& pointable
     mPointableRotQuat[handIndex][handPointableIndex].set(mPointableRot[handIndex][handPointableIndex]);
 }
 
+//------------------------------------------------------------------------------
+
 U32 LeapMotionDeviceData::compare(LeapMotionDeviceData *other)
 {
     S32 result = DIFF_NONE;
@@ -341,6 +361,8 @@ U32 LeapMotionDeviceData::compare(LeapMotionDeviceData *other)
 
     return result;
 }
+
+//------------------------------------------------------------------------------
 
 U32 LeapMotionDeviceData::compareMeta(LeapMotionDeviceData *other)
 {

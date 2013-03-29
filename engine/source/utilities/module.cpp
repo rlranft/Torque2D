@@ -1,4 +1,4 @@
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // Copyright (c) 2012 GarageGames, LLC
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -18,22 +18,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 #include "platform/platform.h"
 #include "utilities/module.h"
 #include "collection/vector.h"
 #include "platform/platformString.h"
 
+//------------------------------------------------------------------------------
 
 //#define DEBUG_SPEW
 #define DEBUG_SPEW_LEVEL 2
 
+//------------------------------------------------------------------------------
 
 Module *Module::smFirst;
 
-
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool Module::_constrainedToComeBefore(Module *module, Mode mode)
 {
@@ -74,7 +75,7 @@ bool Module::_constrainedToComeBefore(Module *module, Mode mode)
     return false;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 bool Module::_constrainedToComeAfter(Module *module, Mode mode)
 {
@@ -115,9 +116,9 @@ bool Module::_constrainedToComeAfter(Module *module, Mode mode)
     return false;
 }
 
-//-----------------------------------------------------------------------------
-/*
-char* SourceModuleManager::_moduleListToString( Vector< Module* >& moduleList )
+//------------------------------------------------------------------------------
+
+String SourceModuleManager::_moduleListToString( Vector< Module* >& moduleList )
 {
    StringBuilder str;
    
@@ -136,14 +137,14 @@ char* SourceModuleManager::_moduleListToString( Vector< Module* >& moduleList )
    return str.end();
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void SourceModuleManager::_printModuleList( Vector< Module* >& moduleList )
 {
    Platform::outputDebugString( _moduleListToString( moduleList ) );
 }
-*/
-//-----------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 
 void SourceModuleManager::_insertIntoModuleList(Module::Mode mode, Vector< Module * >& moduleList, Module *module)
 {
@@ -280,7 +281,7 @@ void SourceModuleManager::_insertIntoModuleList(Module::Mode mode, Vector< Modul
     moduleList.push_back(module);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 Module *SourceModuleManager::_findOverrideFor(Module *module)
 {
@@ -294,7 +295,7 @@ Module *SourceModuleManager::_findOverrideFor(Module *module)
     return NULL;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 S32 SourceModuleManager::_getIndexOfModuleInList(Vector< Module * >& moduleList, Module *module)
 {
@@ -306,7 +307,7 @@ S32 SourceModuleManager::_getIndexOfModuleInList(Vector< Module * >& moduleList,
     return -1;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 S32 SourceModuleManager::_getIndexOfModuleInList(Vector< Module * >& moduleList, const char *moduleName)
 {
@@ -318,7 +319,7 @@ S32 SourceModuleManager::_getIndexOfModuleInList(Vector< Module * >& moduleList,
     return -1;
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void SourceModuleManager::_createModuleList(Module::Mode mode, Vector< Module * >& moduleList)
 {
@@ -326,7 +327,7 @@ void SourceModuleManager::_createModuleList(Module::Mode mode, Vector< Module * 
         _insertIntoModuleList(mode, moduleList, module);
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void SourceModuleManager::initializeSystem()
 {
@@ -351,7 +352,7 @@ void SourceModuleManager::initializeSystem()
     }
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void SourceModuleManager::shutdownSystem()
 {
@@ -375,7 +376,7 @@ void SourceModuleManager::shutdownSystem()
     }
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 Module *SourceModuleManager::findModule(const char *name)
 {
