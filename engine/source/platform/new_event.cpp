@@ -511,7 +511,7 @@ void InputEventManager::buildInputEvent(U32 deviceType, U32 deviceInst, InputEve
    newEvent.action   = action;
    newEvent.fValue   = fValue;
 
-   //////newEvent.postToSignal(Input::smInputEvent);
+   //newEvent.postToSignal(Input::smInputEvent);
 }
 
 void InputEventManager::buildInputEvent(U32 deviceType, U32 deviceInst, InputEventType objType, InputObjectInstances objInst, InputActionType action, Point3F& pValue)
@@ -527,7 +527,7 @@ void InputEventManager::buildInputEvent(U32 deviceType, U32 deviceInst, InputEve
    newEvent.fValue2  = pValue.y;
    newEvent.fValue3  = pValue.z;
 
-   //////newEvent.postToSignal(Input::smInputEvent);
+   //newEvent.postToSignal(Input::smInputEvent);
 }
 
 void InputEventManager::buildInputEvent(U32 deviceType, U32 deviceInst, InputEventType objType, InputObjectInstances objInst, InputActionType action, QuatF& qValue)
@@ -544,5 +544,5 @@ void InputEventManager::buildInputEvent(U32 deviceType, U32 deviceInst, InputEve
    newEvent.fValue3  = qValue.z;
    newEvent.fValue4  = qValue.w;
 
-   //////newEvent.postToSignal(Input::smInputEvent);
+   //newEvent.postToSignal(Input::smInputEvent);
 }

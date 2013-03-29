@@ -458,7 +458,7 @@ struct InputEventInfo
 
    inline void postToSignal(InputEvent &ie)
    {
-       //ie.trigger(deviceInst, fValue, fValue2, fValue3, fValue4, iValue, deviceType, objType, ascii, objInst, action, modifier);
+       ie.trigger(deviceInst, fValue, fValue2, fValue3, fValue4, iValue, deviceType, objType, ascii, objInst, action, modifier);
    }
 };
 
