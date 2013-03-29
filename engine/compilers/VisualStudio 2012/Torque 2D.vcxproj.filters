@@ -1347,11 +1347,11 @@
     <ClCompile Include="..\..\source\utilities\module.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\platform\event.cpp">
-      <Filter>platform</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\string\str.cpp">
       <Filter>string</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\platform\new_event.cpp">
+      <Filter>platform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2786,6 +2786,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\string\str.h">
       <Filter>string</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\platform\new_event.h">
+      <Filter>platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

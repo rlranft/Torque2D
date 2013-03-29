@@ -58,4 +58,4 @@ protected:
    int mOffset;
 };
 
-#endif // _DELEGATE_H_
+#endif // _UTIL_DELEGATE_H_
