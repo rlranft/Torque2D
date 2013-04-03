@@ -193,6 +193,9 @@
     <Filter Include="persistence\taml\xml">
       <UniqueIdentifier>{cc1c1416-376b-4686-a4ac-21d1a35c9390}</UniqueIdentifier>
     </Filter>
+    <Filter Include="input\leapMotion">
+      <UniqueIdentifier>{91cea727-a448-4656-9250-d2efe21582e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\audio\audio.cc">
@@ -1328,6 +1331,15 @@
     </ClCompile>
     <ClCompile Include="..\..\source\persistence\taml\json\tamlJSONParser.cc">
       <Filter>persistence\taml\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionManager.cc">
+      <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionUtil.cpp">
+      <Filter>input\leapMotion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\math\mPoint.cpp">
+      <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2750,6 +2762,18 @@
     </ClInclude>
     <ClInclude Include="..\..\source\persistence\taml\json\tamlJSONParser.h">
       <Filter>persistence\taml\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionManager.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionUtil.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionConstants.h">
+      <Filter>input\leapMotion</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\input\leapMotion\LeapMotionManager_ScriptBinding.h">
+      <Filter>input\leapMotion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

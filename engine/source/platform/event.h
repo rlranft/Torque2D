@@ -430,7 +430,8 @@ enum InputDeviceTypes
    JoystickDeviceType,
    ScreenTouchDeviceType,
    AccelerometerDeviceType,
-   GyroscopeDeviceType
+   GyroscopeDeviceType,
+   LeapMotionDeviceType
 };
 
 /// Device Event Action Types
@@ -448,6 +449,9 @@ enum InputDeviceTypes
 #define SI_TOUCH     0x0C
 #define SI_GESTURE   0x0D
 #define SI_MOTION    0x0F
+#define SI_POS       0x11
+#define SI_ROT       0x12
+#define SI_AXIS      0x13
 
 /// Event SubTypes
 #define SI_ANY       0xff

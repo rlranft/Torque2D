@@ -407,6 +407,8 @@
     <ClCompile Include="..\..\source\gui\language\lang.cc" />
     <ClCompile Include="..\..\source\gui\messageVector.cc" />
     <ClCompile Include="..\..\source\input\actionMap.cc" />
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionManager.cc" />
+    <ClCompile Include="..\..\source\input\leapMotion\leapMotionUtil.cpp" />
     <ClCompile Include="..\..\source\io\bitStream.cc" />
     <ClCompile Include="..\..\source\io\bufferStream.cc" />
     <ClCompile Include="..\..\source\io\fileObject.cc" />
@@ -431,6 +433,7 @@
     <ClCompile Include="..\..\source\io\zip\zipObject.cc" />
     <ClCompile Include="..\..\source\io\zip\zipSubStream.cc" />
     <ClCompile Include="..\..\source\io\zip\zipTempStream.cc" />
+    <ClCompile Include="..\..\source\math\mPoint.cpp" />
     <ClCompile Include="..\..\source\math\rectClipper.cpp" />
     <ClCompile Include="..\..\source\memory\dataChunker.cc" />
     <ClCompile Include="..\..\source\memory\frameAllocator.cc" />
@@ -855,6 +858,10 @@
     <ClInclude Include="..\..\source\gui\language\lang.h" />
     <ClInclude Include="..\..\source\gui\messageVector.h" />
     <ClInclude Include="..\..\source\input\actionMap.h" />
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionConstants.h" />
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionManager.h" />
+    <ClInclude Include="..\..\source\input\leapMotion\LeapMotionManager_ScriptBinding.h" />
+    <ClInclude Include="..\..\source\input\leapMotion\leapMotionUtil.h" />
     <ClInclude Include="..\..\source\io\bitStream.h" />
     <ClInclude Include="..\..\source\io\bufferStream.h" />
     <ClInclude Include="..\..\source\io\fileio.h" />

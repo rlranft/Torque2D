@@ -784,6 +784,11 @@ bool ActionMap::getDeviceTypeAndInstance(const char *pDeviceName, U32 &deviceTyp
        deviceType = ScreenTouchDeviceType;
        offset = dStrlen("touchdevice");
    }
+   else if (dStrnicmp(pDeviceName, "leapdevice", dStrlen("leapdevice")) == 0)
+   {
+       deviceType = LeapMotionDeviceType;
+       offset = dStrlen("leapdevice");
+   }
    else
       return false;
     
@@ -821,17 +826,21 @@ bool ActionMap::getDeviceName(const U32 deviceType, const U32 deviceInstance, ch
       break;
     
      case AccelerometerDeviceType:
-     dStrcpy(buffer, "accelerometer");
-     break;
+      dStrcpy(buffer, "accelerometer");
+      break;
     
      case GyroscopeDeviceType:
-     dStrcpy(buffer, "gyroscope");
-     break;
+      dStrcpy(buffer, "gyroscope");
+      break;
      
      case ScreenTouchDeviceType:
-     dStrcpy(buffer, "touchdevice");
-     break;
-           
+      dStrcpy(buffer, "touchdevice");
+      break;
+     
+     case LeapMotionDeviceType:
+      dStrcpy(buffer, "leapdevice");
+      break;
+
      default:
       Con::errorf( "ActionMap::getDeviceName: unknown device type specified, %d (inst: %d)", deviceType, deviceInstance);
       return false;
