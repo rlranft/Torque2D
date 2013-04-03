@@ -23,8 +23,6 @@
 #include "math/mQuat.h"
 #include "math/mMatrix.h"
 
-const QuatF QuatF::Identity(0.0f,0.0f,0.0f,1.0f);
-
 QuatF& QuatF::set( const EulerF & e )
 {
    F32 cx, sx;
@@ -54,6 +52,30 @@ QuatF& QuatF::set( const EulerF & e )
    z = cysz*cx - sycz*sx;
 
    return *this;
+}
+
+AngAxisF & AngAxisF::set( const QuatF & q )
+{
+   angle = mAcos( q.w ) * 2;
+   F32 sinHalfAngle = mSqrt(1 - q.w * q.w);
+   if (sinHalfAngle != 0)
+   	axis.set( q.x / sinHalfAngle, q.y / sinHalfAngle, q.z / sinHalfAngle );
+   else
+      axis.set(1,0,0);
+   return *this;
+}
+
+AngAxisF & AngAxisF::set( const MatrixF & mat )
+{
+   QuatF q( mat );
+   set( q );
+   return *this;
+}
+
+MatrixF * AngAxisF::setMatrix( MatrixF * mat ) const
+{
+   QuatF q( *this );
+   return q.setMatrix( mat );
 }
 
 QuatF& QuatF::operator *=( const QuatF & b )

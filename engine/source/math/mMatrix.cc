@@ -25,8 +25,6 @@
 #include "console/console.h"
 #include "memory/frameAllocator.h"
 
-const MatrixF MatrixF::Identity( true );
-
 // idx(i,j) is index to element in column i, row j
 
 void MatrixF::transposeTo(F32 *matrix) const

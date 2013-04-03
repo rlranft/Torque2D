@@ -82,13 +82,6 @@ class Point2I
 
    // Unary operators
    Point2I operator-() const;
-
-   //-------------------------------------- Public static constants
-  public:
-	const static Point2I One;
-	const static Point2I Zero;
-	const static Point2I Min;
-	const static Point2I Max;
 };
 
 //------------------------------------------------------------------------------
@@ -142,11 +135,6 @@ class Point3I
 
    // Unary operators
    Point3I operator-() const;
-
-   //-------------------------------------- Public static constants
-public:
-   const static Point3I One;
-   const static Point3I Zero;
 };
 
 
@@ -219,13 +207,6 @@ class Point2F
 
    // Unary operators
    Point2F operator-() const;
-
-   //-------------------------------------- Public static constants
-  public:
-	const static Point2F One;
-	const static Point2F Zero;
-	const static Point2F Min;
-	const static Point2F Max;
 };
 
 
@@ -296,11 +277,6 @@ class Point2D
 
    // Unary operators
    Point2D operator-() const;
-
-   //-------------------------------------- Public static constants
-  public:
-	const static Point2D One;
-	const static Point2D Zero;
 };
 
 
@@ -336,13 +312,10 @@ class Point3F
    //-------------------------------------- Queries
   public:
    bool  isZero() const;
-   bool  isUnitLength() const;
    F32   len()    const;
    F32   lenSquared() const;
    F32   magnitudeSafe();
    bool  equal( Point3F &compare );
-   U32   getLeastComponentIndex() const;
-   U32   getGreatestComponentIndex() const;
 
    //-------------------------------------- Mathematical mutators
   public:
@@ -376,16 +349,6 @@ class Point3F
 
    // Unary operators
    Point3F operator-() const;
-
-   // Public static constants
-public:
-   const static Point3F One;
-   const static Point3F Zero;
-   const static Point3F Max;
-   const static Point3F Min;
-   const static Point3F UnitX;
-   const static Point3F UnitY;
-   const static Point3F UnitZ;
 };
 
 
@@ -453,34 +416,8 @@ class Point3D
 
    // Unary operators
    Point3D operator-() const;
-
-   //-------------------------------------- Public static constants
-public:
-   const static Point3D One;
-   const static Point3D Zero;
 };
 
-
-//------------------------------------------------------------------------------
-/// 4D integer point
-///
-/// Uses S32 internally. Currently storage only.
-class Point4I
-{
-  public:
-   Point4I() {}
-   Point4I(S32 _x, S32 _y, S32 _z, S32 _w);
-
-   S32 x;                                                   
-   S32 y;                                                   
-   S32 z;                                                   
-   S32 w;       
-
-	//-------------------------------------- Public static constants
-  public:
-	const static Point4I One;
-	const static Point4I Zero;
-};
 
 
 //------------------------------------------------------------------------------
@@ -516,11 +453,6 @@ class Point4F
 
    operator F32*() { return (&x); }
    operator F32*() const { return (F32*)(&x); }
-
-   //-------------------------------------- Public static constants
-  public:
-	const static Point4F One;
-	const static Point4F Zero;
 };
 
 
@@ -1289,60 +1221,11 @@ inline bool Point3F::isZero() const
    return ((x*x) <= POINT_EPSILON) && ((y*y) <= POINT_EPSILON) && ((z*z) <= POINT_EPSILON );
 }
 
-inline bool Point3F::isUnitLength() const
-{
-   return ( mFabs( 1.0f - ( x*x + y*y + z*z ) ) < POINT_EPSILON );
-}
-
 inline bool Point3F::equal( Point3F &compare )
 {
    return( ( mFabs( x - compare.x ) < POINT_EPSILON ) &&
            ( mFabs( y - compare.y ) < POINT_EPSILON ) &&
            ( mFabs( z - compare.z ) < POINT_EPSILON ) );
-}
-
-inline U32 Point3F::getLeastComponentIndex() const
-{
-   U32 idx;
-
-   if ( mFabs( x ) < mFabs( y ) )
-   {
-      if ( mFabs( x ) < mFabs( z ) )
-         idx = 0;
-      else
-         idx = 2;
-   }
-   else
-   {
-      if ( mFabs( y ) < mFabs( z ) )
-         idx = 1;  
-      else
-         idx = 2;
-   }
-
-   return idx;
-}
-
-inline U32 Point3F::getGreatestComponentIndex() const
-{
-   U32 idx;
-
-   if ( mFabs( x ) > mFabs( y ) )
-   {
-      if ( mFabs( x ) > mFabs( z ) )
-         idx = 0;
-      else
-         idx = 2;
-   }
-   else
-   {
-      if ( mFabs( y ) > mFabs( z ) )
-         idx = 1;  
-      else
-         idx = 2;
-   }
-
-   return idx;
 }
 
 inline void Point3F::neg()
@@ -1703,14 +1586,6 @@ inline Point3D Point3D::operator-() const
 {
    return Point3D(-x, -y, -z);
 }
-
-//------------------------------------------------------------------------------
-//-------------------------------------- Point4I
-
-inline Point4I::Point4I(S32 _x, S32 _y, S32 _z, S32 _w) : x(_x), y(_y), z(_z), w(_w) 
-{
-}
-
 
 //------------------------------------------------------------------------------
 //-------------------------------------- Point4F

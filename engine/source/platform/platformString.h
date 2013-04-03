@@ -27,10 +27,6 @@
 #include "platform/types.h"
 #endif
 
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
 //------------------------------------------------------------------------------
 
 extern dsize_t dStrlen(const char *str);
@@ -44,7 +40,6 @@ extern char* dStrcatl(char *dst, dsize_t dstSize, ...);
 extern int dStrcmp(const char *str1, const char *str2);
 extern int dStrcmp(const UTF16 *str1, const UTF16 *str2);
 extern int dStrcmp(const UTF8 *str1, const UTF8 *str2);
-extern int dStrnatcmp( const char* str1, const char* str2 );
 
 extern int dStricmp(const char *str1, const char *str2);
 extern int dStrncmp(const char *str1, const char *str2, dsize_t len);
@@ -91,9 +86,6 @@ extern void dPrintf(const char *format, ...);
 extern int dVprintf(const char *format, void *arglist);
 extern int dSprintf(char *buffer, dsize_t bufferSize, const char *format, ...);
 extern int dVsprintf(char *buffer, dsize_t bufferSize, const char *format, void *arglist);
-
-extern bool dStrStartsWith(const char* str1, const char* str2);
-extern bool dStrEndsWith(const char* str1, const char* str2);
 
 #define QSORT_CALLBACK FN_CDECL
 extern void dQsort(void *base, U32 nelem, U32 width, int (QSORT_CALLBACK *fcmp)(const void *, const void *));

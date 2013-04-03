@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "869FF8B71651518C002FE082"
-               BuildableName = "Torque2D_DEBUG.app"
+               BuildableName = "Torque2D.app"
                BlueprintName = "Torque2D"
                ReferencedContainer = "container:Torque2D.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
@@ -52,7 +52,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "869FF8B71651518C002FE082"
-            BuildableName = "Torque2D_DEBUG.app"
+            BuildableName = "Torque2D.app"
             BlueprintName = "Torque2D"
             ReferencedContainer = "container:Torque2D.xcodeproj">
          </BuildableReference>

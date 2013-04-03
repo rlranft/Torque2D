@@ -72,7 +72,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../../Lib/LeapSDK/include;../../Lib/zlib;../../Lib/lpng;../../Lib/ljpeg;../../Lib/openal/win32;../../Source;../../source/testing/googleTest;../../source/testing/googleTest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Lib/LeapSDK/include;../../Lib/zlib;../../Lib/lpng;../../Lib/ljpeg;../../Lib/openal/win32;../../Source;../../Source/persistence/rapidjson/include;../../Source/persistence/libjson;../../source/testing/googleTest;../../source/testing/googleTest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TORQUE_DEBUG;TORQUE_DEBUG_GUARD;_CRT_SECURE_NO_DEPRECATE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -119,7 +119,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../Lib/LeapSDK/include;../../Lib/zlib;../../Lib/lpng;../../Lib/ljpeg;../../Lib/openal/win32;../../Source;../../source/testing/googleTest;../../source/testing/googleTest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Lib/LeapSDK/include;../../Lib/zlib;../../Lib/lpng;../../Lib/ljpeg;../../Lib/openal/win32;../../Source;../../Source/persistence/rapidjson/include;../../Source/persistence/libjson;../../source/testing/googleTest;../../source/testing/googleTest/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>UNICODE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -178,7 +178,7 @@
     <ClCompile>
       <Optimization>MinSpace</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../Lib/LeapSDK/include;../../Lib/zlib;../../Lib/lpng;../../Lib/ljpeg;../../Lib/openal/win32;../../Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../Lib/LeapSDK/include;../../Lib/zlib;../../Lib/lpng;../../Lib/ljpeg;../../Lib/openal/win32;../../Source;../../Source/persistence/rapidjson/include;../../Source/persistence/libjson;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TORQUE_SHIPPING;UNICODE;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -400,11 +400,6 @@
     <ClCompile Include="..\..\source\gui\language\lang.cc" />
     <ClCompile Include="..\..\source\gui\messageVector.cc" />
     <ClCompile Include="..\..\source\input\actionMap.cc" />
-    <ClCompile Include="..\..\source\input\leapMotion\leapMotionData.cpp" />
-    <ClCompile Include="..\..\source\input\leapMotion\leapMotionDevice.cpp" />
-    <ClCompile Include="..\..\source\input\leapMotion\leapMotionFrame.cpp" />
-    <ClCompile Include="..\..\source\input\leapMotion\leapMotionFrameStore.cpp" />
-    <ClCompile Include="..\..\source\input\leapMotion\leapMotionUtil.cpp" />
     <ClCompile Include="..\..\source\io\bitStream.cc" />
     <ClCompile Include="..\..\source\io\bufferStream.cc" />
     <ClCompile Include="..\..\source\io\fileObject.cc" />
@@ -429,10 +424,6 @@
     <ClCompile Include="..\..\source\io\zip\zipObject.cc" />
     <ClCompile Include="..\..\source\io\zip\zipSubStream.cc" />
     <ClCompile Include="..\..\source\io\zip\zipTempStream.cc" />
-    <ClCompile Include="..\..\source\journal\journal.cpp" />
-    <ClCompile Include="..\..\source\journal\process.cpp" />
-    <ClCompile Include="..\..\source\math\mAngAxis.cpp" />
-    <ClCompile Include="..\..\source\math\mPoint.cpp" />
     <ClCompile Include="..\..\source\math\rectClipper.cpp" />
     <ClCompile Include="..\..\source\memory\dataChunker.cc" />
     <ClCompile Include="..\..\source\memory\frameAllocator.cc" />
@@ -460,14 +451,17 @@
     <ClCompile Include="..\..\source\network\serverQuery.cc" />
     <ClCompile Include="..\..\source\network\tcpObject.cc" />
     <ClCompile Include="..\..\source\network\telnetConsole.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\binary\tamlBinaryReader.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\binary\tamlBinaryWriter.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\json\tamlJSONParser.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\json\tamlJSONReader.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\json\tamlJSONWriter.cc" />
     <ClCompile Include="..\..\source\persistence\taml\taml.cc" />
-    <ClCompile Include="..\..\source\persistence\taml\tamlBinaryReader.cc" />
-    <ClCompile Include="..\..\source\persistence\taml\tamlBinaryWriter.cc" />
     <ClCompile Include="..\..\source\persistence\taml\tamlCustom.cc" />
     <ClCompile Include="..\..\source\persistence\taml\tamlWriteNode.cc" />
-    <ClCompile Include="..\..\source\persistence\taml\tamlXmlParser.cc" />
-    <ClCompile Include="..\..\source\persistence\taml\tamlXmlReader.cc" />
-    <ClCompile Include="..\..\source\persistence\taml\tamlXmlWriter.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\xml\tamlXmlParser.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\xml\tamlXmlReader.cc" />
+    <ClCompile Include="..\..\source\persistence\taml\xml\tamlXmlWriter.cc" />
     <ClCompile Include="..\..\source\persistence\tinyXML\tinystr.cpp" />
     <ClCompile Include="..\..\source\persistence\tinyXML\tinyxml.cpp" />
     <ClCompile Include="..\..\source\persistence\tinyXML\tinyxmlerror.cpp" />
@@ -577,7 +571,6 @@
     <ClCompile Include="..\..\source\sim\simSerialize.cpp" />
     <ClCompile Include="..\..\source\sim\simSet.cc" />
     <ClCompile Include="..\..\source\string\findMatch.cc" />
-    <ClCompile Include="..\..\source\string\str.cpp" />
     <ClCompile Include="..\..\source\string\stringBuffer.cc" />
     <ClCompile Include="..\..\source\string\stringStack.cc" />
     <ClCompile Include="..\..\source\string\stringTable.cc" />
@@ -617,8 +610,6 @@
     <ClCompile Include="..\..\source\testing\tests\platformMemoryTests.cc" />
     <ClCompile Include="..\..\source\testing\tests\platformStringTests.cc" />
     <ClCompile Include="..\..\source\testing\unitTesting.cc" />
-    <ClCompile Include="..\..\source\utilities\idGenerator.cpp" />
-    <ClCompile Include="..\..\source\utilities\module.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\2d\assets\AnimationAsset.h" />
@@ -724,7 +715,6 @@
     <ClInclude Include="..\..\source\assets\tamlAssetDeclaredVisitor.h" />
     <ClInclude Include="..\..\source\assets\tamlAssetReferencedUpdateVisitor.h" />
     <ClInclude Include="..\..\source\assets\tamlAssetReferencedVisitor.h" />
-    <ClInclude Include="..\..\source\assets\tamlAssetUpdateVisitor.h" />
     <ClInclude Include="..\..\source\audio\AudioAsset.h" />
     <ClInclude Include="..\..\source\box2d\Box2D.h" />
     <ClInclude Include="..\..\source\box2d\Collision\b2BroadPhase.h" />
@@ -859,13 +849,6 @@
     <ClInclude Include="..\..\source\gui\language\lang.h" />
     <ClInclude Include="..\..\source\gui\messageVector.h" />
     <ClInclude Include="..\..\source\input\actionMap.h" />
-    <ClInclude Include="..\..\source\input\IInputDevice.h" />
-    <ClInclude Include="..\..\source\input\leapMotion\leapMotionConstants.h" />
-    <ClInclude Include="..\..\source\input\leapMotion\leapMotionData.h" />
-    <ClInclude Include="..\..\source\input\leapMotion\leapMotionDevice.h" />
-    <ClInclude Include="..\..\source\input\leapMotion\leapMotionFrame.h" />
-    <ClInclude Include="..\..\source\input\leapMotion\leapMotionFrameStore.h" />
-    <ClInclude Include="..\..\source\input\leapMotion\leapMotionUtil.h" />
     <ClInclude Include="..\..\source\io\bitStream.h" />
     <ClInclude Include="..\..\source\io\bufferStream.h" />
     <ClInclude Include="..\..\source\io\fileio.h" />
@@ -873,7 +856,6 @@
     <ClInclude Include="..\..\source\io\fileStream.h" />
     <ClInclude Include="..\..\source\io\fileStreamObject.h" />
     <ClInclude Include="..\..\source\io\filterStream.h" />
-    <ClInclude Include="..\..\source\io\ioHelper.h" />
     <ClInclude Include="..\..\source\io\memstream.h" />
     <ClInclude Include="..\..\source\io\resizeStream.h" />
     <ClInclude Include="..\..\source\io\resource\resourceManager.h" />
@@ -889,18 +871,11 @@
     <ClInclude Include="..\..\source\io\zip\zipStatFilter.h" />
     <ClInclude Include="..\..\source\io\zip\zipSubStream.h" />
     <ClInclude Include="..\..\source\io\zip\zipTempStream.h" />
-    <ClInclude Include="..\..\source\journal\journal.h" />
-    <ClInclude Include="..\..\source\journal\journaledSignal.h" />
-    <ClInclude Include="..\..\source\journal\process.h" />
-    <ClInclude Include="..\..\source\math\mAngAxis.h" />
-    <ClInclude Include="..\..\source\math\mTransform.h" />
     <ClInclude Include="..\..\source\math\rectClipper.h" />
-    <ClInclude Include="..\..\source\memory\autoPtr.h" />
     <ClInclude Include="..\..\source\memory\dataChunker.h" />
     <ClInclude Include="..\..\source\memory\factoryCache.h" />
     <ClInclude Include="..\..\source\memory\frameAllocator.h" />
     <ClInclude Include="..\..\source\memory\safeDelete.h" />
-    <ClInclude Include="..\..\source\memory\singleton.h" />
     <ClInclude Include="..\..\source\messaging\dispatcher.h" />
     <ClInclude Include="..\..\source\messaging\eventManager.h" />
     <ClInclude Include="..\..\source\messaging\message.h" />
@@ -924,18 +899,37 @@
     <ClInclude Include="..\..\source\network\serverQuery.h" />
     <ClInclude Include="..\..\source\network\tcpObject.h" />
     <ClInclude Include="..\..\source\network\telnetConsole.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\allocators.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\document.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\encodedstream.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\encodings.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\filereadstream.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\filestream.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\filewritestream.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\internal\pow10.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\internal\stack.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\internal\strfunc.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\prettywriter.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\rapidjson.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\reader.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\stringbuffer.h" />
+    <ClInclude Include="..\..\source\persistence\rapidjson\include\rapidjson\writer.h" />
+    <ClInclude Include="..\..\source\persistence\taml\binary\tamlBinaryReader.h" />
+    <ClInclude Include="..\..\source\persistence\taml\binary\tamlBinaryWriter.h" />
+    <ClInclude Include="..\..\source\persistence\taml\json\tamlJSONParser.h" />
+    <ClInclude Include="..\..\source\persistence\taml\json\tamlJSONReader.h" />
+    <ClInclude Include="..\..\source\persistence\taml\json\tamlJSONWriter.h" />
     <ClInclude Include="..\..\source\persistence\taml\taml.h" />
-    <ClInclude Include="..\..\source\persistence\taml\tamlBinaryReader.h" />
-    <ClInclude Include="..\..\source\persistence\taml\tamlBinaryWriter.h" />
     <ClInclude Include="..\..\source\persistence\taml\tamlCallbacks.h" />
     <ClInclude Include="..\..\source\persistence\taml\tamlChildren.h" />
     <ClInclude Include="..\..\source\persistence\taml\tamlCustom.h" />
+    <ClInclude Include="..\..\source\persistence\taml\tamlParser.h" />
+    <ClInclude Include="..\..\source\persistence\taml\tamlVisitor.h" />
     <ClInclude Include="..\..\source\persistence\taml\tamlWriteNode.h" />
-    <ClInclude Include="..\..\source\persistence\taml\tamlXmlParser.h" />
-    <ClInclude Include="..\..\source\persistence\taml\tamlXmlReader.h" />
-    <ClInclude Include="..\..\source\persistence\taml\tamlXmlVisitor.h" />
-    <ClInclude Include="..\..\source\persistence\taml\tamlXmlWriter.h" />
     <ClInclude Include="..\..\source\persistence\taml\taml_ScriptBinding.h" />
+    <ClInclude Include="..\..\source\persistence\taml\xml\tamlXmlParser.h" />
+    <ClInclude Include="..\..\source\persistence\taml\xml\tamlXmlReader.h" />
+    <ClInclude Include="..\..\source\persistence\taml\xml\tamlXmlWriter.h" />
     <ClInclude Include="..\..\source\persistence\tinyXML\tinystr.h" />
     <ClInclude Include="..\..\source\persistence\tinyXML\tinyxml.h" />
     <ClInclude Include="..\..\source\audio\audio.h" />
@@ -997,9 +991,6 @@
     <ClInclude Include="..\..\source\platform\platformGL.h" />
     <ClInclude Include="..\..\source\platform\platformInput.h" />
     <ClInclude Include="..\..\source\platform\platformInput_ScriptBinding.h" />
-    <ClInclude Include="..\..\source\platform\platformIntrinsics.gcc.h" />
-    <ClInclude Include="..\..\source\platform\platformIntrinsics.h" />
-    <ClInclude Include="..\..\source\platform\platformIntrinsics.visualc.h" />
     <ClInclude Include="..\..\source\platform\platformMath.h" />
     <ClInclude Include="..\..\source\platform\platformMemory.h" />
     <ClInclude Include="..\..\source\platform\platformNetwork.h" />
@@ -1045,7 +1036,6 @@
     <ClInclude Include="..\..\source\platformWin32\winOGLVideo.h" />
     <ClInclude Include="..\..\source\platformWin32\winVideo.h" />
     <ClInclude Include="..\..\source\platformWin32\nativeDialogs\win32DirectoryResolver.h" />
-    <ClInclude Include="..\..\source\platform\typetraits.h" />
     <ClInclude Include="..\..\source\sim\scriptGroup.h" />
     <ClInclude Include="..\..\source\sim\scriptObject.h" />
     <ClInclude Include="..\..\source\sim\simBase.h" />
@@ -1062,7 +1052,6 @@
     <ClInclude Include="..\..\source\sim\simObjectTimerEvent.h" />
     <ClInclude Include="..\..\source\sim\simSet.h" />
     <ClInclude Include="..\..\source\string\findMatch.h" />
-    <ClInclude Include="..\..\source\string\str.h" />
     <ClInclude Include="..\..\source\string\stringBuffer.h" />
     <ClInclude Include="..\..\source\string\stringStack.h" />
     <ClInclude Include="..\..\source\string\stringTable.h" />
@@ -1098,9 +1087,6 @@
     <ClInclude Include="..\..\source\gui\editor\guiSeparatorCtrl.h" />
     <ClInclude Include="..\..\source\testing\unitTesting.h" />
     <ClInclude Include="..\..\source\torqueConfig.h" />
-    <ClInclude Include="..\..\source\utilities\idGenerator.h" />
-    <ClInclude Include="..\..\source\utilities\module.h" />
-    <ClInclude Include="..\..\source\utilities\returnType.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\source\math\mMath_ASM.asm">

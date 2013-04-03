@@ -29,7 +29,6 @@
 
 class MatrixF;
 class QuatF;
-class AngAxisF;
 
 inline F32 QuatIsEqual(F32 a,F32 b,F32 epsilon = 0.0001f)
 {
@@ -42,14 +41,34 @@ inline F32 QuatIsZero(F32 a,F32 epsilon = 0.0001f)
 }
 
 //----------------------------------------------------------------------------
+// rotation about an arbitrary axis through the origin:
+
+class AngAxisF
+{
+  public:
+   Point3F axis;
+   F32  angle;
+
+   AngAxisF();
+   AngAxisF( const Point3F & _axis, F32 _angle );
+   explicit AngAxisF( const MatrixF &m );
+   explicit AngAxisF( const QuatF &q );
+
+   AngAxisF& set( const Point3F & _axis, F32 _angle );
+   AngAxisF& set( const MatrixF & m );
+   AngAxisF& set( const QuatF & q );
+
+   int operator ==( const AngAxisF & c ) const;
+   int operator !=( const AngAxisF & c ) const;
+
+   MatrixF * setMatrix( MatrixF * mat ) const;
+};
+
+//----------------------------------------------------------------------------
 // unit quaternion class:
 
 class QuatF
 {
-    //-------------------------------------- Public static constants
-public:
-   const static QuatF Identity;
-
   public:
    F32  x,y,z,w;
 
@@ -91,6 +110,45 @@ public:
    QuatF& mul(const QuatF& a, const QuatF& b);    // This = a * b
 };
 
+
+//----------------------------------------------------------------------------
+// AngAxisF implementation:
+
+inline AngAxisF::AngAxisF()
+{
+}
+
+inline AngAxisF::AngAxisF( const Point3F & _axis, F32 _angle )
+{
+   set(_axis,_angle);
+}
+
+inline AngAxisF::AngAxisF( const MatrixF & mat )
+{
+   set(mat);
+}
+
+inline AngAxisF::AngAxisF( const QuatF & quat )
+{
+   set(quat);
+}
+
+inline AngAxisF& AngAxisF::set( const Point3F & _axis, F32 _angle )
+{
+   axis = _axis;
+   angle = _angle;
+   return *this;
+}
+
+inline int AngAxisF::operator ==( const AngAxisF & c ) const
+{
+   return QuatIsEqual(angle, c.angle) && (axis == c.axis);
+}
+
+inline int AngAxisF::operator !=( const AngAxisF & c ) const
+{
+   return !QuatIsEqual(angle, c.angle) || (axis != c.axis);
+}
 
 //----------------------------------------------------------------------------
 // quaternion implementation:

@@ -58,7 +58,6 @@
 #include "platform/nativeDialogs/msgBox.h"
 #include "platform/nativeDialogs/fileDialog.h"
 #include "memory/safeDelete.h"
-#include "utilities/module.h"
 
 #include <stdio.h>
 
@@ -113,7 +112,7 @@ bool initializeLibraries()
 {
     PlatformAssert::create();
     Con::init();
-    //Sim::init();
+    Sim::init();
 
     if(!Net::init())
     {
@@ -165,8 +164,6 @@ bool initializeLibraries()
     // Initialize the particle system.
     ParticleSystem::Init();
     
-    SourceModuleManager::initializeSystem();
-
 #if defined(TORQUE_OS_IOS) && defined(_USE_STORE_KIT)
     storeInit();
 #endif // TORQUE_OS_IOS && _USE_STORE_KIT
@@ -182,12 +179,10 @@ void shutdownLibraries()
     if (ResourceManager)
         ResourceManager->purge();
 
-    SourceModuleManager::shutdownSystem();
-
     TelnetDebugger::destroy();
     TelnetConsole::destroy();
 
-    //Sim::shutdown();
+    Sim::shutdown();
     Platform::shutdown();
 
     NetStringTable::destroy();
@@ -209,7 +204,7 @@ void shutdownLibraries()
 
     // Destroy the particle system.
     ParticleSystem::destroy();
-
+  
 #ifdef _USE_STORE_KIT
     storeCleanup();
 #endif // _USE_STORE_KIT
