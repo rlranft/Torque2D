@@ -34,6 +34,7 @@
 #include "Leap.h"
 #endif
 
+
 class LeapMotionManager
 {
 protected:
@@ -48,6 +49,8 @@ protected:
 
         virtual void onConnect (const Leap::Controller &controller);
         virtual void onDisconnect (const Leap::Controller &controller);
+        virtual void onInit(const Leap::Controller &controller);
+        virtual void onFrame(const Leap::Controller &controller);
    };
 
     /// The connection to the Leap Motion
@@ -110,13 +113,13 @@ public:
 
     static void staticInit();
 
-    bool enable();
+    void enable(bool enabledState);
     void disable();
-
+    bool getEnabled() { return mEnabled; }
     bool getActive();
     void setActive(bool state);
 
-    bool process();
+    void process(const Leap::Controller& controller);
 };
 
 static LeapMotionManager* gLeapMotionManager;

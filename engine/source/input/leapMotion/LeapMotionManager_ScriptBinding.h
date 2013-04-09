@@ -19,6 +19,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
+
 ConsoleFunction(initLeapMotionManager, void, 1, 1, "() Initialize the LeapMotionManager")
 {
     if (gLeapMotionManager != NULL)
@@ -28,5 +29,35 @@ ConsoleFunction(initLeapMotionManager, void, 1, 1, "() Initialize the LeapMotion
     else
     {
         gLeapMotionManager = new LeapMotionManager();
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleFunction(enableLeapMotionManager, void, 2, 2, "(bool enabledState) Run or pause the LeapMotionManager")
+{
+    if (gLeapMotionManager == NULL)
+    {
+        Con::printf("LeapMotionManager not initialized. Call initLeapMotionManager() first");
+    }
+    else
+    {
+        gLeapMotionManager->enable(dAtob(argv[1]));
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleFunction(isLeapMotionManagerEnabled, bool, 1, 1, "() Checks the LeapMotionManager to see if it is enabled.\n"
+                                                        "@return True if it's running, false otherwise")
+{
+    if (gLeapMotionManager == NULL)
+    {
+        Con::printf("LeapMotionManager not initialized. Call initLeapMotionManager() first");
+        return false;
+    }
+    else
+    {
+        return gLeapMotionManager->getEnabled();
     }
 }

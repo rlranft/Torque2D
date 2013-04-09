@@ -61,28 +61,30 @@ U32 LeapMotionManager::LM_FRAME = 0;
 
 LeapMotionManager::LeapMotionManager()
 {
-    mController = NULL;
-    mListener = NULL;
+    // Initialize the console variables
+    staticInit();
+
+    // Create our controller and listener
+    mListener = new MotionListener();
+    mController = new Leap::Controller();
+    mController->addListener(*mListener);
+
+    // Allocate a mutex to use later
     mActiveMutex = Mutex::createMutex();
 
+    // Nothing is ready yet
     mEnabled = false;
     mActive = false;
-
-   /*for(U32 i=0; i<2; ++i)
-   {
-      mDataBuffer[i] = new LeapMotionManagerData();
-   }
-   mPrevData = mDataBuffer[0];
-
-   buildCodeTable();*/
 }
 
 //-----------------------------------------------------------------------------
 
 LeapMotionManager::~LeapMotionManager()
 {
+    // Disable and delete internal members
     disable();
 
+    // Get rid of the mutex
     Mutex::destroyMutex(mActiveMutex);
 }
 
@@ -111,6 +113,13 @@ void LeapMotionManager::staticInit()
     
     // Indicates that a whole frame event should be generated and frames should be buffered.
     Con::addVariable("LeapMotion::GenerateWholeFrameEvents", TypeBool, &smGenerateWholeFrameEvents);   
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::enable(bool enabledState)
+{
+    mEnabled = enabledState;
 }
 
 //-----------------------------------------------------------------------------
@@ -155,41 +164,60 @@ void LeapMotionManager::setActive(bool state)
 
 //-----------------------------------------------------------------------------
 
-bool LeapMotionManager::process()
+void LeapMotionManager::process(const Leap::Controller& controller)
 {
+    // Is the manager enabled?
     if (!mEnabled)
-        return false;
+        return;
 
+    // Was the leap device activated
     if (!getActive())
-        return false;
+        return;
 
-    return true;
+    // Get the current frame
+    const Leap::Frame frame = controller.frame();
+    
+    // Is a hand present?
+    if ( !frame.hands().empty() ) 
+    {
+        for (int h = 0; h < frame.hands().count(); ++h)
+        {
+            Con::printf("LeapMotionManager::process - Hand: %i", h);
+            const Leap::Hand hand = frame.hands()[h];
+
+            const Leap::FingerList fingers = hand.fingers();
+            for (int f = 0; f < fingers.count(); ++f)
+            {
+                Con::printf("LeapMotionManager::process - Finger: %i", f);
+            }
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::MotionListener::onInit(const Leap::Controller& controller)
+{
+    Con::printf("MotionListener::onInit()");
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::MotionListener::onFrame(const Leap::Controller& controller)
+{
+    gLeapMotionManager->process(controller);
 }
 
 //-----------------------------------------------------------------------------
 
 void LeapMotionManager::MotionListener::onConnect (const Leap::Controller &controller)
 {
-    if (gLeapMotionManager != NULL) 
-    {
-        gLeapMotionManager->setActive(true);
-    }
-    else
-    {
-        Con::errorf("MotionListener::onConnect error: initMotionManager must be called first");
-    }
+    gLeapMotionManager->setActive(true);    
 }
 
 //-----------------------------------------------------------------------------
 
 void LeapMotionManager::MotionListener::onDisconnect (const Leap::Controller &controller)
 {
-    if (gLeapMotionManager != NULL) 
-    {
-        gLeapMotionManager->setActive(false);
-    }
-    else
-    {
-        Con::errorf("MotionListener::onDisconnect error: initMotionManager must be called first");
-    }
+    gLeapMotionManager->setActive(false);
 }
