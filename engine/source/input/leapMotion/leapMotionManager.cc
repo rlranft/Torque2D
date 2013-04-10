@@ -214,11 +214,7 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     if (!frame.isValid())
         return;
 
-    if (getMouseControlToggle())
-    {
-        generateMouseEvent(controller);
-        return;
-    }
+    
 
     // Get gestures
     const Leap::GestureList gestures = frame.gestures();
@@ -262,47 +258,78 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 event.modifier = 0;
             
                 Game->postEvent(event);
-                /*std::cout << "Circle id: " << gesture.id()
-                << ", state: " << gesture.state()
-                << ", progress: " << circle.progress()
-                << ", radius: " << circle.radius()
-                << ", angle " << sweptAngle * Leap::RAD_TO_DEG
-                <<  ", " << clockwiseness << std::endl;*/
                 break;
             }
             case Leap::Gesture::TYPE_SWIPE:
             {
                 Leap::SwipeGesture swipe = gesture;
                 
-                /*std::cout << "Swipe id: " << gesture.id()
-                << ", state: " << gesture.state()
-                << ", direction: " << swipe.direction()
-                << ", speed: " << swipe.speed() << std::endl;
-                */
+                InputEvent event;
+            
+                event.deviceInst = 0;
+                event.fValue = swipe.direction().x;
+                event.fValue2 = swipe.direction().y;
+                event.fValue3 = swipe.direction().z;
+                event.fValue4 = swipe.speed();
+                event.deviceType = LeapMotionDeviceType;
+                event.objType = SI_SWIPE_GESTURE;
+                event.objInst = g;
+                event.action = SI_GESTURE;
+                event.modifier = 0;
+            
+                Game->postEvent(event);
                 break;
             }
             case Leap::Gesture::TYPE_KEY_TAP:
             {
                 Leap::KeyTapGesture tap = gesture;
-                /*std::cout << "Key Tap id: " << gesture.id()
-                << ", state: " << gesture.state()
-                << ", position: " << tap.position()
-                << ", direction: " << tap.direction()<< std::endl;*/
+
+                InputEvent event;
+            
+                event.deviceInst = 0;
+                event.fValue = tap.position().x;
+                event.fValue2 = tap.position().y;
+                event.fValue3 = tap.direction().x;
+                event.fValue3 = tap.direction().y;
+                event.deviceType = LeapMotionDeviceType;
+                event.objType = SI_KEYTAP_GESTURE;
+                event.objInst = g;
+                event.action = SI_GESTURE;
+                event.modifier = 0;
+            
+                Game->postEvent(event);
                 break;
             }
             case Leap::Gesture::TYPE_SCREEN_TAP:
             {
                 Leap::ScreenTapGesture screentap = gesture;
-                /*std::cout << "Screen Tap id: " << gesture.id()
-                << ", state: " << gesture.state()
-                << ", position: " << screentap.position()
-                << ", direction: " << screentap.direction()<< std::endl;*/
+
+                InputEvent event;
+            
+                event.deviceInst = 0;
+                event.fValue = screentap.position().x;
+                event.fValue2 = screentap.position().y;
+                event.fValue3 = screentap.direction().x;
+                event.fValue3 = screentap.direction().y;
+                event.deviceType = LeapMotionDeviceType;
+                event.objType = SI_SCREENTAP_GESTURE;
+                event.objInst = g;
+                event.action = SI_GESTURE;
+                event.modifier = 0;
+            
+                Game->postEvent(event);
                 break;
             }
             default:
-                //std::cout << "Unknown gesture type." << std::endl;
+                Con::warnf("LeapMotionManager::process() - Unknown gesture detected");
                 break;
         }
+    }
+
+    if (getMouseControlToggle())
+    {
+        generateMouseEvent(controller);
+        return;
     }
 
     // Is a hand present?
