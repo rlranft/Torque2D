@@ -46,7 +46,7 @@
     {
         // Make absolutely sure _openGLContext is nil
         _openGLContext = nil;
-
+        //CGAssociateMouseAndMouseCursorPosition(false);
         NSTrackingAreaOptions trackingOptions = NSTrackingCursorUpdate |
                 NSTrackingMouseMoved |
                 NSTrackingMouseEnteredAndExited |
@@ -219,9 +219,6 @@
     
     clickLocation.y = bounds.size.height - clickLocation.y;
     
-    // Move the cursor
-    Canvas->setCursorPos(Point2I((S32) clickLocation.x, (S32) clickLocation.y));
-    
     // Grab any modifiers
     U32 modifiers = 0;
     [self getModifierKey:modifiers event:event];
@@ -358,7 +355,7 @@
     if (!Input::isEnabled() && !Input::isMouseEnabled())
         return;
     
-    // Get the mouse location
+    // Get the mouse location in the window
     NSPoint location = [self convertPoint:[event locationInWindow] fromView:nil];
     
     // NSViews increase the Y the higher the cursor
@@ -369,10 +366,7 @@
     // Grab any modifiers
     U32 modifiers = 0;
     [self getModifierKey:modifiers event:event];
-    
-    // Move the cursor
-    Canvas->setCursorPos(Point2I((S32) location.x, (S32) location.y));
-    
+        
     // Build the mouse event
     MouseMoveEvent TorqueEvent;
     TorqueEvent.xPos = (S32) location.x;

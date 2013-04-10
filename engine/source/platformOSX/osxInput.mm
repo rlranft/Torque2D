@@ -24,6 +24,8 @@
 #import "platformOSX/osxInputManager.h"
 #import "platform/event.h"
 
+#include <CoreGraphics/CoreGraphics.h>
+
 #pragma mark ---- Static Variables ----
 InputManager *Input::smManager = 0;
 CursorManager *Input::smCursorManager = 0;
@@ -336,6 +338,8 @@ S32 Input::getDoubleClickHeight()
 // Not yet implemented. Will resolve in the next platform update
 void Input::setCursorPos(S32 x, S32 y)
 {
+    CGPoint destPoint = CGPointMake(x, y);
+    CGDisplayMoveCursorToPoint(kCGDirectMainDisplay, destPoint);
 }
 
 //-----------------------------------------------------------------------------
