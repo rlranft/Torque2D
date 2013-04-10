@@ -32,7 +32,14 @@
 #include "platform/event.h"
 #endif
 
+#ifndef _GAMEINTERFACE_H_
+#include "game/gameInterface.h"
+#endif
+
 #include "input/leapMotion/LeapMotionManager_ScriptBinding.h"
+#include "leapMotionUtil.h"
+#include "guiCanvas.h"
+
 
 //-----------------------------------------------------------------------------
 
@@ -119,7 +126,9 @@ void LeapMotionManager::staticInit()
 
 void LeapMotionManager::enable(bool enabledState)
 {
+    Mutex::lockMutex(mActiveMutex);
     mEnabled = enabledState;
+    Mutex::unlockMutex(mActiveMutex);
 }
 
 //-----------------------------------------------------------------------------
@@ -164,6 +173,26 @@ void LeapMotionManager::setActive(bool state)
 
 //-----------------------------------------------------------------------------
 
+void LeapMotionManager::toggleMouseControl(bool enabledState)
+{
+    Mutex::lockMutex(mActiveMutex);
+    mMouseControl = enabledState;
+    Mutex::unlockMutex(mActiveMutex);
+}
+
+//-----------------------------------------------------------------------------
+
+bool LeapMotionManager::getMouseControlToggle()
+{
+    Mutex::lockMutex(mActiveMutex);
+    bool mouseControlled = mMouseControl;
+    Mutex::unlockMutex(mActiveMutex);
+
+    return mouseControlled;
+}
+
+//-----------------------------------------------------------------------------
+
 void LeapMotionManager::process(const Leap::Controller& controller)
 {
     // Is the manager enabled?
@@ -176,7 +205,13 @@ void LeapMotionManager::process(const Leap::Controller& controller)
 
     // Get the current frame
     const Leap::Frame frame = controller.frame();
-    
+
+    if (getMouseControlToggle())
+    {
+        generateMouseEvent(controller);
+        return;
+    }
+
     // Is a hand present?
     if ( !frame.hands().empty() ) 
     {
@@ -186,12 +221,81 @@ void LeapMotionManager::process(const Leap::Controller& controller)
             const Leap::Hand hand = frame.hands()[h];
 
             const Leap::FingerList fingers = hand.fingers();
+
             for (int f = 0; f < fingers.count(); ++f)
             {
                 Con::printf("LeapMotionManager::process - Finger: %i", f);
+                InputEvent event;
+                /*
+                event.deviceInst = 0;
+                event.fValue = 0'//userAcc[i];
+                event.deviceType = AccelerometerDeviceType;
+                event.objType = 0;//accelAxes[i];
+                event.objInst = 0;//i;
+                event.action = SI_MOTION;
+                event.modifier = 0;
+
+                Game->postEvent(event); */
             }
         }
     }
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
+{
+
+    const Leap::ScreenList screens = controller.calibratedScreens();
+
+    // make sure we have a detected screen
+    if (screens.empty())
+        return;
+
+    const Leap::Screen screen = screens[0];
+
+    // find the first finger or tool
+    const Leap::Frame frame = controller.frame();
+    const Leap::HandList hands = frame.hands();
+
+    if (hands.empty())
+        return;
+
+    const Leap::PointableList pointables = hands[0].pointables();
+
+    if (pointables.empty())
+        return;
+
+    const Leap::Pointable firstPointable = pointables[0];
+
+    // get x, y coordinates on the first screen
+    const Leap::Vector intersection = screen.intersect( firstPointable, true, 1.0f );
+
+    // if the user is not pointing at the screen all components of
+    // the returned vector will be Not A Number (NaN)
+    // isValid() returns true only if all components are finite
+    if (!intersection.isValid())
+        return;
+
+    unsigned int x = screen.widthPixels() * intersection.x;
+
+    // flip y coordinate to standard top-left origin
+    unsigned int y = screen.heightPixels() * (1.0f - intersection.y);
+
+    //Con::printf("Pointable pos: %i %i", x, y);
+
+    Point2I location(x, y);
+
+    // Move the cursor
+    Canvas->setCursorPos(Point2I((S32) location.x, (S32) location.y));
+
+    // Build the mouse event
+    MouseMoveEvent TorqueEvent;
+    TorqueEvent.xPos = (S32) location.x;
+    TorqueEvent.yPos = (S32) location.y;
+
+    // Post the event
+    Game->postEvent(TorqueEvent);
 }
 
 //-----------------------------------------------------------------------------

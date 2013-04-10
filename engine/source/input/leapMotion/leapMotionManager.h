@@ -65,6 +65,9 @@ protected:
     /// Is the Leap Motion active
     bool mActive;
 
+    /// Is the Manager acting like a mouse
+    bool mMouseControl;
+
 public:
     static bool smEnableDevice;
 
@@ -117,9 +120,12 @@ public:
     void disable();
     bool getEnabled() { return mEnabled; }
     bool getActive();
-    void setActive(bool state);
+    void setActive(bool enabledState);
+    void toggleMouseControl(bool enabledState);
+    bool getMouseControlToggle();
 
     void process(const Leap::Controller& controller);
+    void generateMouseEvent(const Leap::Controller& controller);
 };
 
 static LeapMotionManager* gLeapMotionManager;

@@ -34,7 +34,8 @@ ConsoleFunction(initLeapMotionManager, void, 1, 1, "() Initialize the LeapMotion
 
 //-----------------------------------------------------------------------------
 
-ConsoleFunction(enableLeapMotionManager, void, 2, 2, "(bool enabledState) Run or pause the LeapMotionManager")
+ConsoleFunction(enableLeapMotionManager, void, 2, 2, "(bool enabledState) Run or pause the LeapMotionManager.\n"
+                                                     "@param enabledState True to turn it on, false otherwise")
 {
     if (gLeapMotionManager == NULL)
     {
@@ -59,5 +60,36 @@ ConsoleFunction(isLeapMotionManagerEnabled, bool, 1, 1, "() Checks the LeapMotio
     else
     {
         return gLeapMotionManager->getEnabled();
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleFunction(enableLeapCursorControl, void, 2, 2, "(bool enabledState) Toggles the manager to act like a mouse.\n"
+                                                        "@param enabledState True to act like a mouse, false otherwise")
+{
+    if (gLeapMotionManager == NULL)
+    {
+        Con::printf("LeapMotionManager not initialized. Call initLeapMotionManager() first");
+    }
+    else
+    {
+        return gLeapMotionManager->toggleMouseControl(dAtob(argv[1]));
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleFunction(isLeapCursorControlled, bool, 1, 1, "() Checks the LeapMotionManager to see if it is controlling the mouse.\n"
+        "@return True if it's acting as a mouse, false otherwise")
+{
+    if (gLeapMotionManager == NULL)
+    {
+        Con::printf("LeapMotionManager not initialized. Call initLeapMotionManager() first");
+        return false;
+    }
+    else
+    {
+        return gLeapMotionManager->getMouseControlToggle();
     }
 }
