@@ -23,6 +23,7 @@
 #import "platform/platformInput.h"
 #import "platformOSX/osxInputManager.h"
 #import "platform/event.h"
+#import "platformOSX/platformOSX.h"
 
 #include <CoreGraphics/CoreGraphics.h>
 
@@ -338,8 +339,19 @@ S32 Input::getDoubleClickHeight()
 // Not yet implemented. Will resolve in the next platform update
 void Input::setCursorPos(S32 x, S32 y)
 {
-    CGPoint destPoint = CGPointMake(x, y);
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+    OSXTorqueView* torqueView = [[osxPlatState sharedPlatState] torqueView];
+    NSPoint tempPoint;
+    tempPoint.x = x;
+    tempPoint.y = y;
+
+    tempPoint = [[torqueView window] convertBaseToScreen:tempPoint];
+    CGPoint destPoint = CGPointMake(tempPoint.x, tempPoint.y);
     CGDisplayMoveCursorToPoint(kCGDirectMainDisplay, destPoint);
+    
+    // Drain the memory and release the pool
+    [pool drain];
 }
 
 //-----------------------------------------------------------------------------
