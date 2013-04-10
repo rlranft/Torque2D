@@ -1904,14 +1904,23 @@ CodeMapping gVirtualMap[] =
    { "pitch",         SI_MOTION,    SI_PITCH     },
    { "roll",          SI_MOTION,    SI_ROLL      },
 
+   //-------------------------------------- TOUCH EVENTS
+   // Touch events:
    { "touchdown",     SI_TOUCH,    SI_TOUCHDOWN  },
    { "touchup",       SI_TOUCH,    SI_TOUCHUP    },
    { "touchmove",     SI_TOUCH,    SI_TOUCHMOVE  },
-   { "gesture",       SI_TOUCH,    SI_GESTURE    },
 
+   //-------------------------------------- GESTURE EVENTS
+   // Preset gesture events:
+   { "circle",      SI_GESTURE,  SI_CIRCLE_GESTURE    },
+   { "swipe",       SI_GESTURE,  SI_SWIPE_GESTURE     },
+   { "screenTap",   SI_GESTURE,  SI_SCREENTAP_GESTURE },
+   { "keyTap",      SI_GESTURE,  SI_KEYTAP_GESTURE    },
+   { "pinch",       SI_GESTURE,  SI_PINCH_GESTURE     },
+   { "scale",       SI_GESTURE,  SI_SCALE_GESTURE     },
+   
    //-------------------------------------- MISCELLANEOUS EVENTS
    //
-
    { "anykey",        SI_KEY,      KEY_ANYKEY },
    { "nomatch",       SI_UNKNOWN,  0xFFFFFFFF }
 };

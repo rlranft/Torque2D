@@ -177,7 +177,10 @@ struct ScreenTouchEvent : public Event
 struct InputEvent : public Event
 {
    U32   deviceInst;  ///< Device instance: joystick0, joystick1, etc
-   float fValue;      ///< Value ranges from -1.0 to 1.0
+   float fValue;      ///< Value ranges from -1.0 to 1.0, but doesn't have to. It depends on the context.
+   float fValue2;     ///< Used to store additional data, mainly for rotations and gestures
+   float fValue3;     ///< Used to store additional data, mainly for rotations and gestures
+   float fValue4;     ///< Used to store additional data, mainly for rotations and gestures
    U16   deviceType;  ///< One of mouse, keyboard, joystick, unknown
    U16   objType;     ///< One of SI_XAXIS, SI_BUTTON, SI_KEY ...
    U16   ascii;       ///< ASCII character code if this is a keyboard event.
@@ -416,9 +419,16 @@ enum TouchCodes
    SI_TOUCHDOWN   = 0x30C,
    SI_TOUCHUP     = 0x30D,
    SI_TOUCHMOVE   = 0x30E,
-   SI_PINCH       = 0x30F,
-   SI_SCALE       = 0x401,
-   SI_TAP         = 0x402
+};
+
+enum GestureCodes
+{
+    SI_CIRCLE_GESTURE    = 0x403,
+    SI_SWIPE_GESTURE     = 0x404,
+    SI_KEYTAP_GESTURE    = 0x405,
+    SI_SCREENTAP_GESTURE = 0x406,
+    SI_PINCH_GESTURE     = 0x407,
+    SI_SCALE_GESTURE     = 0x408
 };
 
 /// Input device types
@@ -441,17 +451,18 @@ enum InputDeviceTypes
 #define SI_REPEAT    0x04
 
 ///Device Event Types
-#define SI_UNKNOWN   0x01
-#define SI_BUTTON    0x02
-#define SI_POV       0x03
-#define SI_KEY       0x0A
-#define SI_TEXT      0x0B
-#define SI_TOUCH     0x0C
-#define SI_GESTURE   0x0D
-#define SI_MOTION    0x0F
-#define SI_POS       0x11
-#define SI_ROT       0x12
-#define SI_AXIS      0x13
+#define SI_UNKNOWN           0x01
+#define SI_BUTTON            0x02
+#define SI_POV               0x03
+#define SI_KEY               0x0A
+#define SI_TEXT              0x0B
+#define SI_TOUCH             0x0C
+#define SI_GESTURE           0x0D
+#define SI_MOTION            0x0F
+#define SI_POS               0x11
+#define SI_ROT               0x12
+#define SI_AXIS              0x13
+
 
 /// Event SubTypes
 #define SI_ANY       0xff

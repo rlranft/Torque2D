@@ -36,10 +36,15 @@
 #include "game/gameInterface.h"
 #endif
 
-#include "input/leapMotion/LeapMotionManager_ScriptBinding.h"
-#include "leapMotionUtil.h"
-#include "guiCanvas.h"
+#ifndef _GUICANVAS_H_
+#include "gui/guiCanvas.h"
+#endif
 
+#ifndef _LEAPMOTIONUTIL_H_
+#include "leapMotionUtil.h"
+#endif
+
+#include "input/leapMotion/LeapMotionManager_ScriptBinding.h"
 
 //-----------------------------------------------------------------------------
 
@@ -206,10 +211,98 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     // Get the current frame
     const Leap::Frame frame = controller.frame();
 
+    if (!frame.isValid())
+        return;
+
     if (getMouseControlToggle())
     {
         generateMouseEvent(controller);
         return;
+    }
+
+    // Get gestures
+    const Leap::GestureList gestures = frame.gestures();
+
+    for (int g = 0; g < gestures.count(); ++g)
+    {
+        Leap::Gesture gesture = gestures[g];
+
+        switch (gesture.type())
+        {
+            case Leap::Gesture::TYPE_CIRCLE:
+            {
+                Leap::CircleGesture circle = gesture;
+                bool clockWise;
+
+                if (circle.pointable().direction().angleTo(circle.normal()) <= Leap::PI/4) 
+                    clockWise = true;
+                else 
+                    clockWise = false;
+            
+                // Calculate angle swept since last frame
+                float sweptAngle = 0;
+                
+                if (circle.state() != Leap::Gesture::STATE_START) 
+                {
+                    Leap::CircleGesture previousUpdate = Leap::CircleGesture(controller.frame(1).gesture(circle.id()));
+                    sweptAngle = (circle.progress() - previousUpdate.progress()) * 2 * Leap::PI;
+                }
+                
+                InputEvent event;
+            
+                event.deviceInst = 0;
+                event.fValue = (F32)circle.state();
+                event.fValue2 = circle.radius();
+                event.fValue3 = sweptAngle * Leap::RAD_TO_DEG;
+                event.fValue4 = clockWise;
+                event.deviceType = LeapMotionDeviceType;
+                event.objType = SI_CIRCLE_GESTURE;
+                event.objInst = g;
+                event.action = SI_GESTURE;
+                event.modifier = 0;
+            
+                Game->postEvent(event);
+                /*std::cout << "Circle id: " << gesture.id()
+                << ", state: " << gesture.state()
+                << ", progress: " << circle.progress()
+                << ", radius: " << circle.radius()
+                << ", angle " << sweptAngle * Leap::RAD_TO_DEG
+                <<  ", " << clockwiseness << std::endl;*/
+                break;
+            }
+            case Leap::Gesture::TYPE_SWIPE:
+            {
+                Leap::SwipeGesture swipe = gesture;
+                
+                /*std::cout << "Swipe id: " << gesture.id()
+                << ", state: " << gesture.state()
+                << ", direction: " << swipe.direction()
+                << ", speed: " << swipe.speed() << std::endl;
+                */
+                break;
+            }
+            case Leap::Gesture::TYPE_KEY_TAP:
+            {
+                Leap::KeyTapGesture tap = gesture;
+                /*std::cout << "Key Tap id: " << gesture.id()
+                << ", state: " << gesture.state()
+                << ", position: " << tap.position()
+                << ", direction: " << tap.direction()<< std::endl;*/
+                break;
+            }
+            case Leap::Gesture::TYPE_SCREEN_TAP:
+            {
+                Leap::ScreenTapGesture screentap = gesture;
+                /*std::cout << "Screen Tap id: " << gesture.id()
+                << ", state: " << gesture.state()
+                << ", position: " << screentap.position()
+                << ", direction: " << screentap.direction()<< std::endl;*/
+                break;
+            }
+            default:
+                //std::cout << "Unknown gesture type." << std::endl;
+                break;
+        }
     }
 
     // Is a hand present?
@@ -277,10 +370,10 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
     if (!intersection.isValid())
         return;
 
-    unsigned int x = screen.widthPixels() * intersection.x;
+    unsigned int x = screen.widthPixels() * (U32)intersection.x;
 
     // flip y coordinate to standard top-left origin
-    unsigned int y = screen.heightPixels() * (1.0f - intersection.y);
+    unsigned int y = screen.heightPixels() * (U32)(1.0f - intersection.y);
 
     //Con::printf("Pointable pos: %i %i", x, y);
 
@@ -316,7 +409,11 @@ void LeapMotionManager::MotionListener::onFrame(const Leap::Controller& controll
 
 void LeapMotionManager::MotionListener::onConnect (const Leap::Controller &controller)
 {
-    gLeapMotionManager->setActive(true);    
+    gLeapMotionManager->setActive(true);
+    controller.enableGesture(Leap::Gesture::TYPE_CIRCLE);
+    controller.enableGesture(Leap::Gesture::TYPE_KEY_TAP);
+    controller.enableGesture(Leap::Gesture::TYPE_SCREEN_TAP);
+    controller.enableGesture(Leap::Gesture::TYPE_SWIPE);
 }
 
 //-----------------------------------------------------------------------------
