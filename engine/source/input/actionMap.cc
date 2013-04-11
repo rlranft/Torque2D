@@ -1240,7 +1240,7 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
             // ID
             argv[1] = Con::getFloatArg(pEvent->iValue);
 
-            // State
+            // Progress
             argv[2] = Con::getFloatArg(pEvent->fValues[0]);
 
             // Radius
@@ -2103,11 +2103,11 @@ CodeMapping gVirtualMap[] =
 
    //-------------------------------------- GESTURE EVENTS
    // Preset gesture events:
-   { "leapHandAxis",      SI_LEAP,      LM_HANDAXIS    },
-   { "leapHandPos",       SI_LEAP,      LM_HANDROT     },
-   { "leapHandRot",       SI_LEAP,      LM_HANDPOS     },
-   { "leapFingerPos",     SI_LEAP,      LM_FINGERPOS   },
-   { "leapFingerRot",     SI_LEAP,      LM_FINGERROT   },
+   { "leapLeftHandAxis",      SI_LEAP,      LM_HANDAXIS    },
+   { "leapLeftHandPos",       SI_LEAP,      LM_HANDROT     },
+   { "leapLeftHandRot",       SI_LEAP,      LM_HANDPOS     },
+   { "leapFingerPos",         SI_LEAP,      LM_FINGERPOS   },
+   { "leapFingerRot",         SI_LEAP,      LM_FINGERROT   },
 
    //-------------------------------------- MISCELLANEOUS EVENTS
    //

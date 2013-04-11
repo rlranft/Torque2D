@@ -174,7 +174,6 @@ function LeapToy::createCircleSprite( %this )
     %circle.Position = "0 0";
     %circle.Size = 1;
     %circle.Image = "ToyAssets:Crosshair2";
-    %circle.setBodyType("static");
     %circle.Visible = false;
     %this.circleSprite = %circle;
 
@@ -203,11 +202,15 @@ function LeapToy::pickSprite(%this, %val)
 
 function LeapToy::showCircleSprite( %this, %radius, %isClockwise )
 {
-    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+    if (!%this.circleSprite.visible)
+    {
+        %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+        %this.circleSprite.position = %worldPosition;
+        %this.circleSprite.visible = true;
+    }
+    
     %this.circleSprite.size = %radius;
-    %this.circleSprite.visible = true;
-    %this.circleSprite.position = %worldPosition;
-
+    
     if (%isClockwise)
         %this.circleSprite.AngularVelocity = -180;
     else
@@ -235,20 +238,12 @@ function LeapToy::hideCircleSprite( %this, %radius )
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToCircleGesture(%this, %id, %state, %radius, %isClockwise)
+function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockwise)
 {
-    if (%state == 1)
-    {
+    if (!(%progress % 1) && %progress > 0)
         %this.showCircleSprite(%radius, %isClockwise);
-    }
-    else if (%state == 2)
-    {
-        %this.sizeCircleSprite(%radius, %isClockwise);
-    }
-    else if (%state == 3)
-    {
+    else
         %this.hideCircleSprite();
-    }
 }
 
 //-----------------------------------------------------------------------------

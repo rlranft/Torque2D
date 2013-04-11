@@ -62,7 +62,7 @@ bool LeapMotionManager::smGenerateWholeFrameEvents = false;
 
 U32 LeapMotionManager::LM_FRAMEVALIDDATA = 0;
 U32 LeapMotionManager::LM_HAND[LeapMotionConstants::MaxHands] = {0};
-U32 LeapMotionManager::LM_HANDROT[LeapMotionConstants::MaxHands] = {0};
+//U32 LeapMotionManager::LM_HANDROT[LeapMotionConstants::MaxHands] = {0};
 U32 LeapMotionManager::LM_HANDAXISX = 0;
 U32 LeapMotionManager::LM_HANDAXISY = 0;
 U32 LeapMotionManager::LM_HANDPOINTABLE[LeapMotionConstants::MaxHands][LeapMotionConstants::MaxPointablesPerHand] = {0};
@@ -198,25 +198,84 @@ bool LeapMotionManager::getMouseControlToggle()
 
 //-----------------------------------------------------------------------------
 
-void LeapMotionManager::process(const Leap::Controller& controller)
+void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 {
-    // Is the manager enabled?
-    if (!mEnabled)
-        return;
+    // Get hand (palm) position
+    Point3F rawHandPosition;
+    Point3I convertedHandPosition;
 
-    // Was the leap device activated
-    if (!getActive())
-        return;
+    LeapMotionUtil::convertPosition(hand.palmPosition(), rawHandPosition);
+    convertedHandPosition.x = (S32)mFloor(rawHandPosition.x);
+    convertedHandPosition.y = (S32)mFloor(rawHandPosition.y);
+    convertedHandPosition.z = (S32)mFloor(rawHandPosition.z);
 
-    // Get the current frame
-    const Leap::Frame frame = controller.frame();
+    // Get the hand's normal vector and direction
+    const Leap::Vector normal = hand.palmNormal();
+    const Leap::Vector direction = hand.direction();
 
-    if (!frame.isValid())
-        return;
+    F32 pitch = direction.pitch() * Leap::RAD_TO_DEG;
+    F32 roll = normal.roll() * Leap::RAD_TO_DEG;
+    F32 yaw = direction.yaw() * Leap::RAD_TO_DEG;
+    // Position Event
+    InputEvent handEvent;
 
-    // Get gestures
-    const Leap::GestureList gestures = frame.gestures();
+    handEvent.deviceInst = 0;
+    handEvent.iValue = id;
+    handEvent.fValues[0] = (F32)convertedHandPosition.x;
+    handEvent.fValues[1] = (F32)convertedHandPosition.y;
+    handEvent.fValues[2] = (F32)convertedHandPosition.z;
+    handEvent.deviceType = LeapMotionDeviceType;
+    handEvent.objType = LM_HANDPOS;
+    handEvent.objInst = 0;
+    handEvent.action = SI_LEAP;
+    handEvent.modifier = 0;
 
+    Game->postEvent(handEvent);
+
+    handEvent.fValues[0] = yaw;
+    handEvent.fValues[1] = pitch;
+    handEvent.fValues[2] = roll;
+    handEvent.objType = LM_HANDROT;
+    Game->postEvent(handEvent);
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
+{
+    for (int f = 0; f < fingers.count(); ++f)
+    {
+        // Convert the Leap finger tip position to usable Torque units
+        Point3F rawPosition(0, 0, 0);
+        Point3I convertedPosition;
+        LeapMotionUtil::convertPosition(fingers[f].tipPosition(), rawPosition);
+        convertedPosition.x = (S32)mFloor(rawPosition.x);
+        convertedPosition.y = (S32)mFloor(rawPosition.y);
+        convertedPosition.z = (S32)mFloor(rawPosition.z);
+                
+        // Build the event
+        InputEvent fingerPositionEvent;
+
+        fingerPositionEvent.deviceInst = 0;
+        fingerPositionEvent.iValue = f;
+        fingerPositionEvent.fValues[0] = (F32)convertedPosition.x;
+        fingerPositionEvent.fValues[1] = (F32)convertedPosition.y;
+        fingerPositionEvent.fValues[2] = (F32)convertedPosition.z;
+        fingerPositionEvent.deviceType = LeapMotionDeviceType;
+        fingerPositionEvent.objType = LM_FINGERPOS;
+        fingerPositionEvent.objInst = f;
+        fingerPositionEvent.action = SI_LEAP;
+        fingerPositionEvent.modifier = 0;
+
+        // Post
+        Game->postEvent(fingerPositionEvent);
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
+{
     for (int g = 0; g < gestures.count(); ++g)
     {
         Leap::Gesture gesture = gestures[g];
@@ -235,18 +294,12 @@ void LeapMotionManager::process(const Leap::Controller& controller)
             
                 // Calculate angle swept since last frame
                 float sweptAngle = 0;
-                
-                if (circle.state() != Leap::Gesture::STATE_START) 
-                {
-                    Leap::CircleGesture previousUpdate = Leap::CircleGesture(controller.frame(1).gesture(circle.id()));
-                    sweptAngle = (circle.progress() - previousUpdate.progress()) * 2 * Leap::PI;
-                }
-                
+                                
                 InputEvent event;
             
                 event.deviceInst = 0;
                 event.iValue = g;
-                event.fValues[0] = (F32)circle.state();;
+                event.fValues[0] = circle.progress();
                 event.fValues[1] = circle.radius();
                 event.fValues[2] = clockWise;
                 event.deviceType = LeapMotionDeviceType;
@@ -331,6 +384,30 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 break;
         }
     }
+}
+
+//-----------------------------------------------------------------------------
+
+void LeapMotionManager::process(const Leap::Controller& controller)
+{
+    // Is the manager enabled?
+    if (!mEnabled)
+        return;
+
+    // Was the leap device activated
+    if (!getActive())
+        return;
+
+    // Get the current frame
+    const Leap::Frame frame = controller.frame();
+
+    if (!frame.isValid())
+        return;
+
+    // Get gestures
+    const Leap::GestureList gestures = frame.gestures();
+
+    processGestures(gestures);
 
     if (getMouseControlToggle())
     {
@@ -345,34 +422,11 @@ void LeapMotionManager::process(const Leap::Controller& controller)
         {
             const Leap::Hand hand = frame.hands()[h];
 
-            InputEvent handEvent;
-
-            handEvent.deviceInst = 0;
-            handEvent.fValues[0] = 0;
-            handEvent.deviceType = LeapMotionDeviceType;
-            handEvent.objType = LM_HANDPOS;
-            handEvent.objInst = h;
-            handEvent.action = SI_LEAP;
-            handEvent.modifier = 0;
-
-            //Game->postEvent(handEvent);
-
+            processHand(hand, h);
+            
             const Leap::FingerList fingers = hand.fingers();
 
-            for (int f = 0; f < fingers.count(); ++f)
-            {
-                InputEvent fingerEvent;
-
-                fingerEvent.deviceInst = 0;
-                handEvent.fValues[0] = 0;
-                fingerEvent.deviceType = LeapMotionDeviceType;
-                fingerEvent.objType = LM_FINGERPOS;
-                fingerEvent.objInst = f;
-                fingerEvent.action = SI_LEAP;
-                fingerEvent.modifier = 0;
-
-                //Game->postEvent(fingerEvent);
-            }
+            processHandPointables(fingers);
         }
     }
 }
@@ -381,7 +435,6 @@ void LeapMotionManager::process(const Leap::Controller& controller)
 
 void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
 {
-
     const Leap::ScreenList screens = controller.calibratedScreens();
 
     // make sure we have a detected screen
@@ -413,24 +466,19 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
     if (!intersection.isValid())
         return;
 
-    unsigned int x = screen.widthPixels() * intersection.x;
+    F32 x = screen.widthPixels() * intersection.x;
 
     // flip y coordinate to standard top-left origin
-    unsigned int y = screen.heightPixels() * (1.0f - intersection.y);
-
-    //Con::printf("Pointable pos: %i %i", x, y);
-
-    Point2I location(x, y);
+    F32 y = screen.heightPixels() * (1.0f - intersection.y);
 
     // Move the cursor
-    Canvas->setCursorPos(Point2I((S32) location.x, (S32) location.y));
+    Point2I location((S32)x, (S32)y);
+    Canvas->setCursorPos(location);
 
-    // Build the mouse event
+    // Build and postthe mouse event
     MouseMoveEvent TorqueEvent;
     TorqueEvent.xPos = (S32) location.x;
     TorqueEvent.yPos = (S32) location.y;
-
-    // Post the event
     Game->postEvent(TorqueEvent);
 }
 

@@ -98,7 +98,7 @@ public:
 
     // Hand action codes
     static U32 LM_HAND[LeapMotionConstants::MaxHands];    // SI_POS
-    static U32 LM_HANDROT[LeapMotionConstants::MaxHands]; // SI_ROT
+    //static U32 LM_HANDROT[LeapMotionConstants::MaxHands]; // SI_ROT
 
     static U32 LM_HANDAXISX;   // SI_AXIS
     static U32 LM_HANDAXISY;
@@ -125,6 +125,9 @@ public:
     bool getMouseControlToggle();
 
     void process(const Leap::Controller& controller);
+    void processHand(const Leap::Hand& hand, S32 id);
+    void processHandPointables(const Leap::FingerList& fingers);
+    void processGestures(const Leap::GestureList& gestures);
     void generateMouseEvent(const Leap::Controller& controller);
 };
 
