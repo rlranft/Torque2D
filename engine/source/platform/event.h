@@ -177,10 +177,8 @@ struct ScreenTouchEvent : public Event
 struct InputEvent : public Event
 {
    U32   deviceInst;  ///< Device instance: joystick0, joystick1, etc
-   float fValue;      ///< Value ranges from -1.0 to 1.0, but doesn't have to. It depends on the context.
-   float fValue2;     ///< Used to store additional data, mainly for rotations and gestures
-   float fValue3;     ///< Used to store additional data, mainly for rotations and gestures
-   float fValue4;     ///< Used to store additional data, mainly for rotations and gestures
+   S32 iValue;        ///< Handy for tracking IDs of things like fingers, hands, etc
+   float fValues[7];   ///< Stores the evemt data. Sometimes only one with a range of -1.0 - 1.0 is needed, other times it might be multiple vectors
    U16   deviceType;  ///< One of mouse, keyboard, joystick, unknown
    U16   objType;     ///< One of SI_XAXIS, SI_BUTTON, SI_KEY ...
    U16   ascii;       ///< ASCII character code if this is a keyboard event.
@@ -193,9 +191,23 @@ struct InputEvent : public Event
    char touchesY[256];    ///< Collection of y-coordinates for touches
    char touchIDs[256];    ///< Collection of touch IDs
     
-   InputEvent() { type = InputEventType; size = sizeof(InputEvent); dMemset(touchesX, 0, sizeof(touchesX)); 
-                                                                    dMemset(touchesY, 0, sizeof(touchesY));
-                                                                    dMemset(touchIDs, 0, sizeof(touchIDs));}
+    InputEvent()
+    { 
+        type = InputEventType; 
+        size = sizeof(InputEvent); 
+        deviceInst = 0;
+        iValue     = -1;
+        objType    = 0;
+        ascii      = 0;
+        objInst    = 0;
+        action     = 0;
+        modifier   = 0;
+        dMemset(fValues, 0, sizeof(fValues));
+        dMemset(touchesX, 0, sizeof(touchesX));
+        dMemset(touchesY, 0, sizeof(touchesY));
+        dMemset(touchIDs, 0, sizeof(touchIDs));
+    }
+
 };
 
 /// @defgroup input_constants Input system constants

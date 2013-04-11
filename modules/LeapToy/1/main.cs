@@ -201,32 +201,12 @@ function LeapToy::pickSprite(%this, %val)
 
 //-----------------------------------------------------------------------------
 
-//function reactToCircleGesture(%state, %radius, %angle, %isClockwise)
-function LeapToy::reactToCircleGesture(%this, %state, %radius, %angle, %isClockwise)
-{
-    if (%state == 1)
-    {
-        %this.showCircleSprite(%radius, %isClockwise);
-    }
-    else if (%state == 2)
-    {
-        %this.sizeCircleSprite(%radius, %isClockwise);
-    }
-    else if (%state == 3)
-    {
-        %this.hideCircleSprite();
-    }
-    //echo("Circle Gesture - state: " @ %state @ " radius: " @ %radius @ " angle: " @ %angle @ " isClockwise: " @ %isClockwise);
-}
-
-//-----------------------------------------------------------------------------
-
 function LeapToy::showCircleSprite( %this, %radius, %isClockwise )
 {
     %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
     %this.circleSprite.size = %radius;
     %this.circleSprite.visible = true;
-    //%this.circleSprite.position = %worldPosition;
+    %this.circleSprite.position = %worldPosition;
 
     if (%isClockwise)
         %this.circleSprite.AngularVelocity = -180;
@@ -238,10 +218,8 @@ function LeapToy::showCircleSprite( %this, %radius, %isClockwise )
 
 function LeapToy::sizeCircleSprite( %this, %radius, %isClockwise )
 {
-    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
     %this.circleSprite.size = %radius;
-    //%this.circleSprite.position = %worldPosition;
-
+    
     if (%isClockwise)
         %this.circleSprite.AngularVelocity = -180;
     else
@@ -257,21 +235,39 @@ function LeapToy::hideCircleSprite( %this, %radius )
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToSwipeGesture(%this, %directionX, %directionY, %directionZ, %speed)
+function LeapToy::reactToCircleGesture(%this, %id, %state, %radius, %isClockwise)
+{
+    if (%state == 1)
+    {
+        %this.showCircleSprite(%radius, %isClockwise);
+    }
+    else if (%state == 2)
+    {
+        %this.sizeCircleSprite(%radius, %isClockwise);
+    }
+    else if (%state == 3)
+    {
+        %this.hideCircleSprite();
+    }
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::reactToSwipeGesture(%this, %id, %direction, %speed)
 {
     echo("Swipe Gesture - directionX: " @ %directionX @ " directionY: " @ %directionY @ " directionZ: " @ %directionZ @ " speed: " @ %speed);
 }
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToScreenTapGesture(%this, %positionX, %positionY, %directionX, %directionY)
+function LeapToy::reactToScreenTapGesture(%this, %id, %position, %direction)
 {
     echo("Screen Tap Gesture - positionX: " @ %positionX @ " positionY: " @ %positionY @ " directionX: " @ %directionX @ " directionY: " @ %directionY);
 }
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToKeyTapGesture(%this, %positionX, %positionY, %diretionX, %directionY)
+function LeapToy::reactToKeyTapGesture(%this, %id, %positionX, %direction)
 {
     echo("Key Tap Gesture - positionX: " @ %positionX @ " positionY: " @ %positionY @ " directionX: " @ %directionX @ " directionY: " @ %directionY);
 }

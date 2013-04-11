@@ -1231,10 +1231,10 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
         return( true );
 
     argv[0] = pNode->consoleFunction;
-    argv[1] = Con::getFloatArg(pEvent->fValue);
-    argv[2] = Con::getFloatArg(pEvent->fValue2);
-    argv[3] = Con::getFloatArg(pEvent->fValue3);
-    argv[4] = Con::getFloatArg(pEvent->fValue4);
+    argv[1] = Con::getFloatArg(pEvent->fValues[0]);
+    argv[2] = Con::getFloatArg(pEvent->fValues[1]);
+    argv[3] = Con::getFloatArg(pEvent->fValues[2]);
+    argv[4] = Con::getFloatArg(pEvent->fValues[3]);
 
     if (pNode->object)
         Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
@@ -1299,7 +1299,7 @@ bool ActionMap::processButton(const InputEvent* pEvent)
     // Whadda ya know, we have this bound.  Set up, and call the console
     //  function associated with it...
     //
-    F32 value = pEvent->fValue;
+    F32 value = pEvent->fValues[0];
        
     if (pNode->flags & Node::Ranged)
     {
@@ -1388,7 +1388,7 @@ bool ActionMap::processMove(const InputEvent* pEvent)
         //  function associated with it.  Mouse events ignore range and dead
         //  zone params.
         //
-        F32 value = pEvent->fValue;
+        F32 value = pEvent->fValues[0];
          
         if (pNode->flags & Node::Inverted)
             value *= -1.0f;
@@ -1430,7 +1430,7 @@ bool ActionMap::processMove(const InputEvent* pEvent)
         //  function associated with it.  Joystick move events are the same as mouse
         //  move events except that they don't ignore dead zone.
         //
-        F32 value = pEvent->fValue;
+        F32 value = pEvent->fValues[0];
           
         if ( pNode->flags & Node::Inverted )
             value *= -1.0f;
@@ -1485,7 +1485,7 @@ bool ActionMap::processMotion(const InputEvent* pEvent)
     if ( !pNode->consoleFunction[0] )
         return( true );
        
-    F32 value = pEvent->fValue;
+    F32 value = pEvent->fValues[0];
        
     if ( pNode->flags & Node::Inverted )
         value *= -1.0f;
@@ -1602,7 +1602,7 @@ bool ActionMap::checkBreakTable(const InputEvent* pEvent)
           smBreakTable[i].objInst    == U32(pEvent->objInst)) {
          // Match.  Issue the break event...
          //
-         F32 value = pEvent->fValue;
+         F32 value = pEvent->fValues[0];
          if (smBreakTable[i].flags & Node::Ranged) {
             value = (value * 2.0f) - 1.0f;
             if (smBreakTable[i].flags & Node::Inverted)

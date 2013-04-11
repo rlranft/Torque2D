@@ -245,13 +245,13 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 InputEvent event;
             
                 event.deviceInst = 0;
-                event.fValue = (F32)circle.state();
-                event.fValue2 = circle.radius();
-                event.fValue3 = sweptAngle * Leap::RAD_TO_DEG;
-                event.fValue4 = clockWise;
+                event.iValue = g;
+                event.fValues[0] = (F32)circle.state();;
+                event.fValues[1] = circle.radius();
+                event.fValues[2] = clockWise;
                 event.deviceType = LeapMotionDeviceType;
                 event.objType = SI_CIRCLE_GESTURE;
-                event.objInst = g;
+                event.objInst = 0;
                 event.action = SI_GESTURE;
                 event.modifier = 0;
             
@@ -265,13 +265,15 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 InputEvent event;
             
                 event.deviceInst = 0;
-                event.fValue = swipe.direction().x;
-                event.fValue2 = swipe.direction().y;
-                event.fValue3 = swipe.direction().z;
-                event.fValue4 = swipe.speed();
+                event.iValue = g;
+                event.fValues[0] = (F32)swipe.state();
+                event.fValues[1] = swipe.direction().x;
+                event.fValues[2] = swipe.direction().y;
+                event.fValues[3] = swipe.direction().z;
+                event.fValues[4] = swipe.speed();
                 event.deviceType = LeapMotionDeviceType;
                 event.objType = SI_SWIPE_GESTURE;
-                event.objInst = g;
+                event.objInst = 0;
                 event.action = SI_GESTURE;
                 event.modifier = 0;
             
@@ -285,13 +287,16 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 InputEvent event;
             
                 event.deviceInst = 0;
-                event.fValue = tap.position().x;
-                event.fValue2 = tap.position().y;
-                event.fValue3 = tap.direction().x;
-                event.fValue3 = tap.direction().y;
+                event.iValue = g;
+                event.fValues[0] = tap.position().x;
+                event.fValues[1] = tap.position().y;
+                event.fValues[2] = tap.position().z;
+                event.fValues[3] = tap.direction().x;
+                event.fValues[4] = tap.direction().y;
+                event.fValues[5] = tap.direction().z;
                 event.deviceType = LeapMotionDeviceType;
                 event.objType = SI_KEYTAP_GESTURE;
-                event.objInst = g;
+                event.objInst = 0;
                 event.action = SI_GESTURE;
                 event.modifier = 0;
             
@@ -305,13 +310,15 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 InputEvent event;
             
                 event.deviceInst = 0;
-                event.fValue = screentap.position().x;
-                event.fValue2 = screentap.position().y;
-                event.fValue3 = screentap.direction().x;
-                event.fValue3 = screentap.direction().y;
+                event.iValue = g;
+                event.fValues[0] = (F32)screentap.state();
+                event.fValues[1] = screentap.position().x;
+                event.fValues[2] = screentap.position().y;
+                event.fValues[3] = screentap.direction().x;
+                event.fValues[4] = screentap.direction().y;
                 event.deviceType = LeapMotionDeviceType;
                 event.objType = SI_SCREENTAP_GESTURE;
-                event.objInst = g;
+                event.objInst = 0;
                 event.action = SI_GESTURE;
                 event.modifier = 0;
             
@@ -340,7 +347,7 @@ void LeapMotionManager::process(const Leap::Controller& controller)
             InputEvent handEvent;
 
             handEvent.deviceInst = 0;
-            handEvent.fValue = 0;
+            handEvent.fValues[0] = 0;
             handEvent.deviceType = LeapMotionDeviceType;
             handEvent.objType = LM_HANDPOS;
             handEvent.objInst = h;
@@ -356,7 +363,7 @@ void LeapMotionManager::process(const Leap::Controller& controller)
                 InputEvent fingerEvent;
 
                 fingerEvent.deviceInst = 0;
-                fingerEvent.fValue = 0;
+                handEvent.fValues[0] = 0;
                 fingerEvent.deviceType = LeapMotionDeviceType;
                 fingerEvent.objType = LM_FINGERPOS;
                 fingerEvent.objInst = f;
