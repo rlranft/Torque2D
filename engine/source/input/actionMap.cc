@@ -1986,12 +1986,12 @@ CodeMapping gVirtualMap[] =
 
    //-------------------------------------- GESTURE EVENTS
    // Preset gesture events:
-   { "circle",      SI_GESTURE,  SI_CIRCLE_GESTURE    },
-   { "swipe",       SI_GESTURE,  SI_SWIPE_GESTURE     },
-   { "screenTap",   SI_GESTURE,  SI_SCREENTAP_GESTURE },
-   { "keyTap",      SI_GESTURE,  SI_KEYTAP_GESTURE    },
-   { "pinch",       SI_GESTURE,  SI_PINCH_GESTURE     },
-   { "scale",       SI_GESTURE,  SI_SCALE_GESTURE     },
+   { "circleGesture",      SI_GESTURE,  SI_CIRCLE_GESTURE    },
+   { "swipeGesture",       SI_GESTURE,  SI_SWIPE_GESTURE     },
+   { "screenTapGesture",   SI_GESTURE,  SI_SCREENTAP_GESTURE },
+   { "keyTapGesture",      SI_GESTURE,  SI_KEYTAP_GESTURE    },
+   { "pinchGesture",       SI_GESTURE,  SI_PINCH_GESTURE     },
+   { "scaleGesture",       SI_GESTURE,  SI_SCALE_GESTURE     },
    
    //-------------------------------------- MISCELLANEOUS EVENTS
    //
