@@ -42,7 +42,11 @@ function LeapToy::create( %this )
     LeapMap.push();
     
     SandboxWindow.addInputListener( %this );
-    
+
+    initLeapMotionManager();
+    enableLeapMotionManager(true);
+    enableLeapCursorControl(true);
+
     // Reset the toy.
     LeapToy.reset();
 }
@@ -51,6 +55,7 @@ function LeapToy::create( %this )
 
 function LeapToy::destroy( %this )
 {
+    enableLeapMotionManager(false);
     LeapMap.pop();
     LeapMap.delete();
     
@@ -87,6 +92,9 @@ function LeapToy::reset( %this )
     
     // Create a ball.
     %this.createBall();
+
+    // Create circle gesture visual.
+    %this.createCircleSprite();
 }
 
 //-----------------------------------------------------------------------------
@@ -159,6 +167,23 @@ function LeapToy::createBall( %this )
 
 //-----------------------------------------------------------------------------
 
+function LeapToy::createCircleSprite( %this )
+{
+    // Create the circle.
+    %circle = new Sprite();
+    %circle.Position = "0 0";
+    %circle.Size = 1;
+    %circle.Image = "ToyAssets:Crosshair2";
+    %circle.setBodyType("static");
+    %circle.Visible = false;
+    %this.circleSprite = %circle;
+
+    // Add to the scene.
+    SandboxScene.add( %circle );
+}
+
+//-----------------------------------------------------------------------------
+
 function LeapToy::pickSprite(%this, %val)
 {
     %cursorPosition = Canvas.getCursorPos();
@@ -176,9 +201,58 @@ function LeapToy::pickSprite(%this, %val)
 
 //-----------------------------------------------------------------------------
 
+//function reactToCircleGesture(%state, %radius, %angle, %isClockwise)
 function LeapToy::reactToCircleGesture(%this, %state, %radius, %angle, %isClockwise)
 {
-    echo("Circle Gesture - state: " @ %state @ " radius: " @ %radius @ " angle: " @ %angle @ " isClockwise: " @ %isClockwise);
+    if (%state == 1)
+    {
+        %this.showCircleSprite(%radius, %isClockwise);
+    }
+    else if (%state == 2)
+    {
+        %this.sizeCircleSprite(%radius, %isClockwise);
+    }
+    else if (%state == 3)
+    {
+        %this.hideCircleSprite();
+    }
+    //echo("Circle Gesture - state: " @ %state @ " radius: " @ %radius @ " angle: " @ %angle @ " isClockwise: " @ %isClockwise);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::showCircleSprite( %this, %radius, %isClockwise )
+{
+    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+    %this.circleSprite.size = %radius;
+    %this.circleSprite.visible = true;
+    //%this.circleSprite.position = %worldPosition;
+
+    if (%isClockwise)
+        %this.circleSprite.AngularVelocity = -180;
+    else
+        %this.circleSprite.AngularVelocity = 180;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::sizeCircleSprite( %this, %radius, %isClockwise )
+{
+    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+    %this.circleSprite.size = %radius;
+    //%this.circleSprite.position = %worldPosition;
+
+    if (%isClockwise)
+        %this.circleSprite.AngularVelocity = -180;
+    else
+        %this.circleSprite.AngularVelocity = 180;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::hideCircleSprite( %this, %radius )
+{
+    %this.circleSprite.visible = 0;
 }
 
 //-----------------------------------------------------------------------------

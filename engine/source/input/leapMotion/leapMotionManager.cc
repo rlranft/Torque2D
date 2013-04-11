@@ -214,8 +214,6 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     if (!frame.isValid())
         return;
 
-    
-
     // Get gestures
     const Leap::GestureList gestures = frame.gestures();
 
@@ -337,25 +335,35 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     {
         for (int h = 0; h < frame.hands().count(); ++h)
         {
-            Con::printf("LeapMotionManager::process - Hand: %i", h);
             const Leap::Hand hand = frame.hands()[h];
+
+            InputEvent handEvent;
+
+            handEvent.deviceInst = 0;
+            handEvent.fValue = 0;
+            handEvent.deviceType = LeapMotionDeviceType;
+            handEvent.objType = LM_HANDPOS;
+            handEvent.objInst = h;
+            handEvent.action = SI_LEAP;
+            handEvent.modifier = 0;
+
+            //Game->postEvent(handEvent);
 
             const Leap::FingerList fingers = hand.fingers();
 
             for (int f = 0; f < fingers.count(); ++f)
             {
-                Con::printf("LeapMotionManager::process - Finger: %i", f);
-                InputEvent event;
-                /*
-                event.deviceInst = 0;
-                event.fValue = 0'//userAcc[i];
-                event.deviceType = AccelerometerDeviceType;
-                event.objType = 0;//accelAxes[i];
-                event.objInst = 0;//i;
-                event.action = SI_MOTION;
-                event.modifier = 0;
+                InputEvent fingerEvent;
 
-                Game->postEvent(event); */
+                fingerEvent.deviceInst = 0;
+                fingerEvent.fValue = 0;
+                fingerEvent.deviceType = LeapMotionDeviceType;
+                fingerEvent.objType = LM_FINGERPOS;
+                fingerEvent.objInst = f;
+                fingerEvent.action = SI_LEAP;
+                fingerEvent.modifier = 0;
+
+                //Game->postEvent(fingerEvent);
             }
         }
     }
@@ -397,10 +405,10 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
     if (!intersection.isValid())
         return;
 
-    unsigned int x = screen.widthPixels() * (U32)intersection.x;
+    unsigned int x = screen.widthPixels() * intersection.x;
 
     // flip y coordinate to standard top-left origin
-    unsigned int y = screen.heightPixels() * (U32)(1.0f - intersection.y);
+    unsigned int y = screen.heightPixels() * (1.0f - intersection.y);
 
     //Con::printf("Pointable pos: %i %i", x, y);
 

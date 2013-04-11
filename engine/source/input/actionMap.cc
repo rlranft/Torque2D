@@ -1164,9 +1164,55 @@ bool ActionMap::processBind(const U32 argc, const char** argv, SimObject* object
 
 //------------------------------------------------------------------------------
 
+bool ActionMap::processLeap(const InputEvent* pEvent)
+{
+    static const char *argv[5];
+
+    const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
+
+    if (pNode == NULL)
+    {
+        // Check to see if we clear the modifiers, do we find an action?
+        if (pEvent->modifier != 0)
+            pNode = findNode(pEvent->deviceType, pEvent->deviceInst, 0, pEvent->objInst);
+
+        if (pNode == NULL)
+            return false;
+    }
+
+    // "Do nothing" bind:
+    if ( !pNode->consoleFunction[0] )
+        return( true );
+
+    switch(pEvent->objType)
+    {
+        case LM_HANDAXIS:
+            break;
+
+        case LM_HANDPOS:
+            break;
+
+        case LM_HANDROT:
+            break;
+
+        case LM_FINGERPOS:
+            break;
+
+        case LM_FINGERROT:
+            break;
+
+        default:
+            return false;
+    }
+
+    return true;
+}
+
+//------------------------------------------------------------------------------
+
 bool ActionMap::processGesture(const InputEvent* pEvent)
 {
-    static const char *argv[6];
+    static const char *argv[5];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 
@@ -1187,13 +1233,13 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
     argv[0] = pNode->consoleFunction;
     argv[1] = Con::getFloatArg(pEvent->fValue);
     argv[2] = Con::getFloatArg(pEvent->fValue2);
-    argv[4] = Con::getFloatArg(pEvent->fValue3);
-    argv[5] = Con::getFloatArg(pEvent->fValue4);
+    argv[3] = Con::getFloatArg(pEvent->fValue3);
+    argv[4] = Con::getFloatArg(pEvent->fValue4);
 
     if (pNode->object)
-        Con::executef(pNode->object, 2, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
+        Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
     else
-        Con::execute(6, argv);
+        Con::execute(5, argv);
        
     return true;
 }
@@ -1226,7 +1272,7 @@ bool ActionMap::processTouch(const InputEvent* pEvent)
     argv[3] = pEvent->touchesY; //Con::getReturnBuffer(pEvent->touchesY);
        
     if (pNode->object)
-        Con::executef(pNode->object, 2, argv[0], argv[1], argv[2], argv[3]);
+        Con::executef(pNode->object, 4, argv[0], argv[1], argv[2], argv[3]);
     else
         Con::execute(4, argv);
        
@@ -1471,6 +1517,9 @@ bool ActionMap::processAction(const InputEvent* pEvent)
 {
     switch(pEvent->action)
     {
+    case SI_LEAP:
+        return processLeap(pEvent);
+        break;
     case SI_GESTURE:
         return processGesture(pEvent);
         break;
@@ -1992,7 +2041,15 @@ CodeMapping gVirtualMap[] =
    { "keyTapGesture",      SI_GESTURE,  SI_KEYTAP_GESTURE    },
    { "pinchGesture",       SI_GESTURE,  SI_PINCH_GESTURE     },
    { "scaleGesture",       SI_GESTURE,  SI_SCALE_GESTURE     },
-   
+
+   //-------------------------------------- GESTURE EVENTS
+   // Preset gesture events:
+   { "leapHandAxis",      SI_LEAP,      LM_HANDAXIS    },
+   { "leapHandPos",       SI_LEAP,      LM_HANDROT     },
+   { "leapHandRot",       SI_LEAP,      LM_HANDPOS     },
+   { "leapFingerPos",     SI_LEAP,      LM_FINGERPOS   },
+   { "leapFingerRot",     SI_LEAP,      LM_FINGERROT   },
+
    //-------------------------------------- MISCELLANEOUS EVENTS
    //
    { "anykey",        SI_KEY,      KEY_ANYKEY },
