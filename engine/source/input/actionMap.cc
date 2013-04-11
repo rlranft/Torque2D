@@ -1230,16 +1230,75 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
     if ( !pNode->consoleFunction[0] )
         return( true );
 
+    // Function
     argv[0] = pNode->consoleFunction;
-    argv[1] = Con::getFloatArg(pEvent->fValues[0]);
-    argv[2] = Con::getFloatArg(pEvent->fValues[1]);
-    argv[3] = Con::getFloatArg(pEvent->fValues[2]);
-    argv[4] = Con::getFloatArg(pEvent->fValues[3]);
+    
+    switch(pEvent->objType)
+    {
+        case SI_CIRCLE_GESTURE:
 
-    if (pNode->object)
-        Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
-    else
-        Con::execute(5, argv);
+            // ID
+            argv[1] = Con::getFloatArg(pEvent->iValue);
+
+            // State
+            argv[2] = Con::getFloatArg(pEvent->fValues[0]);
+
+            // Radius
+            argv[3] = Con::getFloatArg(pEvent->fValues[1]);
+
+            // Direction (1 clockwise, 0 counter-clockwise)
+            argv[4] = Con::getFloatArg(pEvent->fValues[2]);
+
+            if (pNode->object)
+                Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
+            else
+                Con::execute(5, argv);
+            break;
+
+        case SI_SWIPE_GESTURE:
+
+            // ID
+            argv[1] = Con::getFloatArg(pEvent->iValue);
+
+            // State
+            argv[2] = Con::getFloatArg(pEvent->fValues[0]);
+
+            // Direction
+            dSscanf(argv[3], "%f %f %f", pEvent->fValues[1], pEvent->fValues[2], pEvent->fValues[3]);
+        
+            // Speed
+            argv[4] = Con::getFloatArg(pEvent->fValues[4]);
+
+            if (pNode->object)
+                Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
+            else
+                Con::execute(5, argv);
+            break;
+
+        case SI_KEYTAP_GESTURE:
+        case SI_SCREENTAP_GESTURE:
+
+            // ID
+            argv[1] = Con::getFloatArg(pEvent->iValue);
+        
+            // Position
+            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            // Direction
+            dSscanf(argv[3], "%f %f %f", pEvent->fValues[3], pEvent->fValues[4], pEvent->fValues[5]);
+                
+            if (pNode->object)
+                Con::executef(pNode->object, 4, argv[0], argv[1], argv[2], argv[3]);
+            else
+                Con::execute(5, argv);
+
+            break;
+
+        case SI_PINCH_GESTURE:
+        case SI_SCALE_GESTURE:
+        default:
+            return true;
+    }
        
     return true;
 }

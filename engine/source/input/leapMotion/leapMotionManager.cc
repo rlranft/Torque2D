@@ -311,11 +311,12 @@ void LeapMotionManager::process(const Leap::Controller& controller)
             
                 event.deviceInst = 0;
                 event.iValue = g;
-                event.fValues[0] = (F32)screentap.state();
-                event.fValues[1] = screentap.position().x;
-                event.fValues[2] = screentap.position().y;
+                event.fValues[0] = screentap.position().x;
+                event.fValues[1] = screentap.position().y;
+                event.fValues[2] = screentap.position().z;
                 event.fValues[3] = screentap.direction().x;
                 event.fValues[4] = screentap.direction().y;
+                event.fValues[5] = screentap.direction().z;
                 event.deviceType = LeapMotionDeviceType;
                 event.objType = SI_SCREENTAP_GESTURE;
                 event.objInst = 0;
