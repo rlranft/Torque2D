@@ -1166,7 +1166,7 @@ bool ActionMap::processBind(const U32 argc, const char** argv, SimObject* object
 
 bool ActionMap::processLeap(const InputEvent* pEvent)
 {
-    static const char *argv[5];
+    //static const char *argv[5];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 

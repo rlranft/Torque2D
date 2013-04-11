@@ -233,7 +233,7 @@
     torqueEvent.modifier = modifiers;
     torqueEvent.ascii = 0;
     torqueEvent.action = action;
-    torqueEvent.fValue = 1.0;
+    torqueEvent.fValues[0] = 1.0;
     
     // Post the input event
     Game->postEvent(torqueEvent);
@@ -281,7 +281,7 @@
     torqueEvent.modifier = modifiers;
     torqueEvent.ascii = 0;
     torqueEvent.action = action;
-    torqueEvent.fValue = fValue;
+    torqueEvent.fValues[0] = fValue;
     torqueEvent.ascii = chars;
     
     // Post the input event
@@ -432,7 +432,7 @@
     torqueEvent.modifier = modifiers;
     torqueEvent.ascii = 0;
     torqueEvent.action = SI_MOVE;
-    torqueEvent.fValue = deltaY;
+    torqueEvent.fValues[0] = deltaY;
     Game->postEvent(torqueEvent);
 }
 
