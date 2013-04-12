@@ -38,7 +38,8 @@ function LeapToy::create( %this )
     LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
     LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
     LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
-    
+    LeapMap.bindObj(leapdevice, leapHandPos, trackHandPosition, %this);
+    LeapMap.bindObj(leapdevice, leapHandRot, trackHandRotation, %this);
     LeapMap.push();
     
     SandboxWindow.addInputListener( %this );
@@ -265,4 +266,18 @@ function LeapToy::reactToScreenTapGesture(%this, %id, %position, %direction)
 function LeapToy::reactToKeyTapGesture(%this, %id, %positionX, %direction)
 {
     echo("Key Tap Gesture - positionX: " @ %positionX @ " positionY: " @ %positionY @ " directionX: " @ %directionX @ " directionY: " @ %directionY);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::trackHandPosition(%this, %id, %position)
+{
+    echo("Hand " @ %id @ " - x:" SPC %position._0 SPC "y:" SPC %position._1 SPC "z:" SPC %position._2);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::trackHandRotation(%this, %id, %rotation)
+{
+    echo("Hand " @ %id @ " - yaw:" SPC %rotation._0 SPC "pitch:" SPC %rotation._1 SPC "roll:" SPC %rotation._2);
 }

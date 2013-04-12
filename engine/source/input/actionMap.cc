@@ -1186,9 +1186,6 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 
     switch(pEvent->objType)
     {
-        case LM_HANDAXIS:
-            break;
-
         case LM_HANDPOS:
             break;
 
@@ -1198,7 +1195,7 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
         case LM_FINGERPOS:
             break;
 
-        case LM_FINGERROT:
+        case LM_HANDAXIS:
             break;
 
         default:
@@ -2103,12 +2100,11 @@ CodeMapping gVirtualMap[] =
 
    //-------------------------------------- GESTURE EVENTS
    // Preset gesture events:
-   { "leapLeftHandAxis",      SI_LEAP,      LM_HANDAXIS    },
-   { "leapLeftHandPos",       SI_LEAP,      LM_HANDROT     },
-   { "leapLeftHandRot",       SI_LEAP,      LM_HANDPOS     },
-   { "leapFingerPos",         SI_LEAP,      LM_FINGERPOS   },
-   { "leapFingerRot",         SI_LEAP,      LM_FINGERROT   },
-
+   { "leapHandAxis",    SI_LEAP,     LM_HANDAXIS    },
+   { "leapHandPos",     SI_LEAP,     LM_HANDROT     },
+   { "leapHandRot",     SI_LEAP,     LM_HANDPOS     },
+   { "leapFingerPos",   SI_LEAP,     LM_FINGERPOS   },
+   
    //-------------------------------------- MISCELLANEOUS EVENTS
    //
    { "anykey",        SI_KEY,      KEY_ANYKEY },

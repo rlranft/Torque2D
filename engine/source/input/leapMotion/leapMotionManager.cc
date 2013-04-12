@@ -201,13 +201,13 @@ bool LeapMotionManager::getMouseControlToggle()
 void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 {
     // Get hand (palm) position
-    Point3F rawHandPosition;
+    /*Point3F rawHandPosition;
     Point3I convertedHandPosition;
-
+    
     LeapMotionUtil::convertPosition(hand.palmPosition(), rawHandPosition);
     convertedHandPosition.x = (S32)mFloor(rawHandPosition.x);
     convertedHandPosition.y = (S32)mFloor(rawHandPosition.y);
-    convertedHandPosition.z = (S32)mFloor(rawHandPosition.z);
+    convertedHandPosition.z = (S32)mFloor(rawHandPosition.z);*/
 
     // Get the hand's normal vector and direction
     const Leap::Vector normal = hand.palmNormal();
@@ -216,27 +216,36 @@ void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
     F32 pitch = direction.pitch() * Leap::RAD_TO_DEG;
     F32 roll = normal.roll() * Leap::RAD_TO_DEG;
     F32 yaw = direction.yaw() * Leap::RAD_TO_DEG;
+
     // Position Event
-    InputEvent handEvent;
+    InputEvent handPosEvent;
 
-    handEvent.deviceInst = 0;
-    handEvent.iValue = id;
-    handEvent.fValues[0] = (F32)convertedHandPosition.x;
-    handEvent.fValues[1] = (F32)convertedHandPosition.y;
-    handEvent.fValues[2] = (F32)convertedHandPosition.z;
-    handEvent.deviceType = LeapMotionDeviceType;
-    handEvent.objType = LM_HANDPOS;
-    handEvent.objInst = 0;
-    handEvent.action = SI_LEAP;
-    handEvent.modifier = 0;
+    handPosEvent.deviceInst = 0;
+    handPosEvent.iValue = id;
+    handPosEvent.fValues[0] = hand.palmPosition().x;
+    handPosEvent.fValues[1] = hand.palmPosition().y;
+    handPosEvent.fValues[2] = hand.palmPosition().z;
+    handPosEvent.deviceType = LeapMotionDeviceType;
+    handPosEvent.objType = LM_HANDPOS;
+    handPosEvent.objInst = 0;
+    handPosEvent.action = SI_LEAP;
+    handPosEvent.modifier = 0;
 
-    Game->postEvent(handEvent);
+    InputEvent handRotEvent;
 
-    handEvent.fValues[0] = yaw;
-    handEvent.fValues[1] = pitch;
-    handEvent.fValues[2] = roll;
-    handEvent.objType = LM_HANDROT;
-    Game->postEvent(handEvent);
+    handRotEvent.deviceInst = 0;
+    handRotEvent.iValue = id;
+    handRotEvent.fValues[0] = yaw;
+    handRotEvent.fValues[1] = pitch;
+    handRotEvent.fValues[2] = roll;
+    handRotEvent.objType = LM_HANDROT;
+    handRotEvent.deviceType = LeapMotionDeviceType;
+    handRotEvent.objInst = 0;
+    handRotEvent.action = SI_LEAP;
+    handRotEvent.modifier = 0;
+
+    Game->postEvent(handPosEvent);
+    Game->postEvent(handRotEvent);
 }
 
 //-----------------------------------------------------------------------------
@@ -246,21 +255,21 @@ void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
     for (int f = 0; f < fingers.count(); ++f)
     {
         // Convert the Leap finger tip position to usable Torque units
-        Point3F rawPosition(0, 0, 0);
+        /*Point3F rawPosition(0, 0, 0);
         Point3I convertedPosition;
         LeapMotionUtil::convertPosition(fingers[f].tipPosition(), rawPosition);
         convertedPosition.x = (S32)mFloor(rawPosition.x);
         convertedPosition.y = (S32)mFloor(rawPosition.y);
-        convertedPosition.z = (S32)mFloor(rawPosition.z);
+        convertedPosition.z = (S32)mFloor(rawPosition.z);*/
                 
         // Build the event
         InputEvent fingerPositionEvent;
 
         fingerPositionEvent.deviceInst = 0;
         fingerPositionEvent.iValue = f;
-        fingerPositionEvent.fValues[0] = (F32)convertedPosition.x;
-        fingerPositionEvent.fValues[1] = (F32)convertedPosition.y;
-        fingerPositionEvent.fValues[2] = (F32)convertedPosition.z;
+        fingerPositionEvent.fValues[0] = fingers[f].tipPosition().x;
+        fingerPositionEvent.fValues[1] = fingers[f].tipPosition().y;
+        fingerPositionEvent.fValues[2] = fingers[f].tipPosition().z;
         fingerPositionEvent.deviceType = LeapMotionDeviceType;
         fingerPositionEvent.objType = LM_FINGERPOS;
         fingerPositionEvent.objInst = f;

@@ -449,7 +449,6 @@ enum LeapMotionCodes
     LM_HANDROT           = 0x40A,
     LM_HANDPOS           = 0x40B,
     LM_FINGERPOS         = 0x40C,
-    LM_FINGERROT         = 0x40D
 };
 
 /// Input device types
