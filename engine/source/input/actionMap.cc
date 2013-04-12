@@ -1167,6 +1167,7 @@ bool ActionMap::processBind(const U32 argc, const char** argv, SimObject* object
 bool ActionMap::processLeap(const InputEvent* pEvent)
 {
     static const char *argv[3];
+    char buffer[32];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 
@@ -1192,9 +1193,11 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 
             // ID
             argv[1] = Con::getFloatArg(pEvent->iValue);
-        
+
             // Position
-            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            argv[2] = buffer;
 
             if (pNode->object)
                 Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
@@ -1206,9 +1209,11 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
             
             // ID
             argv[1] = Con::getFloatArg(pEvent->iValue);
-        
+
             // Rotation
-            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            argv[2] = buffer;
 
             if (pNode->object)
                 Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
@@ -1220,9 +1225,11 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
             
             // ID
             argv[1] = Con::getFloatArg(pEvent->iValue);
-        
+
             // Position
-            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            argv[2] = buffer;
 
             if (pNode->object)
                 Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
@@ -1243,6 +1250,7 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 bool ActionMap::processGesture(const InputEvent* pEvent)
 {
     static const char *argv[5];
+    char buffer[32];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 
@@ -1268,7 +1276,7 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
         case SI_CIRCLE_GESTURE:
 
             // ID
-            argv[1] = Con::getFloatArg(pEvent->iValue);
+            argv[1] = Con::getIntArg(pEvent->iValue);
 
             // Progress
             argv[2] = Con::getFloatArg(pEvent->fValues[0]);
@@ -1288,14 +1296,15 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
         case SI_SWIPE_GESTURE:
 
             // ID
-            argv[1] = Con::getFloatArg(pEvent->iValue);
+            argv[1] = Con::getIntArg(pEvent->iValue);
 
             // State
-            argv[2] = Con::getFloatArg(pEvent->fValues[0]);
+            argv[2] = Con::getIntArg(pEvent->fValues[0]);
 
             // Direction
-            dSscanf(argv[3], "%f %f %f", pEvent->fValues[1], pEvent->fValues[2], pEvent->fValues[3]);
-        
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[1], pEvent->fValues[2], pEvent->fValues[3]);
+
+            argv[3] = buffer;
             // Speed
             argv[4] = Con::getFloatArg(pEvent->fValues[4]);
 
@@ -1312,11 +1321,15 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
             argv[1] = Con::getFloatArg(pEvent->iValue);
         
             // Position
-            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            argv[2] = buffer;
 
             // Direction
-            dSscanf(argv[3], "%f %f %f", pEvent->fValues[3], pEvent->fValues[4], pEvent->fValues[5]);
-                
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[3], pEvent->fValues[4], pEvent->fValues[5]);
+
+            argv[3] = buffer;
+
             if (pNode->object)
                 Con::executef(pNode->object, 4, argv[0], argv[1], argv[2], argv[3]);
             else

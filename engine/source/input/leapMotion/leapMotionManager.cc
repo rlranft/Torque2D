@@ -300,10 +300,7 @@ void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
                     clockWise = true;
                 else 
                     clockWise = false;
-            
-                // Calculate angle swept since last frame
-                float sweptAngle = 0;
-                                
+
                 InputEvent event;
             
                 event.deviceInst = 0;
@@ -323,7 +320,12 @@ void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
             case Leap::Gesture::TYPE_SWIPE:
             {
                 Leap::SwipeGesture swipe = gesture;
-                
+
+                if (swipe.state() != Leap::Gesture::STATE_STOP )
+                {
+                    return;
+                }
+
                 InputEvent event;
             
                 event.deviceInst = 0;
