@@ -1249,7 +1249,7 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 
 bool ActionMap::processGesture(const InputEvent* pEvent)
 {
-    static const char *argv[5];
+    static const char *argv[6];
     char buffer[32];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
@@ -1287,10 +1287,13 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
             // Direction (1 clockwise, 0 counter-clockwise)
             argv[4] = Con::getFloatArg(pEvent->fValues[2]);
 
+            // State
+            argv[5] = Con::getIntArg(pEvent->fValues[3]);
+
             if (pNode->object)
-                Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
+                Con::executef(pNode->object, 6, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
             else
-                Con::execute(5, argv);
+                Con::execute(6, argv);
             break;
 
         case SI_SWIPE_GESTURE:

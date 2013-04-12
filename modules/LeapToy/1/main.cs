@@ -232,16 +232,16 @@ function LeapToy::sizeCircleSprite( %this, %radius, %isClockwise )
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::hideCircleSprite( %this, %radius )
+function LeapToy::hideCircleSprite( %this )
 {
     %this.circleSprite.visible = 0;
 }
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockwise)
+function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockwise, %state)
 {
-    if (!(%progress % 1) && %progress > 0)
+    if (%progress > 0 && %state != 3)
         %this.showCircleSprite(%radius, %isClockwise);
     else
         %this.hideCircleSprite();

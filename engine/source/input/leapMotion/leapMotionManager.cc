@@ -308,6 +308,7 @@ void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
                 event.fValues[0] = circle.progress();
                 event.fValues[1] = circle.radius();
                 event.fValues[2] = clockWise;
+                event.fValues[3] = (F32)circle.state();
                 event.deviceType = LeapMotionDeviceType;
                 event.objType = SI_CIRCLE_GESTURE;
                 event.objInst = 0;
@@ -419,7 +420,8 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     // Get gestures
     const Leap::GestureList gestures = frame.gestures();
 
-    processGestures(gestures);
+    if (!gestures.empty())
+        processGestures(gestures);
 
     if (getMouseControlToggle())
     {
