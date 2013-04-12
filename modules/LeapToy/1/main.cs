@@ -35,11 +35,11 @@ function LeapToy::create( %this )
     
     LeapMap.bindObj(keyboard, space, pickSprite, %this);
     LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
-    LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
-    LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
-    LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
-    LeapMap.bindObj(leapdevice, leapHandPos, trackHandPosition, %this);
-    LeapMap.bindObj(leapdevice, leapHandRot, trackHandRotation, %this);
+    //LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
+    //LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
+    //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
+    //LeapMap.bindObj(leapdevice, leapHandPos, trackHandPosition, %this);
+    //LeapMap.bindObj(leapdevice, leapHandRot, trackHandRotation, %this);
     LeapMap.push();
     
     SandboxWindow.addInputListener( %this );
@@ -249,23 +249,23 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToSwipeGesture(%this, %id, %direction, %speed)
+function LeapToy::reactToSwipeGesture(%this, %id, %state, %direction, %speed)
 {
-    echo("Swipe Gesture - directionX: " @ %directionX @ " directionY: " @ %directionY @ " directionZ: " @ %directionZ @ " speed: " @ %speed);
+    echo("Swipe Gesture - directionX: " @ %direction._0 @ " directionY: " @ %direction._1 @ " directionZ: " @ %direction._2 @ " speed: " @ %speed);
 }
 
 //-----------------------------------------------------------------------------
 
 function LeapToy::reactToScreenTapGesture(%this, %id, %position, %direction)
 {
-    echo("Screen Tap Gesture - positionX: " @ %positionX @ " positionY: " @ %positionY @ " directionX: " @ %directionX @ " directionY: " @ %directionY);
+    echo("Screen Tap Gesture - positionX: " @ %position._0 @ " positionY: " @ %position._1 @ " directionX: " @ %direction._0 @ " directionY: " @ %direction._1);
 }
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::reactToKeyTapGesture(%this, %id, %positionX, %direction)
+function LeapToy::reactToKeyTapGesture(%this, %id, %position, %direction)
 {
-    echo("Key Tap Gesture - positionX: " @ %positionX @ " positionY: " @ %positionY @ " directionX: " @ %directionX @ " directionY: " @ %directionY);
+    echo("Key Tap Gesture - positionX: " @ %position._0 @ " positionY: " @ %position._1 @ " directionX: " @ %direction._0 @ " directionY: " @ %direction._1);
 }
 
 //-----------------------------------------------------------------------------

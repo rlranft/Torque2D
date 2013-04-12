@@ -321,6 +321,7 @@ void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
             {
                 Leap::SwipeGesture swipe = gesture;
 
+                // Comment to post begin and update swipes
                 if (swipe.state() != Leap::Gesture::STATE_STOP )
                 {
                     return;
