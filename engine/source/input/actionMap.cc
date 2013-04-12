@@ -1166,7 +1166,7 @@ bool ActionMap::processBind(const U32 argc, const char** argv, SimObject* object
 
 bool ActionMap::processLeap(const InputEvent* pEvent)
 {
-    //static const char *argv[5];
+    static const char *argv[3];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 
@@ -1184,20 +1184,53 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
     if ( !pNode->consoleFunction[0] )
         return( true );
 
+    argv[0] = pNode->consoleFunction;
+
     switch(pEvent->objType)
     {
         case LM_HANDPOS:
+
+            // ID
+            argv[1] = Con::getFloatArg(pEvent->iValue);
+        
+            // Position
+            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            if (pNode->object)
+                Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
+            else
+                Con::execute(3, argv);
             break;
 
         case LM_HANDROT:
+            
+            // ID
+            argv[1] = Con::getFloatArg(pEvent->iValue);
+        
+            // Rotation
+            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            if (pNode->object)
+                Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
+            else
+                Con::execute(3, argv);
             break;
 
         case LM_FINGERPOS:
+            
+            // ID
+            argv[1] = Con::getFloatArg(pEvent->iValue);
+        
+            // Position
+            dSscanf(argv[2], "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+
+            if (pNode->object)
+                Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
+            else
+                Con::execute(3, argv);
             break;
 
         case LM_HANDAXIS:
-            break;
-
         default:
             return false;
     }
