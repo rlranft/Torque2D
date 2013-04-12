@@ -34,19 +34,21 @@ function LeapToy::create( %this )
     new ActionMap(LeapMap);
     
     LeapMap.bindObj(keyboard, space, pickSprite, %this);
-    LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
-    LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
+    //LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
+    //LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
     //LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
     //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
     //LeapMap.bindObj(leapdevice, leapHandPos, trackHandPosition, %this);
     //LeapMap.bindObj(leapdevice, leapHandRot, trackHandRotation, %this);
+    LeapMap.bindObj(leapdevice, leapFingerPos, trackFingerPos, %this);
+
     LeapMap.push();
     
     SandboxWindow.addInputListener( %this );
 
     initLeapMotionManager();
     enableLeapMotionManager(true);
-    enableLeapCursorControl(true);
+    //enableLeapCursorControl(true);
 
     // Reset the toy.
     LeapToy.reset();
@@ -163,7 +165,7 @@ function LeapToy::createBall( %this )
     %ball.setDefaultDensity( 0.1 );
     %ball.setDefaultRestitution( 0.5 );
     %ball.createCircleCollisionShape( 1 );
-    
+
     // Add to the scene.
     SandboxScene.add( %ball );
 }
@@ -175,6 +177,7 @@ function LeapToy::createCircleSprite( %this )
     // Create the circle.
     %circle = new Sprite();
     %circle.Position = "0 0";
+    %object.BodyType = "static";
     %circle.Size = 1;
     %circle.Image = "ToyAssets:Crosshair2";
     %circle.Visible = false;
@@ -352,4 +355,12 @@ function LeapToy::trackHandPosition(%this, %id, %position)
 function LeapToy::trackHandRotation(%this, %id, %rotation)
 {
     echo("Hand " @ %id @ " - yaw:" SPC %rotation._0 SPC "pitch:" SPC %rotation._1 SPC "roll:" SPC %rotation._2);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::trackFingerPos(%this, %id, %position)
+{
+    if (!%id)
+        echo("Finger " @ %id+1 @ " - x:" SPC %position._0 SPC "y:" SPC %position._1);
 }

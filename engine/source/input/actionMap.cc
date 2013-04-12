@@ -1167,7 +1167,7 @@ bool ActionMap::processBind(const U32 argc, const char** argv, SimObject* object
 bool ActionMap::processLeap(const InputEvent* pEvent)
 {
     static const char *argv[3];
-    char buffer[32];
+    char buffer[64];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 
@@ -1225,7 +1225,6 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
             
             // ID
             argv[1] = Con::getFloatArg(pEvent->iValue);
-
             // Position
             dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
 
