@@ -87,6 +87,7 @@ LeapMotionManager::LeapMotionManager()
     // Nothing is ready yet
     mEnabled = false;
     mActive = false;
+    mMouseControl = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -323,9 +324,9 @@ void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
                 Leap::SwipeGesture swipe = gesture;
 
                 // Comment to post begin and update swipes
-                if (swipe.state() != Leap::Gesture::STATE_STOP )
+                if (swipe.state() != Leap::Gesture::STATE_STOP)
                 {
-                    return;
+                    break;
                 }
 
                 InputEvent event;

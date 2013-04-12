@@ -35,7 +35,7 @@ function LeapToy::create( %this )
     
     LeapMap.bindObj(keyboard, space, pickSprite, %this);
     LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
-    //LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
+    LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
     //LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
     //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
     //LeapMap.bindObj(leapdevice, leapHandPos, trackHandPosition, %this);
@@ -135,6 +135,7 @@ function LeapToy::createGround( %this )
     %ground.setBodyType("static");
     %ground.Image = "ToyAssets:dirtGround";
     %ground.setPosition(0, -12);
+    %ground.SceneLayer = 11;
     %ground.setSize(LeapToy.GroundWidth, 6);
     %ground.setRepeatX(LeapToy.GroundWidth / 60);   
     %ground.createEdgeCollisionShape(LeapToy.GroundWidth/-2, 3, LeapToy.GroundWidth/2, 3);
@@ -145,6 +146,7 @@ function LeapToy::createGround( %this )
     %grass.setBodyType("static");
     %grass.Image = "ToyAssets:grassForeground";
     %grass.setPosition(0, -8.5);
+    %grass.SceneLayer = 12;
     %grass.setSize(LeapToy.GroundWidth, 2); 
     SandboxScene.add(%grass);       
 }
@@ -239,10 +241,74 @@ function LeapToy::hideCircleSprite( %this )
 
 //-----------------------------------------------------------------------------
 
+function LeapToy::createAsteroid( %this, %position, %direction, %speed )
+{
+    %size = 3;
+    %reducedSpeed = mClamp((%speed / 10), 0, 55);
+
+    %velocity = vectorScale(%direction, %reducedSpeed);
+
+    // Create an asteroid.
+    %object = new Sprite()
+    {
+        class = "Asteroid";
+    };
+
+    %object.Position = %position;
+    %object.CollisionCallback = true;
+    %object.Size = %size;
+    %object.SceneLayer = 8;
+    %object.Image = "ToyAssets:Asteroids";
+    %object.ImageFrame = getRandom(0,3);
+    %object.setDefaultDensity( 0.2 );
+    %object.createCircleCollisionShape( %size * 0.4 );
+    %object.setLinearVelocity( %velocity._0, %velocity._1 );
+    %object.setAngularVelocity( getRandom(-90,90) );
+    %object.setLifetime( 10 );
+    SandboxScene.add( %object );
+
+    // Create fire trail.
+    %player = new ParticlePlayer();
+    %player.Particle = "ToyAssets:bonfire";
+    %player.Position = %object.Position;
+    %player.EmissionRateScale = 3;
+    %player.SizeScale = 2;
+    %player.SceneLayer = 0;
+    %player.setLifetime( 10 );
+    SandboxScene.add( %player );
+    %jointId = SandboxScene.createRevoluteJoint( %object, %player );
+    SandboxScene.setRevoluteJointLimit( %jointId, 0, 0 );
+
+    %object.Trail = %player;
+
+    return %object;
+}
+
+//-----------------------------------------------------------------------------
+
+function Asteroid::onCollision( %this, %object, %collisionDetails )
+{
+    // Create explosion.
+    %player = new ParticlePlayer();
+    %player.BodyType = static;
+    %player.Particle = "ToyAssets:impactExplosion";
+    %player.Position = %this.Position;
+    %player.SceneLayer = 0;
+    SandboxScene.add( %player );
+
+    // Delete the asteroid.
+    %this.Trail.LinearVelocity = 0;
+    %this.Trail.AngularVelocity = 0;
+    %this.Trail.safeDelete();
+    %this.safeDelete();
+}
+
+//-----------------------------------------------------------------------------
+
 function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockwise, %state)
 {
     if (%progress > 0 && %state != 3)
-        %this.showCircleSprite(%radius, %isClockwise);
+        %this.showCircleSprite(%radius / 2, %isClockwise);
     else
         %this.hideCircleSprite();
 }
@@ -251,7 +317,13 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
 
 function LeapToy::reactToSwipeGesture(%this, %id, %state, %direction, %speed)
 {
-    echo("Swipe Gesture - directionX: " @ %direction._0 @ " directionY: " @ %direction._1 @ " directionZ: " @ %direction._2 @ " speed: " @ %speed);
+    //echo("Swipe Gesture - directionX: " @ %direction._0 @ " directionY: " @ %direction._1 @ " directionZ: " @ %direction._2 @ " speed: " @ %speed);
+    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+
+    if (isLeapCursorControlled())
+        %worldPosition = "0 0";
+
+    %this.createAsteroid(%worldPosition, %direction, %speed);
 }
 
 //-----------------------------------------------------------------------------
