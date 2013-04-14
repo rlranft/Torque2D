@@ -501,7 +501,7 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
 
 void LeapMotionManager::MotionListener::onInit(const Leap::Controller& controller)
 {
-    Con::printf("MotionListener::onInit()");
+    //Con::printf("MotionListener::onInit()");
 }
 
 //-----------------------------------------------------------------------------
