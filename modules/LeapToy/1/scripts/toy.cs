@@ -88,6 +88,8 @@ function LeapToy::createBall( %this )
     %ball.setDefaultRestitution( 0.5 );
     %ball.createCircleCollisionShape( 1 );
 
+    %this.ball = %ball;
+
     // Add to the scene.
     SandboxScene.add( %ball );
 }

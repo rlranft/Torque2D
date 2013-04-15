@@ -34,9 +34,9 @@ function LeapToy::initializeInput( %this )
     //LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
     //LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
     //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
-    //LeapMap.bindObj(leapdevice, leapHandPos, trackHandPosition, %this);
-    //LeapMap.bindObj(leapdevice, leapHandRot, trackHandRotation, %this);
-    //LeapMap.bindObj(leapdevice, leapFingerPos, trackFingerPos, %this);
+    //LeapMap.bindObj(leapdevice, leapHandPos, "D", "-0.1, 0.1", trackHandPosition, %this);
+    //LeapMap.bindObj(leapdevice, leapHandRot, "D", "-0.1, 0.1", trackHandRotation, %this);
+    //LeapMap.bindObj(leapdevice, leapFingerPos, "D", "-0.1, 0.1", trackFingerPos, %this);
 
     // Push the LeapMap to the stack, making it active
     LeapMap.push();
