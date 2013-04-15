@@ -34,9 +34,9 @@ function LeapToy::initializeInput( %this )
     //LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
     //LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
     //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
-    //LeapMap.bindObj(leapdevice, leapHandPos, "D", "-0.1, 0.1", trackHandPosition, %this);
-    //LeapMap.bindObj(leapdevice, leapHandRot, "D", "-0.1, 0.1", trackHandRotation, %this);
-    //LeapMap.bindObj(leapdevice, leapFingerPos, "D", "-0.1, 0.1", trackFingerPos, %this);
+    //LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);
+    //LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
+    //LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
 
     // Push the LeapMap to the stack, making it active
     LeapMap.push();
@@ -130,7 +130,13 @@ function LeapToy::reactToKeyTapGesture(%this, %id, %position, %direction)
 // %position - 3 point vector based on where the hand is located in "Leap Space"
 function LeapToy::trackHandPosition(%this, %id, %position)
 {
-    echo("Hand " @ %id @ " - x:" SPC %position._0 SPC "y:" SPC %position._1 SPC "z:" SPC %position._2);
+    //echo("Hand " @ %id @ " - x:" SPC %position._0 SPC "y:" SPC %position._1 SPC "z:" SPC %position._2);
+
+    %xPosition = %position._0;
+    %yPosition = %position._1;
+    %zPosition = %position._2;
+
+    %this.accelerateBall(%xPosition, %yPosition, 0);
 }
 
 //-----------------------------------------------------------------------------
@@ -140,7 +146,12 @@ function LeapToy::trackHandPosition(%this, %id, %position)
 // %rotation - 3 point vector based on the hand's rotation: "yaw pitch roll"
 function LeapToy::trackHandRotation(%this, %id, %rotation)
 {
-    echo("Hand " @ %id @ " - yaw:" SPC %rotation._0 SPC "pitch:" SPC %rotation._1 SPC "roll:" SPC %rotation._2);
+    //echo("Hand " @ %id @ " - yaw:" SPC %rotation._0 SPC "pitch:" SPC %rotation._1 SPC "roll:" SPC %rotation._2);
+    %yaw = %rotation._0;
+    %pitch = %rotation._1;
+    %roll = %rotation._2;
+
+    %this.accelerateBall(%yaw, %pitch, %roll);
 }
 
 //-----------------------------------------------------------------------------

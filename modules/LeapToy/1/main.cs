@@ -25,7 +25,11 @@ function LeapToy::create( %this )
     // Execute toy scripts
     exec("./scripts/input.cs");
     exec("./scripts/toy.cs");
-    
+
+    %this.handPosDeadzone = "-1.0 1.0";
+    %this.handRotDeadzone = "-1.0 1.0";
+    %this.fingerPosDeadzone = "-1.0 1.0";
+
     // Set the sandbox drag mode availability.
     Sandbox.allowManipulation( pull );
     

@@ -172,6 +172,19 @@ function LeapToy::hideCircleSprite( %this )
 }
 
 //-----------------------------------------------------------------------------
+// This will be called when either the hand position or hand rotation is being tracked
+//
+// %horizontalSpeed - How fast to move in the X-axis
+// %verticalSpeed - How fast to move in the Y-axis
+// %angularSpeed - How fast to rotate on the Z-axis
+function LeapToy::accelerateBall( %this, %horizontalSpeed, %verticalSpeed, %angularSpeed)
+{
+    %this.ball.setLinearVelocity(%horizontalSpeed, %verticalSpeed);
+
+    %this.ball.setAngularVelocity(%angularSpeed);
+}
+
+//-----------------------------------------------------------------------------
 // This is called when a user makes a swipe gesture with the Leap Motion
 //
 // %position - Where to spawn the asteroid

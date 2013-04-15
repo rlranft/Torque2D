@@ -1200,6 +1200,10 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
             values[1] = 0.0f;
         if ( pEvent->fValues[2] >= pNode->deadZoneBegin && pEvent->fValues[2] <= pNode->deadZoneEnd )
             values[2] = 0.0f;
+
+        // All values are all null, so don't bother executing the function
+        if (!values[0] && !values[1] && !values[2])
+            return true;
     }
 
     switch(pEvent->objType)
