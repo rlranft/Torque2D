@@ -3516,7 +3516,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = /usr/lib/libz.dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../../..;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Shipping;
@@ -3618,7 +3617,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = /usr/lib/libz.dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)_DEBUG";
-				SYMROOT = ../../..;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3657,7 +3655,6 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = /usr/lib/libz.dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SYMROOT = ../../..;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

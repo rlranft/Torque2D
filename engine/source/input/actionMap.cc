@@ -1187,15 +1187,30 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 
     argv[0] = pNode->consoleFunction;
 
+    float values[3];
+    values[0] = pEvent->fValues[0];
+    values[1] = pEvent->fValues[1];
+    values[2] = pEvent->fValues[2];
+
+    if ( pNode->flags & Node::HasDeadZone )
+    {
+        if ( pEvent->fValues[0] >= pNode->deadZoneBegin && pEvent->fValues[0] <= pNode->deadZoneEnd )
+            values[0] = 0.0f;
+        if ( pEvent->fValues[1] >= pNode->deadZoneBegin && pEvent->fValues[1] <= pNode->deadZoneEnd )
+            values[1] = 0.0f;
+        if ( pEvent->fValues[2] >= pNode->deadZoneBegin && pEvent->fValues[2] <= pNode->deadZoneEnd )
+            values[2] = 0.0f;
+    }
+
     switch(pEvent->objType)
     {
         case LM_HANDPOS:
 
             // ID
-            argv[1] = Con::getFloatArg(pEvent->iValue);
+            argv[1] = Con::getIntArg(pEvent->iValue);
 
             // Position
-            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", values[0], values[1], values[2]);
 
             argv[2] = buffer;
 
@@ -1208,10 +1223,10 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
         case LM_HANDROT:
             
             // ID
-            argv[1] = Con::getFloatArg(pEvent->iValue);
+            argv[1] = Con::getIntArg(pEvent->iValue);
 
             // Rotation
-            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", values[0], values[1], values[2]);
 
             argv[2] = buffer;
 
@@ -1224,9 +1239,10 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
         case LM_FINGERPOS:
             
             // ID
-            argv[1] = Con::getFloatArg(pEvent->iValue);
+            argv[1] = Con::getIntArg(pEvent->iValue);
+
             // Position
-            dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);
+            dSprintf(buffer, sizeof(buffer), "%f %f %f", values[0], values[1], values[2]);
 
             argv[2] = buffer;
 
@@ -1320,7 +1336,7 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
         case SI_SCREENTAP_GESTURE:
 
             // ID
-            argv[1] = Con::getFloatArg(pEvent->iValue);
+            argv[1] = Con::getIntArg(pEvent->iValue);
         
             // Position
             dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[0], pEvent->fValues[1], pEvent->fValues[2]);

@@ -41,7 +41,11 @@ function LeapToy::createBackground( %this )
     
     // Set an image.
     %object.Image = "ToyAssets:jungleSky";
-            
+
+    %object.createEdgeCollisionShape( -20, -15, -20, 15 );
+    %object.createEdgeCollisionShape( 20, -15, 20, 15 );
+    %object.createEdgeCollisionShape( -20, 15, 20, 15 );
+
     // Add the sprite to the scene.
     SandboxScene.add( %object );   
 }

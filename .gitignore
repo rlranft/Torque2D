@@ -26,7 +26,8 @@ Torque2D_DEBUG.exe
 Torque2DGame.app
 Torque2DGame_Debug.app
 linkmap.txt
-    
+engine/compilers/Xcode/build
+
 # Compiled source #
 ###################
 *.com
