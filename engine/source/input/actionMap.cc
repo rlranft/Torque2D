@@ -1269,7 +1269,7 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 bool ActionMap::processGesture(const InputEvent* pEvent)
 {
     static const char *argv[6];
-    char buffer[32];
+    char buffer[64];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
 
@@ -2169,8 +2169,8 @@ CodeMapping gVirtualMap[] =
    //-------------------------------------- GESTURE EVENTS
    // Preset gesture events:
    { "leapHandAxis",    SI_LEAP,     LM_HANDAXIS    },
-   { "leapHandPos",     SI_LEAP,     LM_HANDROT     },
-   { "leapHandRot",     SI_LEAP,     LM_HANDPOS     },
+   { "leapHandPos",     SI_LEAP,     LM_HANDPOS     },
+   { "leapHandRot",     SI_LEAP,     LM_HANDROT     },
    { "leapFingerPos",   SI_LEAP,     LM_FINGERPOS   },
    
    //-------------------------------------- MISCELLANEOUS EVENTS

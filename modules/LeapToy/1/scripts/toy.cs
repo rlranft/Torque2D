@@ -77,6 +77,57 @@ function LeapToy::createGround( %this )
 
 //-----------------------------------------------------------------------------
 
+function LeapToy::createPyramid( %this )
+{
+    // Fetch the block count.
+    %blockCount = LeapToy.BlockCount;
+
+    // Sanity!
+    if ( %blockCount < 2 )
+    {
+        echo( "Cannot have a pyramid block count less than two." );
+        return;
+    }
+
+    // Set the block size.
+    %blockSize = LeapToy.BlockSize;
+
+    // Calculate a block building position.
+    %posx = %blockCount * -0.5 * %blockSize;
+    %posy = -8.8 + (%blockSize * 0.5);
+
+    // Build the stack of blocks.
+    for( %stack = 0; %stack < %blockCount; %stack++ )
+    {
+        // Calculate the stack position.
+        %stackIndexCount = %blockCount - (%stack*2);
+        %stackX = %posX + ( %stack * %blockSize );
+        %stackY = %posY + ( %stack * %blockSize );
+
+        // Build the stack.
+        for ( %stackIndex = 0; %stackIndex < %stackIndexCount; %stackIndex++ )
+        {
+            // Calculate the block position.
+            %blockX = %stackX + (%stackIndex*%blockSize);
+            %blockY = %stackY;
+
+            // Create the sprite.
+            %obj = new Sprite();
+            %obj.setPosition( %blockX, %blockY );
+            %obj.setSize( %blockSize );
+            %obj.setImage( "ToyAssets:blocks" );
+            %obj.setImageFrame( getRandom(0,55) );
+            %obj.setDefaultFriction( 1.0 );
+            %obj.createPolygonBoxCollisionShape( %blockSize, %blockSize );
+
+            // Add to the scene.
+            SandboxScene.add( %obj );
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+
 function LeapToy::createBall( %this )
 {
     // Create the ball.
@@ -177,11 +228,9 @@ function LeapToy::hideCircleSprite( %this )
 // %horizontalSpeed - How fast to move in the X-axis
 // %verticalSpeed - How fast to move in the Y-axis
 // %angularSpeed - How fast to rotate on the Z-axis
-function LeapToy::accelerateBall( %this, %horizontalSpeed, %verticalSpeed, %angularSpeed)
+function LeapToy::accelerateBall( %this, %horizontalSpeed, %verticalSpeed )
 {
     %this.ball.setLinearVelocity(%horizontalSpeed, %verticalSpeed);
-
-    %this.ball.setAngularVelocity(%angularSpeed);
 }
 
 //-----------------------------------------------------------------------------
@@ -256,4 +305,51 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
     %this.Trail.AngularVelocity = 0;
     %this.Trail.safeDelete();
     %this.safeDelete();
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::grabObjectsInCircle( %this, %radius )
+{
+    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+    %picked = SandboxScene.pickCircle(%worldPosition, %radius);
+
+    // Finish if nothing picked.
+    if ( %picked $= "" )
+        return;
+
+    // Fetch the pick count.
+    %pickCount = %picked.Count;
+
+    for( %n = 0; %n < %pickCount; %n++ )
+    {
+        // Fetch the picked object.
+        %pickedObject = getWord( %picked, %n );
+
+        // Skip if the object is static.
+        if ( %pickedObject.getBodyType() $= "static" )
+            continue;
+
+        %jointID = SandboxScene.createTargetJoint( %pickedObject, %worldPosition, Sandbox.ManipulationPullMaxForce );
+        %this.manipulationJoints = %this.manipulationJoints SPC %jointID;
+    }
+
+    %this.pickedObjects = true;
+}
+
+function LeapToy::createNewBlock( %this )
+{
+    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+
+    // Create the sprite.
+    %obj = new Sprite();
+    %obj.setPosition( %worldPosition );
+    %obj.setSize( LeapToy.blockSize );
+    %obj.setImage( "ToyAssets:blocks" );
+    %obj.setImageFrame( getRandom(0,55) );
+    %obj.setDefaultFriction( 1.0 );
+    %obj.createPolygonBoxCollisionShape( LeapToy.blockSize, LeapToy.blockSize );
+
+    // Add to the scene.
+    SandboxScene.add( %obj );
 }

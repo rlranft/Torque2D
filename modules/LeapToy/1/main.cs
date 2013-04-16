@@ -27,8 +27,19 @@ function LeapToy::create( %this )
     exec("./scripts/toy.cs");
 
     %this.handPosDeadzone = "-1.0 1.0";
-    %this.handRotDeadzone = "-1.0 1.0";
+    %this.handRotDeadzone = "-5.0 5.0";
     %this.fingerPosDeadzone = "-1.0 1.0";
+    %this.enableSwipeGesture = false;
+    %this.enableCircleGesture = false;
+    %this.enableScreenTapGesture = false;
+    %this.enableHandRotation = false;
+    %this.enableFingerTracking = false;
+
+    addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
+    addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
+    addFlagOption( "Enable Screen Tap Gesture", "setEnableTapGesture", LeapToy.enableScreenTapGesture, false, "Turns on screen tap gesture recognition" );
+    addFlagOption( "Enable Hand Rotation", "setEnableHandRotation", LeapToy.enableHandRotation, false, "Turns on tracking of hand rotation" );
+    addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
 
     // Set the sandbox drag mode availability.
     Sandbox.allowManipulation( pull );
@@ -36,8 +47,10 @@ function LeapToy::create( %this )
     // Set the manipulation mode.
     Sandbox.useManipulation( pull );
     
-    // Width of the ground objects collide with
+    // Configure the toy.
     LeapToy.GroundWidth = 40;
+    LeapToy.BlockSize = 1.5;
+    LeapToy.BlockCount = 15;
 
     %this.initializeInput();
     
@@ -65,21 +78,66 @@ function LeapToy::destroy( %this )
 
 function LeapToy::reset( %this )
 {
+    %this.pickedObjects = false;
+    %this.manipulationJoints = "";
+
     // Clear the scene.
     SandboxScene.clear();
     
     // Set the camera size.
     SandboxWindow.setCameraSize( 40, 30 );
+
+    // Se the gravity.
+    SandboxScene.setGravity( 0, -9.8 );
        
     // Create background.
     %this.createBackground();
     
     // Create the ground.
     %this.createGround();
-    
+
+    // Create the pyramid.
+    %this.createPyramid();
+
     // Create a ball.
     %this.createBall();
 
     // Create circle gesture visual.
     %this.createCircleSprite();
 }
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::setEnableSwipeGesture( %this, %value )
+{
+    %this.enableSwipeGesture = %value;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::setEnableCircleGesture( %this, %value )
+{
+    %this.enableCircleGesture = %value;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::setEnableTapGesture( %this, %value )
+{
+    %this.enableScreenTapGesture = %value;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::setEnableHandRotation( %this, %value )
+{
+    %this.enableHandRotation = %value;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::setEnableFingerTracking( %this, %value )
+{
+    %this.enableFingerTracking = %value;
+}
+

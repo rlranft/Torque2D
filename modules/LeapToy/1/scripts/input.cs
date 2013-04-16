@@ -26,17 +26,17 @@ function LeapToy::initializeInput( %this )
     new ActionMap(LeapMap);
     
     // Create keyboard bindings
-    LeapMap.bindObj(keyboard, space, pickSprite, %this);
-    LeapMap.bindObj(keyboard, z, toggleCursorMode, %this);
-    
+    LeapMap.bindObj(keyboard, tab, toggleCursorMode, %this);
+    LeapMap.bindObj(keyboard, escape, showToolBox, %this);
+
     // Create Leap Motion bindings
-    //LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
-    //LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
-    //LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
+    LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
+    LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
+    LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
+    LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
+    LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
     //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
     //LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);
-    //LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
-    //LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
 
     // Push the LeapMap to the stack, making it active
     LeapMap.push();
@@ -60,11 +60,21 @@ function LeapToy::initializeInput( %this )
 function LeapToy::onTouchMoved(%this, %touchID, %worldPosition)
 {
     // Finish if nothing is being pulled.
-    if ( !isObject(Sandbox.ManipulationPullObject[%touchID]) )
+    if (!%this.pickedObjects)
         return;
-        
-    // Set a new target for the target joint.
-    SandboxScene.setTargetJointTarget( Sandbox.ManipulationPullJointId[%touchID], %worldPosition );
+
+    %pickedObjectCount = getWordCount(%this.manipulationJoints);
+
+    for (%i = 0; %i < %pickedObjectCount; %i++)
+    {
+        %joint = getWord(%this.manipulationJoints, %i);
+
+        if (%joint $= "")
+            continue;
+
+        // Set a new target for the target joint.
+        SandboxScene.setTargetJointTarget( %joint, %worldPosition );
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -77,10 +87,13 @@ function LeapToy::onTouchMoved(%this, %touchID, %worldPosition)
 // %state - State of the gesture progress: 1: Started, 2: Updated, 3: Stopped
 function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockwise, %state)
 {
-    if (%progress > 0 && %state != 3)
-        %this.showCircleSprite(%radius / 2, %isClockwise);
-    else
-        %this.hideCircleSprite();
+    if (!%this.enableCircleGesture)
+        return;
+
+    if (%progress > 0 && %state != 3 && !%this.pickedObjects)
+    {
+        %this.grabObjectsInCircle(%radius/10);
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -92,7 +105,9 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
 // %speed - How fast the user's finger moved. Values will be quite large
 function LeapToy::reactToSwipeGesture(%this, %id, %state, %direction, %speed)
 {
-    //echo("Swipe Gesture - directionX: " @ %direction._0 @ " directionY: " @ %direction._1 @ " directionZ: " @ %direction._2 @ " speed: " @ %speed);
+    if (!%this.enableSwipeGesture)
+        return;
+
     %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
 
     if (isLeapCursorControlled())
@@ -109,7 +124,10 @@ function LeapToy::reactToSwipeGesture(%this, %id, %state, %direction, %speed)
 // %direction - 3 point vector based on the direction the finger motion
 function LeapToy::reactToScreenTapGesture(%this, %id, %position, %direction)
 {
-    echo("Screen Tap Gesture - positionX: " @ %position._0 @ " positionY: " @ %position._1 @ " directionX: " @ %direction._0 @ " directionY: " @ %direction._1);
+    if (!%this.enableScreenTapGesture)
+        return;
+
+    %this.createNewBlock();
 }
 
 //-----------------------------------------------------------------------------
@@ -131,12 +149,6 @@ function LeapToy::reactToKeyTapGesture(%this, %id, %position, %direction)
 function LeapToy::trackHandPosition(%this, %id, %position)
 {
     //echo("Hand " @ %id @ " - x:" SPC %position._0 SPC "y:" SPC %position._1 SPC "z:" SPC %position._2);
-
-    %xPosition = %position._0;
-    %yPosition = %position._1;
-    %zPosition = %position._2;
-
-    %this.accelerateBall(%xPosition, %yPosition, 0);
 }
 
 //-----------------------------------------------------------------------------
@@ -146,12 +158,15 @@ function LeapToy::trackHandPosition(%this, %id, %position)
 // %rotation - 3 point vector based on the hand's rotation: "yaw pitch roll"
 function LeapToy::trackHandRotation(%this, %id, %rotation)
 {
-    //echo("Hand " @ %id @ " - yaw:" SPC %rotation._0 SPC "pitch:" SPC %rotation._1 SPC "roll:" SPC %rotation._2);
+    if (isLeapCursorControlled() || !%this.enableHandRotation)
+        return;
+
+    // Grab the values. Only going to use pitch and inverse roll
     %yaw = %rotation._0;
     %pitch = %rotation._1;
     %roll = %rotation._2;
 
-    %this.accelerateBall(%yaw, %pitch, %roll);
+    %this.accelerateBall(%roll*-1, %pitch);
 }
 
 //-----------------------------------------------------------------------------
@@ -160,6 +175,9 @@ function LeapToy::trackHandRotation(%this, %id, %rotation)
 // %position - 3 point vector based on where the finger is located in "Leap Space"
 function LeapToy::trackFingerPos(%this, %id, %position)
 {
+    if (!%this.enableFingerTracking)
+        return;
+
     if (!%id)
         echo("Finger " @ %id+1 @ " - x:" SPC %position._0 SPC "y:" SPC %position._1);
 }
@@ -175,4 +193,12 @@ function LeapToy::toggleCursorMode( %this, %val )
         enableLeapCursorControl(false);
     else
         enableLeapCursorControl(true);
+}
+
+//-----------------------------------------------------------------------------
+// Shows the Sandbox tool box
+function LeapToy::showToolBox( %this, %val )
+{
+    if (%val)
+        toggleToolbox(true);
 }
