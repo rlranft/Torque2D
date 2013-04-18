@@ -93,3 +93,22 @@ ConsoleFunction(isLeapCursorControlled, bool, 1, 1, "() Checks the LeapMotionMan
         return gLeapMotionManager->getMouseControlToggle();
     }
 }
+
+//-----------------------------------------------------------------------------
+
+ConsoleFunction(configureLeapGesture, bool, 3, 3, "(gestureString, value) Modified a Config string on the main "
+                                                  "Controller, via the LeapMotionManager.\n"
+                                                  "@param gestureString The Config string to be set\n"
+                                                  "@param value The new value for the Config string\n"
+                                                  "@return True if string was successfully set, false otherwise")
+{
+    if (gLeapMotionManager == NULL)
+    {
+        Con::printf("LeapMotionManager not initialized. Call initLeapMotionManager() first");
+        return false;
+    }
+    else
+    {
+        return gLeapMotionManager->configureLeapGesture(argv[1], dAtof(argv[2]));
+    }
+}

@@ -198,6 +198,32 @@ bool LeapMotionManager::getMouseControlToggle()
 }
 
 //-----------------------------------------------------------------------------
+// You can get and set gesture configuration parameters using the Config object
+// obtained from a connected Controller object. The key strings required to
+// * identify a configuration parameter include:
+//*
+//* Key string | Value type | Default value | Units
+//* -----------|------------|---------------|------
+//* Gesture.Circle.MinRadius | float | 5.0 | mm
+//        * Gesture.Circle.MinArc | float | 1.5 | radians
+//        * Gesture.Swipe.MinLength | float | 150 | mm
+//        * Gesture.Swipe.MinVelocity | float | 1000 | mm/s
+//        * Gesture.KeyTap.MinDownVelocity | float | 50 | mm/s
+//        * Gesture.KeyTap.HistorySeconds | float | 0.1 | s
+//        * Gesture.KeyTap.MinDistance | float | 3.0 | mm
+//        * Gesture.ScreenTap.MinForwardVelocity  | float | 50 | mm/s
+//        * Gesture.ScreenTap.HistorySeconds | float | 0.1 | s
+//        * Gesture.ScreenTap.MinDistance | float | 5.0 | mm
+bool LeapMotionManager::configureLeapGesture(const char* configString, const F32 value)
+{
+    Leap::Config config = mController->config();
+    std::string *keyString = new std::string(configString);
+    bool success = config.setFloat(*keyString, value);
+    delete keyString;
+    return success;
+}
+
+//-----------------------------------------------------------------------------
 
 void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 {
