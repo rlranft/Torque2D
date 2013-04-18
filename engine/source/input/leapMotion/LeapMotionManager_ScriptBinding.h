@@ -96,11 +96,21 @@ ConsoleFunction(isLeapCursorControlled, bool, 1, 1, "() Checks the LeapMotionMan
 
 //-----------------------------------------------------------------------------
 
-ConsoleFunction(configureLeapGesture, bool, 3, 3, "(gestureString, value) Modified a Config string on the main "
-                                                  "Controller, via the LeapMotionManager.\n"
-                                                  "@param gestureString The Config string to be set\n"
-                                                  "@param value The new value for the Config string\n"
-                                                  "@return True if string was successfully set, false otherwise")
+ConsoleFunction(configureLeapGesture, bool, 3, 3,   "(gestureString, value) Modified a Config string on the main "
+                                                    "Controller, via the LeapMotionManager. The following strings are allowed:\n"
+                                                    "Gesture.Circle.MinRadius\n"
+                                                    "Gesture.Circle.MinArc\n"
+                                                    "Gesture.Swipe.MinLength\n"
+                                                    "Gesture.Swipe.MinVelocity\n"
+                                                    "Gesture.KeyTap.MinDownVelocity\n"
+                                                    "Gesture.KeyTap.HistorySeconds\n"
+                                                    "Gesture.KeyTap.MinDistance\n"
+                                                    "Gesture.ScreenTap.MinForwardVelocity\n"
+                                                    "Gesture.ScreenTap.HistorySeconds\n"
+                                                    "Gesture.ScreenTap.MinDistance\n"
+                                                    "@param gestureString The Config string to be set\n"
+                                                    "@param value The new value for the Config string\n"
+                                                    "@return True if string was successfully set, false otherwise")
 {
     if (gLeapMotionManager == NULL)
     {
