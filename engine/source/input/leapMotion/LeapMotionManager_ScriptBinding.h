@@ -98,6 +98,7 @@ ConsoleFunction(isLeapCursorControlled, bool, 1, 1, "() Checks the LeapMotionMan
 
 ConsoleFunction(configureLeapGesture, bool, 3, 3,   "(gestureString, value) Modified a Config string on the main "
                                                     "Controller, via the LeapMotionManager. The following strings are allowed:\n"
+                                                    "Gesture.Circle.MinProgress\n"
                                                     "Gesture.Circle.MinRadius\n"
                                                     "Gesture.Circle.MinArc\n"
                                                     "Gesture.Swipe.MinLength\n"
@@ -119,7 +120,13 @@ ConsoleFunction(configureLeapGesture, bool, 3, 3,   "(gestureString, value) Modi
     }
     else
     {
-        bool result = gLeapMotionManager->configureLeapGesture(argv[1], dAtof(argv[2]));
-        return result;
+        if (!dStrcmp("Gesture.Circle.MinProgress", argv[1]))
+        {
+            return gLeapMotionManager->setMinCircleProgress(dAtof(argv[2]));
+        }
+        else
+        {
+            return gLeapMotionManager->configureLeapGesture(argv[1], dAtof(argv[2]));
+        }
     }
 }

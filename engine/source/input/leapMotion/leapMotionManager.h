@@ -40,6 +40,7 @@ class LeapMotionManager
 protected:
     
     bool mEnabled;
+    F32 mMinCircleProgress;
 
     class MotionListener : public Leap::Listener
     {
@@ -125,6 +126,8 @@ public:
     void setActive(bool enabledState);
     void toggleMouseControl(bool enabledState);
     bool getMouseControlToggle();
+    bool setMinCircleProgress(const F32 value);
+    F32 getMinCircleProgress() { return mMinCircleProgress; }
     bool configureLeapGesture(const char* configString, const F32 value);
     void process(const Leap::Controller& controller);
     void processHand(const Leap::Hand& hand, S32 id);

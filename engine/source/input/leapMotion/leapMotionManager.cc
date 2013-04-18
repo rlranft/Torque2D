@@ -88,6 +88,7 @@ LeapMotionManager::LeapMotionManager()
     mEnabled = false;
     mActive = false;
     mMouseControl = false;
+    mMinCircleProgress = 0.0;
 }
 
 //-----------------------------------------------------------------------------
@@ -230,6 +231,13 @@ bool LeapMotionManager::configureLeapGesture(const char* configString, const F32
 
 //-----------------------------------------------------------------------------
 
+bool LeapMotionManager::setMinCircleProgress(const F32 value)
+{
+    mMinCircleProgress = value;
+}
+
+//-----------------------------------------------------------------------------
+
 void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 {
     // Get hand (palm) position
@@ -326,6 +334,10 @@ void LeapMotionManager::processGestures(const Leap::GestureList& gestures)
             case Leap::Gesture::TYPE_CIRCLE:
             {
                 Leap::CircleGesture circle = gesture;
+
+                if (circle.progress() < mMinCircleProgress)
+                    break;
+
                 bool clockWise;
 
                 if (circle.pointable().direction().angleTo(circle.normal()) <= Leap::PI/4) 

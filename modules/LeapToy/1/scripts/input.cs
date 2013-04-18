@@ -46,10 +46,10 @@ function LeapToy::initializeInput( %this )
     enableLeapMotionManager(true);
     enableLeapCursorControl(true);
     
-    configureLeapGesture("Gesture.Circle.MinArc", 5.5);
-    configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 25);
-    configureLeapGesture("Gesture.ScreenTap.MinDistance", 2.5);
-    
+    configureLeapGesture("Gesture.Circle.MinProgress", 1.5);
+    configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 15);
+    configureLeapGesture("Gesture.ScreenTap.MinDistance", 1.5);
+
     // Make this toy a listener for input (used purely for onTouchMoved in this case)
     SandboxWindow.addInputListener( %this );
 }
