@@ -234,6 +234,7 @@ bool LeapMotionManager::configureLeapGesture(const char* configString, const F32
 bool LeapMotionManager::setMinCircleProgress(const F32 value)
 {
     mMinCircleProgress = value;
+    return true;
 }
 
 //-----------------------------------------------------------------------------
