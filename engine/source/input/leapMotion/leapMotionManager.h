@@ -47,10 +47,12 @@ protected:
         MotionListener() {}
         virtual ~MotionListener() {}
 
-        virtual void onConnect (const Leap::Controller &controller);
-        virtual void onDisconnect (const Leap::Controller &controller);
-        virtual void onInit(const Leap::Controller &controller);
-        virtual void onFrame(const Leap::Controller &controller);
+        virtual void onConnect (const Leap::Controller& controller);
+        virtual void onDisconnect (const Leap::Controller& controller);
+        virtual void onInit(const Leap::Controller& controller);
+        virtual void onFrame(const Leap::Controller& controller);
+        virtual void onFocusGained(const Leap::Controller& controller);
+        virtual void onFocusLost(const Leap::Controller& controller);
    };
 
     /// The connection to the Leap Motion

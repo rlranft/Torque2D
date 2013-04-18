@@ -119,6 +119,7 @@ ConsoleFunction(configureLeapGesture, bool, 3, 3,   "(gestureString, value) Modi
     }
     else
     {
-        return gLeapMotionManager->configureLeapGesture(argv[1], dAtof(argv[2]));
+        bool result = gLeapMotionManager->configureLeapGesture(argv[1], dAtof(argv[2]));
+        return result;
     }
 }

@@ -544,7 +544,7 @@ void LeapMotionManager::MotionListener::onFrame(const Leap::Controller& controll
 
 //-----------------------------------------------------------------------------
 
-void LeapMotionManager::MotionListener::onConnect (const Leap::Controller &controller)
+void LeapMotionManager::MotionListener::onConnect(const Leap::Controller& controller)
 {
     gLeapMotionManager->setActive(true);
     controller.enableGesture(Leap::Gesture::TYPE_CIRCLE);
@@ -555,7 +555,17 @@ void LeapMotionManager::MotionListener::onConnect (const Leap::Controller &contr
 
 //-----------------------------------------------------------------------------
 
-void LeapMotionManager::MotionListener::onDisconnect (const Leap::Controller &controller)
+void LeapMotionManager::MotionListener::onDisconnect (const Leap::Controller& controller)
+{
+    gLeapMotionManager->setActive(false);
+}
+
+void LeapMotionManager::MotionListener::onFocusGained(const Leap::Controller& controller)
+{
+    gLeapMotionManager->setActive(true);
+}
+
+void LeapMotionManager::MotionListener::onFocusLost(const Leap::Controller& controller)
 {
     gLeapMotionManager->setActive(false);
 }
