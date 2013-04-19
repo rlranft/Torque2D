@@ -31,7 +31,7 @@ function LeapToy::create( %this )
     %this.fingerPosDeadzone = "-1.0 1.0";
     %this.enableSwipeGesture = false;
     %this.enableCircleGesture = true;
-    %this.enableScreenTapGesture = false;
+    %this.enableScreenTapGesture = true;
     %this.enableHandRotation = false;
     %this.enableFingerTracking = false;
 

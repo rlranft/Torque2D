@@ -136,7 +136,8 @@ function LeapToy::reactToScreenTapGesture(%this, %id, %position, %direction)
     if (!%this.enableScreenTapGesture)
         return;
 
-    %this.createNewBlock();
+    %control = Canvas.getMouseControl();
+    %control.performClick();
 }
 
 //-----------------------------------------------------------------------------
