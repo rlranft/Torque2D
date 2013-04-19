@@ -335,6 +335,19 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
     %player.SceneLayer = 0;
     SandboxScene.add( %player );
 
+    %controller = new PointForceController();
+    %controller.setControlLayers( 8 ); // Only affect asteroids.
+    %controller.Radius = 5;
+    %controller.Force = -15;
+    %controller.NonLinear = true;
+    %controller.LinearDrag = 0.1;
+    %controller.AngularDrag = 0;
+    SandboxScene.Controllers.add( %controller );
+
+    %controller.Position = %this.Position
+    
+    schedule(100, 0, %controller.safeDelete);
+        
     // Delete the asteroid.
     %this.Trail.LinearVelocity = 0;
     %this.Trail.AngularVelocity = 0;
