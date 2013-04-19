@@ -46,7 +46,7 @@ function LeapToy::initializeInput( %this )
     enableLeapMotionManager(true);
     enableLeapCursorControl(true);
     
-    configureLeapGesture("Gesture.Circle.MinProgress", 1.5);
+    configureLeapGesture("Gesture.Circle.MinProgress", 2);
     configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 15);
     configureLeapGesture("Gesture.ScreenTap.MinDistance", 1.5);
 
@@ -94,7 +94,7 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
     if (!%this.enableCircleGesture)
         return;
 
-    if (%progress > 0 && %state != 3)
+    if (%progress > 0 && %state != 3 && %state != 2)
     {
         %this.grabObjectsInCircle(%radius/10);
         %this.showCircleSprite(%radius, %isClockwise);
