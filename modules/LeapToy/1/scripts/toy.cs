@@ -23,31 +23,67 @@
 function LeapToy::createBackground( %this )
 {    
     // Create the sprite.
-    %object = new Sprite();
+    %background = new Sprite();
     
     // Set the sprite as "static" so it is not affected by gravity.
-    %object.setBodyType( static );
+    %background.setBodyType( static );
        
-    // Always try to configure a scene-object prior to adding it to a scene for best performance.
-
     // Set the position.
-    %object.Position = "0 0";
+    %background.Position = "0 0";
 
     // Set the size.        
-    %object.Size = "40 30";
+    %background.Size = "40 30";
     
     // Set to the furthest background layer.
-    %object.SceneLayer = 31;
+    %background.SceneLayer = 31;
     
     // Set an image.
-    %object.Image = "ToyAssets:jungleSky";
+    %background.Image = "LeapToy:menuBackground";
 
-    %object.createEdgeCollisionShape( -20, -15, -20, 15 );
-    %object.createEdgeCollisionShape( 20, -15, 20, 15 );
-    %object.createEdgeCollisionShape( -20, 15, 20, 15 );
+    %background.createEdgeCollisionShape( -20, -15, -20, 15 );
+    %background.createEdgeCollisionShape( 20, -15, 20, 15 );
+    %background.createEdgeCollisionShape( -20, 15, 20, 15 );
 
     // Add the sprite to the scene.
-    SandboxScene.add( %object );   
+    SandboxScene.add( %background );
+    
+    %this.createCircles();
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::createCircles( %this )
+{
+    // Create the sprite.
+    %circleOne = new Sprite();
+    %circleTwo = new Sprite();
+    
+    // Set the sprite as "static" so it is not affected by gravity.
+    %circleOne.BodyType = "Kinematic";
+    %circleTwo.BodyType = "Kinematic";
+       
+    // Set the position.
+    %circleOne.Position = "15 10";
+    %circleTwo.Position = "15 10";
+    
+    // Set the size.        
+    %circleOne.Size = "15 15";
+    %circleTwo.Size = "15 15";
+    
+    // Set to the furthest background layer.
+    %circleOne.SceneLayer = 30;
+    %circleTwo.SceneLayer = 30;
+    
+    // Set an image.
+    %circleOne.Image = "LeapToy:complexCircle";
+    %circleTwo.Image = "LeapToy:simpleCircle";
+    
+    %circleOne.AngularVelocity = 15;
+    %circleTwo.AngularVelocity = -15;
+    
+    // Add the sprite to the scene.
+    SandboxScene.add( %circleOne );
+    SandboxScene.add( %circleTwo );
 }
 
 //-----------------------------------------------------------------------------
@@ -57,22 +93,13 @@ function LeapToy::createGround( %this )
     // Create the ground
     %ground = new Scroller();
     %ground.setBodyType("static");
-    %ground.Image = "ToyAssets:dirtGround";
+    %ground.Image = "LeapToy:window";
     %ground.setPosition(0, -12);
     %ground.SceneLayer = 11;
     %ground.setSize(LeapToy.GroundWidth, 6);
-    %ground.setRepeatX(LeapToy.GroundWidth / 60);   
+    %ground.setRepeatX(LeapToy.GroundWidth / 40);   
     %ground.createEdgeCollisionShape(LeapToy.GroundWidth/-2, 3, LeapToy.GroundWidth/2, 3);
-    SandboxScene.add(%ground);  
-    
-    // Create the grass.
-    %grass = new Sprite();
-    %grass.setBodyType("static");
-    %grass.Image = "ToyAssets:grassForeground";
-    %grass.setPosition(0, -8.5);
-    %grass.SceneLayer = 12;
-    %grass.setSize(LeapToy.GroundWidth, 2); 
-    SandboxScene.add(%grass);       
+    SandboxScene.add(%ground);    
 }
 
 //-----------------------------------------------------------------------------
@@ -110,13 +137,20 @@ function LeapToy::createPyramid( %this )
             // Calculate the block position.
             %blockX = %stackX + (%stackIndex*%blockSize);
             %blockY = %stackY;
-
+            %blockFrames = "0 2 4 6";
+            %randomNumber = getRandom(0, 4);
+            
             // Create the sprite.
-            %obj = new Sprite();
+            %obj = new Sprite()
+            {
+                class = "Block";
+                flippd = false;
+            };
+            
             %obj.setPosition( %blockX, %blockY );
             %obj.setSize( %blockSize );
-            %obj.setImage( "ToyAssets:blocks" );
-            %obj.setImageFrame( getRandom(0,55) );
+            %obj.setImage( "LeapToy:objectsBlocks" );            
+            %obj.setImageFrame( getWord(%blockFrames, %randomNumber) );
             %obj.setDefaultFriction( 1.0 );
             %obj.createPolygonBoxCollisionShape( %blockSize, %blockSize );
 
@@ -133,11 +167,11 @@ function LeapToy::createBall( %this )
     // Create the ball.
     %ball = new Sprite();
     %ball.Position = "5 5";
-    %ball.Size = 2;
-    %ball.Image = "ToyAssets:Football";        
-    %ball.setDefaultDensity( 0.1 );
+    %ball.Size = 4;
+    %ball.Image = "LeapToy:widgetBall";        
+    %ball.setDefaultDensity( 1 );
     %ball.setDefaultRestitution( 0.5 );
-    %ball.createCircleCollisionShape( 1 );
+    %ball.createCircleCollisionShape( 1.8 );
 
     %this.ball = %ball;
 
@@ -151,11 +185,12 @@ function LeapToy::createCircleSprite( %this )
 {
     // Create the circle.
     %circle = new Sprite();
-    %circle.Position = "0 0";
-    %circle.setBodyType("static");
-    %circle.Size = 1;
-    %circle.Image = "ToyAssets:Crosshair2";
+    %circle.Position = "-10 5";
+    %circle.setBodyType("Kinematic");
+    %circle.Size = 5;
+    %circle.Image = "LeapToy:circleThree";
     %circle.Visible = false;
+    %circle.AngularVelocity = 180;
     %this.circleSprite = %circle;
 
     // Add to the scene.
@@ -327,14 +362,33 @@ function LeapToy::grabObjectsInCircle( %this, %radius )
         %pickedObject = getWord( %picked, %n );
 
         // Skip if the object is static.
-        if ( %pickedObject.getBodyType() $= "static" )
+        if ( %pickedObject.getBodyType() $= "static" || %pickedObject.getBodyType() $= "kinematic")
             continue;
+        
+        if (%pickedObject.class $= "block")
+            %pickedObject.flipFrame();
+    }
+}
 
-        %jointID = SandboxScene.createTargetJoint( %pickedObject, %worldPosition, Sandbox.ManipulationPullMaxForce );
-        %this.manipulationJoints = %this.manipulationJoints SPC %jointID;
+function Block::flipFrame( %this )
+{
+    %currentFrame = %this.getImageFrame();
+    
+    if (%this.flipped == true)
+    {
+        %newFrame = %currentFrame - 1;
+        %this.flipped = false;
+        LeapToy.selectedObjects.remove(%this);
+    }
+    else
+    {
+        %newFrame = %currentFrame + 1;
+        %this.flipped = true;
+        LeapToy.selectedObjects.add(%this);
     }
 
-    %this.pickedObjects = true;
+    %this.setImageFrame(%newFrame);
+    
 }
 
 function LeapToy::createNewBlock( %this )

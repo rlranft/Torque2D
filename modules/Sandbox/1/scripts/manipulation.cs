@@ -105,7 +105,7 @@ function SandboxInputController::onTouchDown(%this, %touchID, %worldPosition)
             %pickedObject = getWord( %picked, %n );
             
             // Skip if the object is static.
-            if ( %pickedObject.getBodyType() $= "static" )
+            if ( %pickedObject.getBodyType() $= "static" || %pickedObject.getBodyType() $= "kinematic")
                 continue;
                 
             // Set the pull object.

@@ -49,10 +49,11 @@ function LeapToy::create( %this )
     
     // Configure the toy.
     LeapToy.GroundWidth = 40;
-    LeapToy.BlockSize = 1.5;
+    LeapToy.BlockSize = 2;
     LeapToy.BlockCount = 15;
 
     %this.initializeInput();
+    %this.selectedObjects = new SimSet();
     
     // Reset the toy.
     LeapToy.reset();
@@ -65,7 +66,10 @@ function LeapToy::destroy( %this )
     // Turn on Leap driven cursor control, if it was activated
     if (isLeapCursorControlled())
         enableLeapMotionManager(false);
-        
+    
+    %this.selectedObjects.clear();
+    %this.selectedObjects.delete();
+    
     // Clean up the Leap ActionMap
     LeapMap.pop();
     LeapMap.delete();
@@ -104,6 +108,8 @@ function LeapToy::reset( %this )
 
     // Create circle gesture visual.
     %this.createCircleSprite();
+    
+    %this.selectedObjects.clear();
 }
 
 //-----------------------------------------------------------------------------

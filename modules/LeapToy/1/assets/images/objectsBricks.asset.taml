@@ -1,0 +1,7 @@
+<ImageAsset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../Torque2D.xsd"
+            AssetName="objectsBricks"
+            ImageFile="objectsBricks.png"
+            CellCountX="2"
+            CellCountY="5"
+            CellWidth="56"
+            CellHeight="32"/>
