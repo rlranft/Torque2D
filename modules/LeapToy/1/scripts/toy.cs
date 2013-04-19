@@ -344,9 +344,9 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
     %controller.AngularDrag = 0;
     SandboxScene.Controllers.add( %controller );
 
-    %controller.Position = %this.Position
-    
-    schedule(100, 0, %controller.safeDelete);
+    %controller.Position = %this.Position;
+    %id = %controller.getID();
+    schedule(100, 0, "%id.safeDelete();");
         
     // Delete the asteroid.
     %this.Trail.LinearVelocity = 0;
