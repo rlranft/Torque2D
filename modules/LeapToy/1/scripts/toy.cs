@@ -281,7 +281,7 @@ function LeapToy::createAsteroid( %this, %position, %direction, %speed )
     
     // Reduce the speed of the swipe so it can be used for a reasonable
     // velocity in T2D.
-    %reducedSpeed = mClamp((%speed / 10), 0, 55);
+    %reducedSpeed = mClamp((%speed / 8), 0, 55);
     %velocity = vectorScale(%direction, %reducedSpeed);
 
     // Create an asteroid.
@@ -296,7 +296,7 @@ function LeapToy::createAsteroid( %this, %position, %direction, %speed )
     %object.SceneLayer = 8;
     %object.Image = "ToyAssets:Asteroids";
     %object.ImageFrame = getRandom(0,3);
-    %object.setDefaultDensity( 0.2 );
+    %object.setDefaultDensity( 3 );
     %object.createCircleCollisionShape( %size * 0.4 );
     %object.setLinearVelocity( %velocity._0, %velocity._1 );
     %object.setAngularVelocity( getRandom(-90,90) );
