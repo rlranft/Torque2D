@@ -97,6 +97,11 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
     if (%progress > 0 && %state != 3)
     {
         %this.grabObjectsInCircle(%radius/10);
+        %this.showCircleSprite(%radius, %isClockwise);
+    }
+    else
+    {
+        %this.hideCircleSprite();
     }
 }
 
