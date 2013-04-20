@@ -32,12 +32,14 @@ function LeapToy::create( %this )
     %this.enableSwipeGesture = false;
     %this.enableCircleGesture = true;
     %this.enableScreenTapGesture = true;
+    %this.enableKeyTapGesture = true;
     %this.enableHandRotation = false;
     %this.enableFingerTracking = false;
 
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
-    addFlagOption( "Enable Screen Tap Gesture", "setEnableTapGesture", LeapToy.enableScreenTapGesture, false, "Turns on screen tap gesture recognition" );
+    addFlagOption( "Enable Screen Tap Gesture", "setEnableScreenTapGesture", LeapToy.enableScreenTapGesture, false, "Turns on screen tap gesture recognition" );
+    addFlagOption( "Enable Key Tap Gesture", "setEnableKeyGesture", LeapToy.enableKeyTapGesture, false, "Turns on key tap gesture recognition" );
     addFlagOption( "Enable Hand Rotation", "setEnableHandRotation", LeapToy.enableHandRotation, false, "Turns on tracking of hand rotation" );
     addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
 
@@ -128,9 +130,16 @@ function LeapToy::setEnableCircleGesture( %this, %value )
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::setEnableTapGesture( %this, %value )
+function LeapToy::setEnableScreenTapGesture( %this, %value )
 {
     %this.enableScreenTapGesture = %value;
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::setEnableKeyTapGesture( %this, %value )
+{
+    %this.enableKeyTapGesture = %value;
 }
 
 //-----------------------------------------------------------------------------

@@ -29,13 +29,17 @@ function LeapToy::initializeInput( %this )
     LeapMap.bindObj(keyboard, tab, toggleCursorMode, %this);
     LeapMap.bindObj(keyboard, escape, showToolBox, %this);
 
+    // Debugging keybinds
+    LeapMap.bindObj(keyboard, space, simulateCircle, %this);
+    LeapMap.bindObj(keyboard, x, simulateKeytap, %this);
+
     // Create Leap Motion bindings
     LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
     LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
     LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
     LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
     LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
-    //LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
+    LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
     //LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);
 
     // Push the LeapMap to the stack, making it active
@@ -97,7 +101,7 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
     if (%progress > 0 && %state != 2)
     {
         %this.grabObjectsInCircle(%radius/7);        
-	%this.schedule(500, "hideCircleSprite");
+	    %this.schedule(500, "hideCircleSprite");
     }
     else if (%progress > 0 && %state != 3)
     {
@@ -148,7 +152,10 @@ function LeapToy::reactToScreenTapGesture(%this, %id, %position, %direction)
 // %direction - 3 point vector based on the direction the finger tap
 function LeapToy::reactToKeyTapGesture(%this, %id, %position, %direction)
 {
-    echo("Key Tap Gesture - positionX: " @ %position._0 @ " positionY: " @ %position._1 @ " directionX: " @ %direction._0 @ " directionY: " @ %direction._1);
+    if (!%this.enableKeyTapGesture)
+        return;
+
+    %this.deleteSelectedObjects();
 }
 
 //-----------------------------------------------------------------------------
@@ -212,3 +219,20 @@ function LeapToy::showToolBox( %this, %val )
     if (%val)
         toggleToolbox(true);
 }
+
+function LeapToy::simulateCircle( %this, %val)
+{
+    if (%val)
+    {
+        %this.grabObjectsInCircle(2);
+    }
+}
+
+function LeapToy::simulateKeyTap( %this, %val )
+{
+    if (%val)
+    {
+        %this.deleteSelectedObjects();
+    }
+}
+

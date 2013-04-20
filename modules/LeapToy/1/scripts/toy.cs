@@ -383,6 +383,8 @@ function LeapToy::grabObjectsInCircle( %this, %radius )
     }
 }
 
+//-----------------------------------------------------------------------------
+
 function Block::flipFrame( %this )
 {
     %currentFrame = %this.getImageFrame();
@@ -404,6 +406,8 @@ function Block::flipFrame( %this )
     
 }
 
+//-----------------------------------------------------------------------------
+
 function LeapToy::createNewBlock( %this )
 {
     %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
@@ -419,4 +423,12 @@ function LeapToy::createNewBlock( %this )
 
     // Add to the scene.
     SandboxScene.add( %obj );
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::deleteSelectedObjects( %this )
+{
+    while (%this.selectedObjects.getCount() > 0)
+        %this.selectedObjects.getObject(0).delete();
 }
