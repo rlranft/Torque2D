@@ -35,13 +35,17 @@ function LeapToy::create( %this )
     %this.enableKeyTapGesture = true;
     %this.enableHandRotation = false;
     %this.enableFingerTracking = false;
-
+    %this.currentLevel = "Gestures";
+    
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
     addFlagOption( "Enable Screen Tap Gesture", "setEnableScreenTapGesture", LeapToy.enableScreenTapGesture, false, "Turns on screen tap gesture recognition" );
     addFlagOption( "Enable Key Tap Gesture", "setEnableKeyGesture", LeapToy.enableKeyTapGesture, false, "Turns on key tap gesture recognition" );
     addFlagOption( "Enable Hand Rotation", "setEnableHandRotation", LeapToy.enableHandRotation, false, "Turns on tracking of hand rotation" );
     addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
+    
+    %options = "Gestures,Breakout";
+    addSelectionOption(%options, "Level", 2, setLevel, true, "Choose which Leap Motion Demo to play");
 
     // Set the sandbox drag mode availability.
     Sandbox.allowManipulation( pull );
@@ -65,29 +69,26 @@ function LeapToy::create( %this )
 
 function LeapToy::destroy( %this )
 {
-    // Turn on Leap driven cursor control, if it was activated
+    // Turn off Leap driven cursor control, if it was activated
     if (isLeapCursorControlled())
         enableLeapMotionManager(false);
     
     %this.selectedObjects.clear();
     %this.selectedObjects.delete();
     
-    // Clean up the Leap ActionMap
-    LeapMap.pop();
-    LeapMap.delete();
-    
-    // Tell this toy to stop listening for input events
-    SandboxWindow.removeInputListener( %this );  
+    // Clean up the ActionMaps
+    %this.destroyInput();
 }
 
 //-----------------------------------------------------------------------------
 
 function LeapToy::reset( %this )
 {
-    %this.pickedObjects = false;
-    %this.manipulationJoints = "";
-
-    // Clear the scene.
+    // Reset the input
+    LeapMap.pop();
+    GestureMap.pop();
+    
+     // Clear the scene.
     SandboxScene.clear();
     
     // Set the camera size.
@@ -95,23 +96,18 @@ function LeapToy::reset( %this )
 
     // Se the gravity.
     SandboxScene.setGravity( 0, -9.8 );
-       
-    // Create background.
-    %this.createBackground();
     
-    // Create the ground.
-    %this.createGround();
+    if (%this.currentLevel $= "Gestures")
+        %this.createGesturesLevel();
+    else if (%this.currentLevel $= "Breakout")
+        %this.createBreakoutLevel();
+}
 
-    // Create the pyramid.
-    %this.createPyramid();
+//-----------------------------------------------------------------------------
 
-    // Create a ball.
-    %this.createBall();
-
-    // Create circle gesture visual.
-    %this.createCircleSprite();
-    
-    %this.selectedObjects.clear();
+function LeapToy::setLevel( %this, %value)
+{
+    %this.currentLevel = %value;
 }
 
 //-----------------------------------------------------------------------------
@@ -155,4 +151,3 @@ function LeapToy::setEnableFingerTracking( %this, %value )
 {
     %this.enableFingerTracking = %value;
 }
-

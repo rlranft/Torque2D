@@ -20,6 +20,39 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
+function LeapToy::createGesturesLevel( %this )
+{
+    // Create background.
+    %this.createBackground();
+    
+    // Create the ground.
+    %this.createGround();
+
+    // Create the pyramid.
+    %this.createPyramid();
+
+    // Create a ball.
+    %this.createBall();
+
+    // Create circle gesture visual.
+    %this.createCircleSprite();
+    
+    %this.selectedObjects.clear();
+    
+    GestureMap.push();
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::createBreakoutLevel( %this )
+{
+    echo("BREAKOUT!");
+    
+    LeapMap.push();
+}
+
+//-----------------------------------------------------------------------------
+
 function LeapToy::createBackground( %this )
 {    
     // Create the sprite.

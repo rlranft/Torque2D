@@ -22,28 +22,36 @@
 
 function LeapToy::initializeInput( %this )
 {
-    // Create a new ActionMap
+    // General toy action map
+    new ActionMap(ToyMap);
+    
+    // Gesture action map for sandbox
+    new ActionMap(GestureMap);
+    
+    // Absolute pos/rotation action map for game
     new ActionMap(LeapMap);
     
     // Create keyboard bindings
-    LeapMap.bindObj(keyboard, tab, toggleCursorMode, %this);
-    LeapMap.bindObj(keyboard, escape, showToolBox, %this);
+    ToyMap.bindObj(keyboard, tab, toggleCursorMode, %this);
+    ToyMap.bindObj(keyboard, escape, showToolBox, %this);
 
     // Debugging keybinds
-    LeapMap.bindObj(keyboard, space, simulateCircle, %this);
-    LeapMap.bindObj(keyboard, x, simulateKeytap, %this);
+    ToyMap.bindObj(keyboard, space, simulateCircle, %this);
+    ToyMap.bindObj(keyboard, x, simulateKeytap, %this);
 
-    // Create Leap Motion bindings
-    LeapMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
-    LeapMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
-    LeapMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
+    // Create Leap Motion gesture bindings
+    GestureMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
+    GestureMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
+    GestureMap.bindObj(leapdevice, swipeGesture, reactToSwipeGesture, %this);
+    GestureMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
+    
+    // Create the Leap Motion hand/finger bindings
+    LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);
     LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
     LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
-    LeapMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
-    //LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);
-
+    
     // Push the LeapMap to the stack, making it active
-    LeapMap.push();
+    ToyMap.push();
     
     // Initialize the Leap Motion manager
     initLeapMotionManager();
@@ -53,36 +61,20 @@ function LeapToy::initializeInput( %this )
     configureLeapGesture("Gesture.Circle.MinProgress", 1);
     configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 1);
     configureLeapGesture("Gesture.ScreenTap.MinDistance", 0.1);
-
-    // Make this toy a listener for input (used purely for onTouchMoved in this case)
-    SandboxWindow.addInputListener( %this );
 }
 
 //-----------------------------------------------------------------------------
-// Callback for when a mouse is moving in SceneWindow. More or less desktop only.
-// in this toy, it will move a joint around based on the cursor movement. Any
-// attached objects should move with it
-//
-// %touchID - Ordered device ID based on when it was tracked
-// %worldPosition - Where in the Scene the current cursor is located
-function LeapToy::onTouchMoved(%this, %touchID, %worldPosition)
+
+function LeapToy::destroyInput(%this)
 {
-    // Finish if nothing is being pulled.
-    if (!%this.pickedObjects)
-        return;
-
-    %pickedObjectCount = getWordCount(%this.manipulationJoints);
-
-    for (%i = 0; %i < %pickedObjectCount; %i++)
-    {
-        %joint = getWord(%this.manipulationJoints, %i);
-
-        if (%joint $= "")
-            continue;
-
-        // Set a new target for the target joint.
-        SandboxScene.setTargetJointTarget( %joint, %worldPosition );
-    }
+    LeapMap.pop();
+    LeapMap.delete();
+    
+    GestureMap.pop();
+    GestureMap.delete();
+    
+    ToyMap.pop();
+    ToyMap.delete();
 }
 
 //-----------------------------------------------------------------------------
@@ -165,7 +157,7 @@ function LeapToy::reactToKeyTapGesture(%this, %id, %position, %direction)
 // %position - 3 point vector based on where the hand is located in "Leap Space"
 function LeapToy::trackHandPosition(%this, %id, %position)
 {
-    //echo("Hand " @ %id @ " - x:" SPC %position._0 SPC "y:" SPC %position._1 SPC "z:" SPC %position._2);
+    echo("Hand " @ %id @ " - x:" SPC %position._0 SPC "y:" SPC %position._1 SPC "z:" SPC %position._2);
 }
 
 //-----------------------------------------------------------------------------
@@ -220,6 +212,8 @@ function LeapToy::showToolBox( %this, %val )
         toggleToolbox(true);
 }
 
+//-----------------------------------------------------------------------------
+// DEBUGGING FUNCTIONS
 function LeapToy::simulateCircle( %this, %val)
 {
     if (%val)
@@ -227,7 +221,6 @@ function LeapToy::simulateCircle( %this, %val)
         %this.grabObjectsInCircle(2);
     }
 }
-
 function LeapToy::simulateKeyTap( %this, %val )
 {
     if (%val)
@@ -235,4 +228,5 @@ function LeapToy::simulateKeyTap( %this, %val )
         %this.deleteSelectedObjects();
     }
 }
-
+// DEBUGGING FUNCTIONS
+//-----------------------------------------------------------------------------
