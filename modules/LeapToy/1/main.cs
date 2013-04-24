@@ -55,9 +55,6 @@ function LeapToy::create( %this )
     // Set the sandbox drag mode availability.
     Sandbox.allowManipulation( pull );
     
-    // Set the manipulation mode.
-    Sandbox.useManipulation( pull );
-    
     // Configure the toy.
     LeapToy.GroundWidth = 40;
     LeapToy.BlockSize = 2;
@@ -65,6 +62,8 @@ function LeapToy::create( %this )
     LeapToy.BrickRows = 4;
     LeapToy.BrickColumns = 9;
     LeapToy.BrickSize = "3 1";
+    LeapToy.PaddleSpeed = 30;
+    LeapToy.maxBallSpeed = 20;
     
     // Initialize all bindings
     %this.initializeInput();
@@ -110,9 +109,6 @@ function LeapToy::reset( %this )
     // Set the camera size.
     SandboxWindow.setCameraSize( 40, 30 );
 
-    // Se the gravity.
-    SandboxScene.setGravity( 0, -9.8 );
-    
     if (%this.currentLevel $= "Gestures")
         %this.createGesturesLevel();
     else if (%this.currentLevel $= "Breakout")

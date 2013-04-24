@@ -26,7 +26,7 @@ function LeapToy::createTakesDamageBehavior( %this )
 
 //-----------------------------------------------------------------------------
 
-function TakesDamageBehavior::initialize(%this, %health, %lives, %respawnTime, %invincibleTime, %respawnEffect, %explodeEffect)
+function TakesDamageBehavior::initialize(%this, %health, %lives, %respawnTime, %invincibleTime, %respawnEffect, %explodeEffect, %startFrame)
 {
     %this.health = %health;
     %this.lives = %lives;
@@ -34,7 +34,7 @@ function TakesDamageBehavior::initialize(%this, %health, %lives, %respawnTime, %
     %this.invincibleTime = %invincibleTime;
     %this.respawnEffect = %respawnEffect;
     %this.explodeEffect = %explodeEffect;
-    
+    %this.startFrame = %startFrame;
     %this.startHealth = %this.health;
 }
 
@@ -42,7 +42,7 @@ function TakesDamageBehavior::initialize(%this, %health, %lives, %respawnTime, %
 
 function TakesDamageBehavior::onBehaviorAdd( %this )
 {
-    %this.startHealth = %this.health;
+    %this.startHealth = %this.health;    
     %this.owner.collisionCallback = true;
     %this.spawn();
 }
@@ -100,6 +100,7 @@ function TakesDamageBehavior::spawn( %this )
     %this.health = %this.startHealth;
     %this.owner.visible = true;
     %this.owner.setCollisionSuppress(false);
+    %this.owner.setImageFrame(%this.startFrame);
     
     if (%this.respawnEffect !$= "")
     {
@@ -127,5 +128,6 @@ function TakesDamageBehavior::explode( %this )
         %particlePlayer.ParticleInterpolation = true;
         %particlePlayer.Particle = %this.explodeEffect;
         SandboxScene.add(%particlePlayer);
+        %particlePlayer.setLifetime( 3 );
     }
 }

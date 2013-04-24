@@ -41,6 +41,12 @@ function LeapToy::createGesturesLevel( %this )
     %this.selectedObjects.clear();
     
     GestureMap.push();
+    
+    // Se the gravity.
+    SandboxScene.setGravity( 0, -9.8 );
+        
+    // Set the manipulation mode.
+    Sandbox.useManipulation( pull );
 }
 
 //-----------------------------------------------------------------------------
@@ -85,7 +91,7 @@ function LeapToy::createPyramid( %this )
             %obj = new Sprite()
             {
                 class = "Block";
-                flippd = false;
+                flipped = false;
             };
             
             %obj.setPosition( %blockX, %blockY );

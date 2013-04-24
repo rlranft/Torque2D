@@ -39,7 +39,9 @@ function LeapToy::initializeInput( %this )
     ToyMap.bindObj(keyboard, space, simulateCircle, %this);
     ToyMap.bindObj(keyboard, x, simulateKeytap, %this);
     ToyMap.bindObj(keyboard, z, showParticle, %this);    
-
+    ToyMap.bindObj(keyboard, a, movePaddleLeft, %this);    
+    ToyMap.bindObj(keyboard, d, movePaddleRight, %this);    
+    
     // Create Leap Motion gesture bindings
     GestureMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
     GestureMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapGesture, %this);
@@ -242,6 +244,31 @@ function LeapToy::showParticle(%this)
     %particlePlayer.Particle = "LeapToy:blockFadeParticle";
     %particlePlayer.SizeScale = 1;
     SandboxScene.add( %particlePlayer ); 
+    %particlePlayer.setLifeTime(3);
+}
+
+function LeapToy::movePaddleLeft(%this, %val)
+{
+    if (%val)
+    {
+        %this.paddle.setLinearVelocity(%this.PaddleSpeed*-1, 0);
+    }
+    else
+    {
+        %this.paddle.setLinearVelocity(0, 0);
+    }
+}
+
+function LeapToy::movePaddleRight(%this, %val)
+{
+    if (%val)
+    {
+        %this.paddle.setLinearVelocity(%this.PaddleSpeed, 0);
+    }
+    else
+    {
+        %this.paddle.setLinearVelocity(0, 0);
+    }
 }
 // DEBUGGING FUNCTIONS
 //-----------------------------------------------------------------------------

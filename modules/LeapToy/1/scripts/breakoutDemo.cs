@@ -24,6 +24,9 @@ function LeapToy::createBreakoutLevel( %this )
 {
     LeapMap.push();
     
+    //Sandbox.useManipulation("off");
+    Sandbox.useManipulation( pull );
+    
     // Create background.
     %this.createBackground();
     
@@ -33,12 +36,17 @@ function LeapToy::createBreakoutLevel( %this )
     // Create the breakable bricks
     %this.createBricks();
     
-    %this.createBall();
-    %this.ball.setPosition(-5, -5);
+    %this.createPaddle();
+    
+    %this.createBreakOutBall();
+    %this.breakoutBall.setPosition(-5, -5);
     %dealsDamage = %this.DealsDamageBehavior.createInstance();
     %dealsDamage.initialize(10, false, "");
     
-    %this.ball.addBehavior(%dealsDamage);
+    // Se the gravity.
+    SandboxScene.setGravity( 0, 0);
+        
+    %this.breakoutBall.addBehavior(%dealsDamage);    
 }
 
 //-----------------------------------------------------------------------------
@@ -79,28 +87,31 @@ function LeapToy::createBricks( %this )
             %brickX = (%stackIndex*%brickSize._0)+%posx;
             %brickY = %stackY;
             %brickFrames = "0 2 4 6 8 10";
-            %randomNumber = getRandom(0, 6);
+            %randomNumber = getRandom(0, 5);
+            %frame = getWord(%brickFrames, %randomNumber);
             
             // Create the sprite.
             %obj = new Sprite()
             {
                 class = "Brick";
-                flippd = false;
             };            
             
             %obj.setPosition( %brickX, %brickY );
             %obj.setSize( %brickSize );
             %obj.setBodyType("Kinematic");
-            %obj.setImage( "LeapToy:objectsBricks" );            
-            %obj.setImageFrame( getWord(%brickFrames, %randomNumber) );
+            %obj.setImage( "LeapToy:objectsBricks", %frame );
             %obj.setDefaultFriction( 1.0 );
             %obj.createPolygonBoxCollisionShape( %brickSize );
             %obj.CollisionCallback = true;
             
             %takesDamage = %this.TakesDamageBehavior.createInstance();
-            %takesDamage.initialize(20, 100, 10, 0, "", "LeapToy:blockFadeParticle");
+            %takesDamage.initialize(20, 100, 10, 0, "", "LeapToy:blockFadeParticle", %frame);
             
             %obj.addBehavior(%takesDamage);
+            
+            %swapImage = %this.SwapImageBehavior.createInstance();
+            %swapImage.initialize("LeapToy:objectsBricks", %frame+1);
+            %obj.addBehavior(%swapImage);
             
             // Add to the scene.
             SandboxScene.add( %obj );
@@ -110,7 +121,57 @@ function LeapToy::createBricks( %this )
 
 //-----------------------------------------------------------------------------
 
-function Brick::onCollision(%this, %object, %collisionDetails)
+function LeapToy::createPaddle(%this)
 {
+    %obj = new Sprite()
+    {
+        class = "Paddle";
+    };            
     
+    %obj.setPosition( 0, -8);
+    %obj.setSize( 5, 2.5 );
+    %obj.setImage( "LeapToy:playerUfo");
+    %obj.setDefaultFriction( 0 );
+    %obj.createPolygonBoxCollisionShape( 4.8, 2.3);
+    %obj.CollisionCallback = true;
+    %obj.setFixedAngle( true );
+    %this.paddle = %obj;
+    
+    SandboxScene.add(%obj);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::createBreakoutBall( %this )
+{
+    // Create the ball.
+    %ball = new Sprite()
+    {
+        class = "Ball";
+    };
+    
+    %ball.Position = "5 5";
+    %ball.Size = 2;
+    %ball.Image = "LeapToy:widgetBall";        
+    %ball.setDefaultDensity( 1 );
+    %ball.setDefaultRestitution( 1.0 );
+    %ball.setDefaultFriction(0);
+    %ball.createCircleCollisionShape( 0.8 );
+    %ball.CollisionCallback = true;
+    %ball.setLinearVelocity(-5, 20);
+    %this.breakoutBall = %ball;
+
+    // Add to the scene.
+    SandboxScene.add( %ball );
+}
+
+function Ball::onCollision(%this, %object, %collisionDetails)
+{
+    %xVelocity = %this.getLinearVelocity()._0;
+    %yVelocity = %this.getLinearVelocity()._1;
+    
+    %newXVelocity = mClamp(%xVelocity, (LeapToy.maxBallSpeed*-1), LeapToy.maxBallSpeed);
+    %newYVelocity = mClamp(%yVelocity, (LeapToy.maxBallSpeed*-1), LeapToy.maxBallSpeed);
+    
+    %this.setLinearVelocity(%newXVelocity, %newYVelocity);
 }
