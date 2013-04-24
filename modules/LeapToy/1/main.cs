@@ -25,6 +25,11 @@ function LeapToy::create( %this )
     // Execute toy scripts
     exec("./scripts/input.cs");
     exec("./scripts/toy.cs");
+    exec("./scripts/gestureDemo.cs");
+    exec("./scripts/breakoutDemo.cs");
+    exec("./scripts/DealsDamageBehavior.cs");
+    exec("./scripts/TakesDamageBehavior.cs");
+    exec("./scripts/SwapImageOnCollision.cs");
 
     %this.handPosDeadzone = "-1.0 1.0";
     %this.handRotDeadzone = "-5.0 5.0";
@@ -35,7 +40,7 @@ function LeapToy::create( %this )
     %this.enableKeyTapGesture = true;
     %this.enableHandRotation = false;
     %this.enableFingerTracking = false;
-    %this.currentLevel = "Gestures";
+    %this.currentLevel = "Breakout";
     
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
@@ -57,9 +62,20 @@ function LeapToy::create( %this )
     LeapToy.GroundWidth = 40;
     LeapToy.BlockSize = 2;
     LeapToy.BlockCount = 15;
-
+    LeapToy.BrickRows = 4;
+    LeapToy.BrickColumns = 9;
+    LeapToy.BrickSize = "3 1";
+    
+    // Initialize all bindings
     %this.initializeInput();
+    
+    // Build the behaviors
+    %this.createDealsDamageBehavior();
+    %this.createTakesDamageBehavior();
+    %this.createSwapImageBehavior();
+    
     %this.selectedObjects = new SimSet();
+    %this.add(%this.selectedObjects);
     
     // Reset the toy.
     LeapToy.reset();

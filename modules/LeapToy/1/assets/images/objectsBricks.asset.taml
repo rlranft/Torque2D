@@ -2,6 +2,6 @@
             AssetName="objectsBricks"
             ImageFile="objectsBricks.png"
             CellCountX="2"
-            CellCountY="5"
-            CellWidth="56"
-            CellHeight="32"/>
+            CellCountY="6"
+            CellWidth="112"
+            CellHeight="64"/>

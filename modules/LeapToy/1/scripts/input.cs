@@ -38,6 +38,7 @@ function LeapToy::initializeInput( %this )
     // Debugging keybinds
     ToyMap.bindObj(keyboard, space, simulateCircle, %this);
     ToyMap.bindObj(keyboard, x, simulateKeytap, %this);
+    ToyMap.bindObj(keyboard, z, showParticle, %this);    
 
     // Create Leap Motion gesture bindings
     GestureMap.bindObj(leapdevice, circleGesture, reactToCircleGesture, %this);
@@ -227,6 +228,20 @@ function LeapToy::simulateKeyTap( %this, %val )
     {
         %this.deleteSelectedObjects();
     }
+}
+
+function LeapToy::showParticle(%this)
+{
+    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+    
+    %particlePlayer = new ParticlePlayer();
+    %particlePlayer.BodyType = static;
+    %particlePlayer.SetPosition( %worldPosition );
+    %particlePlayer.SceneLayer = 0;
+    %particlePlayer.ParticleInterpolation = true;
+    %particlePlayer.Particle = "LeapToy:blockFadeParticle";
+    %particlePlayer.SizeScale = 1;
+    SandboxScene.add( %particlePlayer ); 
 }
 // DEBUGGING FUNCTIONS
 //-----------------------------------------------------------------------------
