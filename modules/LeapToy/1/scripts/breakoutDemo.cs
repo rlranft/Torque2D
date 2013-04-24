@@ -38,15 +38,10 @@ function LeapToy::createBreakoutLevel( %this )
     
     %this.createPaddle();
     
-    %this.createBreakOutBall();
-    %this.breakoutBall.setPosition(-5, -5);
-    %dealsDamage = %this.DealsDamageBehavior.createInstance();
-    %dealsDamage.initialize(10, false, "");
+    %this.createBreakOutBall();    
     
     // Se the gravity.
-    SandboxScene.setGravity( 0, 0);
-        
-    %this.breakoutBall.addBehavior(%dealsDamage);    
+    SandboxScene.setGravity( 0, 0);        
 }
 
 //-----------------------------------------------------------------------------
@@ -123,10 +118,8 @@ function LeapToy::createBricks( %this )
 
 function LeapToy::createPaddle(%this)
 {
-    %obj = new Sprite()
-    {
-        class = "Paddle";
-    };            
+    // Create the player paddle
+    %obj = new Sprite();
     
     %obj.setPosition( 0, -8);
     %obj.setSize( 5, 2.5 );
@@ -159,11 +152,19 @@ function LeapToy::createBreakoutBall( %this )
     %ball.createCircleCollisionShape( 0.8 );
     %ball.CollisionCallback = true;
     %ball.setLinearVelocity(-5, 20);
+    %ball.setPosition(-5, -5);
+    
+    %dealsDamage = %this.DealsDamageBehavior.createInstance();
+    %dealsDamage.initialize(10, false, "");
+    %ball.addBehavior(%dealsDamage);    
+    
     %this.breakoutBall = %ball;
-
+    
     // Add to the scene.
     SandboxScene.add( %ball );
 }
+
+//-----------------------------------------------------------------------------
 
 function Ball::onCollision(%this, %object, %collisionDetails)
 {
@@ -174,4 +175,11 @@ function Ball::onCollision(%this, %object, %collisionDetails)
     %newYVelocity = mClamp(%yVelocity, (LeapToy.maxBallSpeed*-1), LeapToy.maxBallSpeed);
     
     %this.setLinearVelocity(%newXVelocity, %newYVelocity);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::movePaddle( %this, %speed )
+{
+    %this.paddle.setLinearVelocity(%this.PaddleSpeed, 0);
 }

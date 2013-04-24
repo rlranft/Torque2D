@@ -49,9 +49,9 @@ function LeapToy::initializeInput( %this )
     GestureMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
     
     // Create the Leap Motion hand/finger bindings
-    LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);
     LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
-    LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
+    //LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);    
+    //LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
     
     // Push the LeapMap to the stack, making it active
     ToyMap.push();
@@ -173,12 +173,10 @@ function LeapToy::trackHandRotation(%this, %id, %rotation)
     if (isLeapCursorControlled() || !%this.enableHandRotation)
         return;
 
-    // Grab the values. Only going to use pitch and inverse roll
-    %yaw = %rotation._0;
-    %pitch = %rotation._1;
+    // Grab the values. Only going to use roll in this demo
     %roll = %rotation._2;
 
-    %this.accelerateBall(%roll*-1, %pitch);
+    %this.movePaddle(%roll*-1);
 }
 
 //-----------------------------------------------------------------------------

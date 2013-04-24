@@ -7,7 +7,6 @@
         EmitterType="POINT"
         EmitterSize="2 1"
         OrientationType="FIXED"
-        PivotPoint="0.500000 0.500000"
         FixedForceAngle="0"
         FixedAspect="0"
         IntenseParticles="1"

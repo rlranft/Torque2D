@@ -127,7 +127,7 @@ function TakesDamageBehavior::explode( %this )
         %particlePlayer.SceneLayer = %this.owner.getSceneLayer();
         %particlePlayer.ParticleInterpolation = true;
         %particlePlayer.Particle = %this.explodeEffect;
+        %particlePlayer.SizeScale = 0.8;
         SandboxScene.add(%particlePlayer);
-        %particlePlayer.setLifetime( 3 );
     }
 }
