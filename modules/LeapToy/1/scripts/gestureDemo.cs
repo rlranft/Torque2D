@@ -222,8 +222,7 @@ function LeapToy::createAsteroid( %this, %position, %direction, %speed )
     %object.CollisionCallback = true;
     %object.Size = %size;
     %object.SceneLayer = 7;
-    %object.Image = "ToyAssets:Asteroids";
-    %object.ImageFrame = getRandom(0,3);
+    %object.Image = "LeapToy:widgetFruit";
     %object.setDefaultDensity( 3 );
     %object.createCircleCollisionShape( %size * 0.4 );
     %object.setLinearVelocity( %velocity._0, %velocity._1 );
@@ -233,7 +232,7 @@ function LeapToy::createAsteroid( %this, %position, %direction, %speed )
 
     // Create fire trail.
     %player = new ParticlePlayer();
-    %player.Particle = "ToyAssets:bonfire";
+    %player.Particle = "ToyAssets:digitalFire";
     %player.Position = %object.Position;
     %player.EmissionRateScale = 3;
     %player.SizeScale = 2;
@@ -258,7 +257,7 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
     // Create explosion.
     %player = new ParticlePlayer();
     %player.BodyType = static;
-    %player.Particle = "ToyAssets:impactExplosion";
+    %player.Particle = "LeapToy:digitalExplosion";
     %player.Position = %this.Position;
     %player.SceneLayer = 0;
     SandboxScene.add( %player );
