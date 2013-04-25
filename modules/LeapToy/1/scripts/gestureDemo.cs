@@ -165,7 +165,7 @@ function LeapToy::showCircleSprite( %this, %radius, %isClockwise )
         // gesture first started
         %this.circleSprite.position = %worldPosition;
     }
-    
+        
     // Resize the circle based on how big the radius was
     %this.circleSprite.size = %radius;
     
@@ -284,9 +284,14 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::grabObjectsInCircle( %this, %radius )
+function LeapToy::grabObjectsInCircle( %this )
 {
-    %worldPosition = SandboxWindow.getWorldPoint(Canvas.getCursorPos());
+    %worldPosition = %this.circleSprite.getPosition();
+    %size = %this.circleSprite.getSize();
+
+    %radius = (%size._0 * 0.5);
+    echo("Radius:" SPC %radius);
+
     %picked = SandboxScene.pickCircle(%worldPosition, %radius);
 
     // Finish if nothing picked.

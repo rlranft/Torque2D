@@ -35,12 +35,12 @@ function LeapToy::create( %this )
     %this.handRotDeadzone = "-1.0 1.0";
     %this.fingerPosDeadzone = "-1.0 1.0";
     %this.enableSwipeGesture = false;
-    %this.enableCircleGesture = false;
-    %this.enableScreenTapGesture = false;
-    %this.enableKeyTapGesture = false;
-    %this.enableHandRotation = true;
+    %this.enableCircleGesture = true;
+    %this.enableScreenTapGesture = true;
+    %this.enableKeyTapGesture = true;
+    %this.enableHandRotation = false;
     %this.enableFingerTracking = false;
-    %this.currentLevel = "Breakout";
+    %this.currentLevel = "Gestures";
     
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
