@@ -232,7 +232,7 @@ function LeapToy::createAsteroid( %this, %position, %direction, %speed )
 
     // Create fire trail.
     %player = new ParticlePlayer();
-    %player.Particle = "ToyAssets:digitalFire";
+    %player.Particle = "LeapToy:digitalFire";
     %player.Position = %object.Position;
     %player.EmissionRateScale = 3;
     %player.SizeScale = 2;
