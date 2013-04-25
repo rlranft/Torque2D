@@ -21,12 +21,7 @@
 //-----------------------------------------------------------------------------
 
 function LeapToy::createBreakoutLevel( %this )
-{
-    LeapMap.push();
-    
-    //Sandbox.useManipulation("off");
-    Sandbox.useManipulation( pull );
-    
+{    
     // Create background.
     %this.createBackground();
     
@@ -41,7 +36,14 @@ function LeapToy::createBreakoutLevel( %this )
     %this.createBreakOutBall();    
     
     // Se the gravity.
-    SandboxScene.setGravity( 0, 0);        
+    SandboxScene.setGravity( 0, 0);
+    
+    // Set the manipulation mode.
+    Sandbox.useManipulation( pull );
+
+    // Swap action maps
+    GestureMap.pop();
+    LeapMap.push();
 }
 
 //-----------------------------------------------------------------------------
@@ -135,7 +137,7 @@ function LeapToy::createPaddle(%this)
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::createBreakoutBall( %this )
+function LeapToy::createBreakoutBall(%this)
 {
     // Create the ball.
     %ball = new Sprite()
@@ -179,7 +181,7 @@ function Ball::onCollision(%this, %object, %collisionDetails)
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::movePaddle( %this, %speed )
+function LeapToy::movePaddle(%this, %speed)
 {
-    %this.paddle.setLinearVelocity(%this.PaddleSpeed, 0);
+    %this.paddle.setLinearVelocity(%speed, 0);
 }

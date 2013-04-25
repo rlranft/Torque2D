@@ -32,20 +32,20 @@ function LeapToy::create( %this )
     exec("./scripts/SwapImageOnCollision.cs");
 
     %this.handPosDeadzone = "-1.0 1.0";
-    %this.handRotDeadzone = "-5.0 5.0";
+    %this.handRotDeadzone = "-1.0 1.0";
     %this.fingerPosDeadzone = "-1.0 1.0";
     %this.enableSwipeGesture = false;
-    %this.enableCircleGesture = true;
-    %this.enableScreenTapGesture = true;
-    %this.enableKeyTapGesture = true;
-    %this.enableHandRotation = false;
+    %this.enableCircleGesture = false;
+    %this.enableScreenTapGesture = false;
+    %this.enableKeyTapGesture = false;
+    %this.enableHandRotation = true;
     %this.enableFingerTracking = false;
     %this.currentLevel = "Breakout";
     
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
     addFlagOption( "Enable Screen Tap Gesture", "setEnableScreenTapGesture", LeapToy.enableScreenTapGesture, false, "Turns on screen tap gesture recognition" );
-    addFlagOption( "Enable Key Tap Gesture", "setEnableKeyGesture", LeapToy.enableKeyTapGesture, false, "Turns on key tap gesture recognition" );
+    addFlagOption( "Enable Key Tap Gesture", "setEnableKeyTapGesture", LeapToy.enableKeyTapGesture, false, "Turns on key tap gesture recognition" );
     addFlagOption( "Enable Hand Rotation", "setEnableHandRotation", LeapToy.enableHandRotation, false, "Turns on tracking of hand rotation" );
     addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
     

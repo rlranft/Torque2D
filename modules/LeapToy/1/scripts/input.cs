@@ -50,8 +50,6 @@ function LeapToy::initializeInput( %this )
     
     // Create the Leap Motion hand/finger bindings
     LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
-    //LeapMap.bindObj(leapdevice, leapHandPos, "D", %this.handPosDeadzone, trackHandPosition, %this);    
-    //LeapMap.bindObj(leapdevice, leapFingerPos, "D", %this.fingerPosDeadzone, trackFingerPos, %this);
     
     // Push the LeapMap to the stack, making it active
     ToyMap.push();
@@ -64,6 +62,8 @@ function LeapToy::initializeInput( %this )
     configureLeapGesture("Gesture.Circle.MinProgress", 1);
     configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 1);
     configureLeapGesture("Gesture.ScreenTap.MinDistance", 0.1);
+    configureLeapGesture("Gesture.KeyTap.MinDownVelocity", 20);
+    configureLeapGesture("Gesture.KeyTap.MinDistance", 1.0);
 }
 
 //-----------------------------------------------------------------------------
@@ -93,14 +93,14 @@ function LeapToy::reactToCircleGesture(%this, %id, %progress, %radius, %isClockw
     if (!%this.enableCircleGesture)
         return;
 
-    if (%progress > 0 && %state != 2)
+    if (%progress > 0 && %state == 3)
     {
         %this.grabObjectsInCircle(%radius/7);        
 	    %this.schedule(500, "hideCircleSprite");
     }
     else if (%progress > 0 && %state != 3)
     {
-        %this.showCircleSprite(%radius, %isClockwise);
+        %this.showCircleSprite(%radius/7, %isClockwise);
     }
 }
 

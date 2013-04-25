@@ -40,13 +40,15 @@ function LeapToy::createGesturesLevel( %this )
     // Make sure no objects are still selected
     %this.selectedObjects.clear();
     
-    GestureMap.push();
-    
     // Se the gravity.
     SandboxScene.setGravity( 0, -9.8 );
         
     // Set the manipulation mode.
     Sandbox.useManipulation( pull );
+    
+    // Swap action maps
+    LeapMap.pop();
+    GestureMap.push();
 }
 
 //-----------------------------------------------------------------------------
