@@ -96,6 +96,7 @@ function LeapToy::createPyramid( %this )
                 flipped = false;
             };
             
+            %obj.setSceneLayer(3);
             %obj.setPosition( %blockX, %blockY );
             %obj.setSize( %blockSize );
             %obj.setImage( "LeapToy:objectsBlocks" );
@@ -220,7 +221,7 @@ function LeapToy::createAsteroid( %this, %position, %direction, %speed )
     %object.Position = %position;
     %object.CollisionCallback = true;
     %object.Size = %size;
-    %object.SceneLayer = 8;
+    %object.SceneLayer = 7;
     %object.Image = "ToyAssets:Asteroids";
     %object.ImageFrame = getRandom(0,3);
     %object.setDefaultDensity( 3 );
@@ -263,9 +264,9 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
     SandboxScene.add( %player );
 
     %controller = new PointForceController();
-    %controller.setControlLayers( 8 ); // Only affect asteroids.
+    %controller.setControlLayers( 3 ); // Only affect blocks.
     %controller.Radius = 5;
-    %controller.Force = -15;
+    %controller.Force = -65;
     %controller.NonLinear = true;
     %controller.LinearDrag = 0.1;
     %controller.AngularDrag = 0;
@@ -273,13 +274,22 @@ function Asteroid::onCollision( %this, %object, %collisionDetails )
 
     %controller.Position = %this.Position;
     %id = %controller.getID();
-    schedule(100, 0, "%id.safeDelete();");
-        
+
     // Delete the asteroid.
     %this.Trail.LinearVelocity = 0;
     %this.Trail.AngularVelocity = 0;
     %this.Trail.safeDelete();
     %this.safeDelete();
+
+    LeapToy.schedule(500, "deleteController", %controller);
+}
+
+//-----------------------------------------------------------------------------
+
+function LeapToy::deleteController(%this, %controller)
+{
+    SandboxScene.Controllers.remove(%controller);
+    %controller.delete();
 }
 
 //-----------------------------------------------------------------------------

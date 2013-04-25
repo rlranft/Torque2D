@@ -60,7 +60,7 @@ function LeapToy::initializeInput( %this )
     enableLeapCursorControl(true);
     
     configureLeapGesture("Gesture.Circle.MinProgress", 1);
-    configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 1);
+    configureLeapGesture("Gesture.ScreenTap.MinForwardVelocity", 0.1);
     configureLeapGesture("Gesture.ScreenTap.MinDistance", 0.1);
     configureLeapGesture("Gesture.KeyTap.MinDownVelocity", 20);
     configureLeapGesture("Gesture.KeyTap.MinDistance", 1.0);
