@@ -293,28 +293,36 @@ void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 
 void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
 {
+
+    const Leap::Screen screen = mController->calibratedScreens()[0];
+    
     for (int f = 0; f < fingers.count(); ++f)
-    {
-        // Convert the Leap finger tip position to usable Torque units
-        /*Point3F rawPosition(0, 0, 0);
-        Point3F convertedPosition;
-        LeapMotionUtil::convertPosition(fingers[f].tipPosition(), rawPosition);
-        convertedPosition.x = mFloor(rawPosition.x);
-        convertedPosition.y = mFloor(rawPosition.y);
-        convertedPosition.z = mFloor(rawPosition.z);*/
+    {        
+        // get x, y coordinates on the first screen
+        const Leap::Vector intersection = screen.intersect( fingers[f], true, 1.0f );
+        
+        // if the user is not pointing at the screen all components of
+        // the returned vector will be Not A Number (NaN)
+        // isValid() returns true only if all components are finite
+        if (!intersection.isValid())
+            return;
+        
+        F32 x = screen.widthPixels() * intersection.x;
+        
+        // flip y coordinate to standard top-left origin
+        F32 y = screen.heightPixels() * (1.0f - intersection.y);
+        
+        // Move the cursor
+        Point2I location((S32)x, (S32)y);
                 
         // Build the event
         InputEvent fingerPositionEvent;
-        Leap::Matrix transform;
-        transform.origin = Leap::Vector(0.0f, -2.0f, 0.5f);
-
-        Leap::Vector tipPosition = transform.transformPoint(fingers[f].tipPosition());
-
+        
         fingerPositionEvent.deviceInst = 0;
         fingerPositionEvent.iValue = f;
-        fingerPositionEvent.fValues[0] = tipPosition.x;//fingers[f].tipPosition().x;
-        fingerPositionEvent.fValues[1] = tipPosition.y;//fingers[f].tipPosition().y;
-        fingerPositionEvent.fValues[2] = tipPosition.z;//fingers[f].tipPosition().z;
+        fingerPositionEvent.fValues[0] = location.x;//fingers[f].tipPosition().x;
+        fingerPositionEvent.fValues[1] = location.y;//fingers[f].tipPosition().y;
+        fingerPositionEvent.fValues[2] = 0;//fingers[f].tipPosition().z;
         fingerPositionEvent.deviceType = LeapMotionDeviceType;
         fingerPositionEvent.objType = LM_FINGERPOS;
         fingerPositionEvent.objInst = f;

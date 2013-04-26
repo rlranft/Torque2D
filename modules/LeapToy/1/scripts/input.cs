@@ -50,7 +50,8 @@ function LeapToy::initializeInput( %this )
     
     // Create the Leap Motion hand/finger bindings
     LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
-    
+    GestureMap.bindObj(leapdevice, leapFingerPos, trackFingerPos, %this);
+
     // Push the LeapMap to the stack, making it active
     ToyMap.push();
     
@@ -188,8 +189,14 @@ function LeapToy::trackFingerPos(%this, %id, %position)
     if (!%this.enableFingerTracking)
         return;
 
-    if (!%id)
-        echo("Finger " @ %id+1 @ " - x:" SPC %position._0 SPC "y:" SPC %position._1);
+    %screenPosition = %position._0 SPC %position._1;
+
+    %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
+
+    %this.showFingerCircle(%id, %worldPosition);
+
+    //if (!%id)
+    //    echo("Finger " @ %id+1 @ " - x:" SPC %worldPosition._0 SPC "y:" SPC %worldPosition._1);
 }
 
 //-----------------------------------------------------------------------------
