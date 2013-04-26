@@ -296,21 +296,21 @@ void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
     for (int f = 0; f < fingers.count(); ++f)
     {
         // Convert the Leap finger tip position to usable Torque units
-        /*Point3F rawPosition(0, 0, 0);
-        Point3I convertedPosition;
+        Point3F rawPosition(0, 0, 0);
+        Point3F convertedPosition;
         LeapMotionUtil::convertPosition(fingers[f].tipPosition(), rawPosition);
-        convertedPosition.x = (S32)mFloor(rawPosition.x);
-        convertedPosition.y = (S32)mFloor(rawPosition.y);
-        convertedPosition.z = (S32)mFloor(rawPosition.z);*/
+        convertedPosition.x = mFloor(rawPosition.x);
+        convertedPosition.y = mFloor(rawPosition.y);
+        convertedPosition.z = mFloor(rawPosition.z);
                 
         // Build the event
         InputEvent fingerPositionEvent;
 
         fingerPositionEvent.deviceInst = 0;
         fingerPositionEvent.iValue = f;
-        fingerPositionEvent.fValues[0] = fingers[f].tipPosition().x;
-        fingerPositionEvent.fValues[1] = fingers[f].tipPosition().y;
-        fingerPositionEvent.fValues[2] = fingers[f].tipPosition().z;
+        fingerPositionEvent.fValues[0] = convertedPosition.x;//fingers[f].tipPosition().x;
+        fingerPositionEvent.fValues[1] = convertedPosition.y;//fingers[f].tipPosition().y;
+        fingerPositionEvent.fValues[2] = convertedPosition.z;//fingers[f].tipPosition().z;
         fingerPositionEvent.deviceType = LeapMotionDeviceType;
         fingerPositionEvent.objType = LM_FINGERPOS;
         fingerPositionEvent.objInst = f;
