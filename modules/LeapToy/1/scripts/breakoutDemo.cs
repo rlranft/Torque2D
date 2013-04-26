@@ -43,7 +43,8 @@ function LeapToy::createBreakoutLevel( %this )
 
     // Swap action maps
     GestureMap.pop();
-    LeapMap.push();
+    FingerMap.pop();
+    BreakoutMap.push();
 }
 
 //-----------------------------------------------------------------------------

@@ -28,8 +28,11 @@ function LeapToy::initializeInput( %this )
     // Gesture action map for sandbox
     new ActionMap(GestureMap);
     
-    // Absolute pos/rotation action map for game
-    new ActionMap(LeapMap);
+    // Absolute palm rotation/pos action map for breakout game
+    new ActionMap(BreakoutMap);
+    
+    // Absolute finger positioning for finger demo
+    new ActionMap(FingerMap);
     
     // Create keyboard bindings
     ToyMap.bindObj(keyboard, tab, toggleCursorMode, %this);
@@ -49,8 +52,8 @@ function LeapToy::initializeInput( %this )
     GestureMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapGesture, %this);
     
     // Create the Leap Motion hand/finger bindings
-    LeapMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
-    GestureMap.bindObj(leapdevice, leapFingerPos, trackFingerPos, %this);
+    BreakoutMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
+    FingerMap.bindObj(leapdevice, leapFingerPos, trackFingerPos, %this);
 
     // Push the LeapMap to the stack, making it active
     ToyMap.push();
@@ -194,9 +197,6 @@ function LeapToy::trackFingerPos(%this, %id, %position)
     %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
 
     %this.showFingerCircle(%id, %worldPosition);
-
-    //if (!%id)
-    //    echo("Finger " @ %id+1 @ " - x:" SPC %worldPosition._0 SPC "y:" SPC %worldPosition._1);
 }
 
 //-----------------------------------------------------------------------------

@@ -38,8 +38,10 @@ function LeapToy::createFingerLevel( %this )
     Sandbox.useManipulation( off );
 
     // Swap action maps
+    // Swap action maps
     GestureMap.pop();
-    LeapMap.push();
+    BreakoutMap.pop();
+    FingerMap.push();
 }
 
 //-----------------------------------------------------------------------------
@@ -71,6 +73,8 @@ function LeapToy::createFingerCircles(%this)
 
 function LeapToy::showFingerCircle(%this, %id, %worldPosition)
 {
+    echo("Finger " SPC %id SPC ":" SPC %worldPosition);
+    
     %finger = %this.fingers[%id];
     
     if (!isObject(%finger))
@@ -79,11 +83,10 @@ function LeapToy::showFingerCircle(%this, %id, %worldPosition)
     if (!%finger.visible)
     {
         %finger.visible = true;
-        
-        %finger.setPosition(%worldPosition);    
     }
     
-    %this.schedule(2000, "checkFingerActivity", %id, %worldPosition);
+    %finger.setPosition(%worldPosition);
+    %this.schedule(100, "checkFingerActivity", %id, %worldPosition);
 }
 
 //-----------------------------------------------------------------------------

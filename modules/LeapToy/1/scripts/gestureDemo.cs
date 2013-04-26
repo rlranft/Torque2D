@@ -47,7 +47,8 @@ function LeapToy::createGesturesLevel( %this )
     Sandbox.useManipulation( pull );
     
     // Swap action maps
-    LeapMap.pop();
+    FingerMap.pop();
+    BreakoutMap.pop();
     GestureMap.push();
 }
 
