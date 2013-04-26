@@ -27,6 +27,8 @@ function LeapToy::create( %this )
     exec("./scripts/toy.cs");
     exec("./scripts/gestureDemo.cs");
     exec("./scripts/breakoutDemo.cs");
+    exec("./scripts/fingerDemo.cs");
+    
     exec("./scripts/DealsDamageBehavior.cs");
     exec("./scripts/TakesDamageBehavior.cs");
     exec("./scripts/SwapImageOnCollision.cs");
@@ -40,7 +42,7 @@ function LeapToy::create( %this )
     %this.enableKeyTapGesture = false;
     %this.enableHandRotation = false;
     %this.enableFingerTracking = true;
-    %this.currentLevel = "Gestures";
+    %this.currentLevel = "Finger Tracking";
     
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
@@ -49,7 +51,7 @@ function LeapToy::create( %this )
     addFlagOption( "Enable Hand Rotation", "setEnableHandRotation", LeapToy.enableHandRotation, false, "Turns on tracking of hand rotation" );
     addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
     
-    %options = "Gestures,Breakout";
+    %options = "Gestures,Breakout,Finger Tracking";
     addSelectionOption(%options, "Level", 2, setLevel, true, "Choose which Leap Motion Demo to play");
 
     // Set the sandbox drag mode availability.
@@ -64,6 +66,7 @@ function LeapToy::create( %this )
     LeapToy.BrickSize = "3 1";
     LeapToy.PaddleSpeed = 30;
     LeapToy.maxBallSpeed = 20;
+    LeapToy.fingerCount = 0;
     
     // Initialize all bindings
     %this.initializeInput();
@@ -113,6 +116,8 @@ function LeapToy::reset( %this )
         %this.createGesturesLevel();
     else if (%this.currentLevel $= "Breakout")
         %this.createBreakoutLevel();
+    else if (%this.currentLevel $= "Finger Tracking")
+        %this.createFingerLevel();
 }
 
 //-----------------------------------------------------------------------------

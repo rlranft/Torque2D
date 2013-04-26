@@ -275,5 +275,17 @@ function LeapToy::movePaddleRight(%this, %val)
         %this.paddle.setLinearVelocity(0, 0);
     }
 }
+
+function LeapToy::simulateFingerPositions(%this)
+{
+    %numFingers = getRandom(0, 9);
+    setRandomSeed(-1);
+    %randomPosition = getRandom(-10, 10) SPC getRandom(-10, 10);
+    for (%i = 0; %i < %numFingers; %i++)
+    {
+        %this.showFingerCircle(%i, %randomPosition);
+    }
+}
+
 // DEBUGGING FUNCTIONS
 //-----------------------------------------------------------------------------

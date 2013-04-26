@@ -39,7 +39,7 @@ function LeapToy::createBreakoutLevel( %this )
     SandboxScene.setGravity( 0, 0);
     
     // Set the manipulation mode.
-    Sandbox.useManipulation( pull );
+    Sandbox.useManipulation( off );
 
     // Swap action maps
     GestureMap.pop();
