@@ -1391,9 +1391,9 @@ bool ActionMap::processTouch(const InputEvent* pEvent)
        
     // Ok, we're all set up, call the function.
     argv[0] = pNode->consoleFunction;
-    argv[1] = pEvent->touchIDs; //Con::getReturnBuffer(pEvent->touchIDs);
-    argv[2] = pEvent->touchesX; //Con::getReturnBuffer(pEvent->touchesX);
-    argv[3] = pEvent->touchesY; //Con::getReturnBuffer(pEvent->touchesY);
+    argv[1] = pEvent->fingerIDs;
+    argv[2] = pEvent->fingersX;
+    argv[3] = pEvent->fingersY;
        
     if (pNode->object)
         Con::executef(pNode->object, 4, argv[0], argv[1], argv[2], argv[3]);

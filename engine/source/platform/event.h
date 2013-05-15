@@ -187,9 +187,11 @@ struct InputEvent : public Event
    U8    modifier;    ///< Modifier to action: SI_LSHIFT, SI_LCTRL, etc.
 
    // iOS specific
-   char touchesX[256];    ///< Collection of x-coordinates for touches
-   char touchesY[256];    ///< Collection of y-coordinates for touches
-   char touchIDs[256];    ///< Collection of touch IDs
+   char fingersX[256];    ///< Collection of x-coordinates for fingers
+   char fingersY[256];    ///< Collection of y-coordinates for fingers
+   char fingersZ[256];    ///< Collection of Z-coordinates for fingers
+
+   char fingerIDs[256];    ///< Collection of touch IDs
     
     InputEvent()
     { 
@@ -203,9 +205,10 @@ struct InputEvent : public Event
         action     = 0;
         modifier   = 0;
         dMemset(fValues, 0, sizeof(fValues));
-        dMemset(touchesX, 0, sizeof(touchesX));
-        dMemset(touchesY, 0, sizeof(touchesY));
-        dMemset(touchIDs, 0, sizeof(touchIDs));
+        dMemset(fingersX, 0, sizeof(fingersX));
+        dMemset(fingersY, 0, sizeof(fingersY));
+        dMemset(fingersZ, 0, sizeof(fingersZ));
+        dMemset(fingerIDs, 0, sizeof(fingerIDs));
     }
 
 };
