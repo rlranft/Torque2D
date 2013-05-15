@@ -74,8 +74,11 @@ function LeapToy::initializeInput( %this )
 
 function LeapToy::destroyInput(%this)
 {
-    LeapMap.pop();
-    LeapMap.delete();
+    FingerMap.pop();
+    FingerMap.delete();
+    
+    BreakoutMap.pop();
+    BreakoutMap.delete();
     
     GestureMap.pop();
     GestureMap.delete();
@@ -187,16 +190,27 @@ function LeapToy::trackHandRotation(%this, %id, %rotation)
 // Constantly polling callback based on the finger position on a hand
 // %id - Ordered hand ID based on when it was added to the tracking device
 // %position - 3 point vector based on where the finger is located in "Leap Space"
-function LeapToy::trackFingerPos(%this, %id, %position)
+function LeapToy::trackFingerPos(%this, %ids, %fingersX, %fingersY, %fingersZ)
 {
     if (!%this.enableFingerTracking)
         return;
 
-    %screenPosition = %position._0 SPC %position._1;
+    for(%i = 0; %i < getWordCount(%ids); %i++)
+    {
+        if (%i == 0 || %i == 1)
+        {
+            %x = getWord(%fingersX, %i);
+            %y = getWord(%fingersY, %i);
+            %z = getWord(%fingersZ, %i);
+            echo("Finger" SPC %i+1 SPC ":" SPC %x SPC %y SPC %z);
+        }
+    }
 
-    %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
+//    %screenPosition = %position._0 SPC %position._1;
 
-    %this.showFingerCircle(%id, %worldPosition);
+//    %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
+
+//    %this.showFingerCircle(%id, %worldPosition);
 }
 
 //-----------------------------------------------------------------------------

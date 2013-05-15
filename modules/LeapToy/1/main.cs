@@ -103,8 +103,9 @@ function LeapToy::destroy( %this )
 function LeapToy::reset( %this )
 {
     // Reset the input
-    LeapMap.pop();
+    FingerMap.pop();
     GestureMap.pop();
+    BreakoutMap.pop();
     
      // Clear the scene.
     SandboxScene.clear();

@@ -52,9 +52,9 @@ protected:
         FingerEvent( S32 ID, F32 X, F32 Y, F32 Z)
         {
             id = ID;
-            x = x;
-            y = y;
-            z = z;
+            x = X;
+            y = Y;
+            z = Z;
         }
     };
 
