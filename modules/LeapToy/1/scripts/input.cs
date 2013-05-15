@@ -34,6 +34,9 @@ function LeapToy::initializeInput( %this )
     // Absolute finger positioning for finger demo
     new ActionMap(FingerMap);
     
+    // action map for the builder demo game
+    new ActionMap(BuilderMap);
+    
     // Create keyboard bindings
     ToyMap.bindObj(keyboard, tab, toggleCursorMode, %this);
     ToyMap.bindObj(keyboard, escape, showToolBox, %this);
@@ -54,6 +57,13 @@ function LeapToy::initializeInput( %this )
     // Create the Leap Motion hand/finger bindings
     BreakoutMap.bindObj(leapdevice, leapHandRot, "D", %this.handRotDeadzone, trackHandRotation, %this);
     FingerMap.bindObj(leapdevice, leapFingerPos, trackFingerPos, %this);
+    
+   // Create Leap Motion Builder Demo bindings
+    BuilderMap.bindObj(leapdevice, circleGesture, reactToCircleBuilder, %this);
+    BuilderMap.bindObj(leapdevice, screenTapGesture, reactToScreenTapBuilder, %this);
+    BuilderMap.bindObj(leapdevice, swipeGesture, reactToSwipeBuilder, %this);
+    BuilderMap.bindObj(leapdevice, keyTapGesture, reactToKeyTapBuilder, %this);
+    BuilderMap.bindObj(leapdevice, leapFingerPos, trackFingerPosBuilder, %this);
 
     // Push the LeapMap to the stack, making it active
     ToyMap.push();
@@ -85,6 +95,9 @@ function LeapToy::destroyInput(%this)
     
     ToyMap.pop();
     ToyMap.delete();
+    
+    BuilderMap.pop();
+    BuilderMap.delete();
 }
 
 //-----------------------------------------------------------------------------

@@ -28,6 +28,7 @@ function LeapToy::create( %this )
     exec("./scripts/gestureDemo.cs");
     exec("./scripts/breakoutDemo.cs");
     exec("./scripts/fingerDemo.cs");
+    exec("./scripts/builderDemo.cs");
     
     exec("./scripts/DealsDamageBehavior.cs");
     exec("./scripts/TakesDamageBehavior.cs");
@@ -51,7 +52,7 @@ function LeapToy::create( %this )
     addFlagOption( "Enable Hand Rotation", "setEnableHandRotation", LeapToy.enableHandRotation, false, "Turns on tracking of hand rotation" );
     addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
     
-    %options = "Gestures,Breakout,Finger Tracking";
+    %options = "Gestures,Breakout,Finger Tracking,Builder Demo";
     addSelectionOption(%options, "Level", 2, setLevel, true, "Choose which Leap Motion Demo to play");
 
     // Set the sandbox drag mode availability.
@@ -106,6 +107,7 @@ function LeapToy::reset( %this )
     FingerMap.pop();
     GestureMap.pop();
     BreakoutMap.pop();
+    BuilderMap.pop();
     
      // Clear the scene.
     SandboxScene.clear();
@@ -119,6 +121,8 @@ function LeapToy::reset( %this )
         %this.createBreakoutLevel();
     else if (%this.currentLevel $= "Finger Tracking")
         %this.createFingerLevel();
+    else if (%this.currentLevel $= "Builder Demo")
+        %this.createBuilderLevel();
 }
 
 //-----------------------------------------------------------------------------
