@@ -42,6 +42,24 @@ protected:
     bool mEnabled;
     F32 mMinCircleProgress;
 
+    struct FingerEvent
+    {
+        S32 id;
+        F32 x;
+        F32 y;
+        F32 z;
+
+        FingerEvent( S32 ID, F32 X, F32 Y, F32 Z)
+        {
+            id = ID;
+            x = x;
+            y = y;
+            z = z;
+        }
+    };
+
+    Vector<FingerEvent> mFingerEvents;
+
     class MotionListener : public Leap::Listener
     {
     public:

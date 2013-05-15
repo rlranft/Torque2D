@@ -1166,7 +1166,7 @@ bool ActionMap::processBind(const U32 argc, const char** argv, SimObject* object
 
 bool ActionMap::processLeap(const InputEvent* pEvent)
 {
-    static const char *argv[3];
+    static const char *argv[5];
     char buffer[64];
 
     const Node* pNode = findNode( pEvent->deviceType, pEvent->deviceInst, pEvent->modifier, pEvent->objType );
@@ -1242,18 +1242,22 @@ bool ActionMap::processLeap(const InputEvent* pEvent)
 
         case LM_FINGERPOS:
             
-            // ID
-            argv[1] = Con::getIntArg(pEvent->iValue);
+            // IDs
+            argv[1] = pEvent->fingerIDs;
 
-            // Position
-            dSprintf(buffer, sizeof(buffer), "%f %f %f", values[0], values[1], values[2]);
+            // X-coordinates
+            argv[2] = pEvent->fingersX;
 
-            argv[2] = buffer;
+            // Y-coordinates
+            argv[3] = pEvent->fingersY;
+
+            // Z-coordinates
+            argv[4] = pEvent->fingersZ;
 
             if (pNode->object)
-                Con::executef(pNode->object, 3, argv[0], argv[1], argv[2]);
+                Con::executef(pNode->object, 5, argv[0], argv[1], argv[2], argv[3], argv[4]);
             else
-                Con::execute(3, argv);
+                Con::execute(5, argv);
             break;
 
         case LM_HANDAXIS:
@@ -1307,7 +1311,7 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
             argv[4] = Con::getFloatArg(pEvent->fValues[2]);
 
             // State
-            argv[5] = Con::getIntArg(pEvent->fValues[3]);
+            argv[5] = Con::getFloatArg(pEvent->fValues[3]);
 
             if (pNode->object)
                 Con::executef(pNode->object, 6, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
@@ -1321,7 +1325,7 @@ bool ActionMap::processGesture(const InputEvent* pEvent)
             argv[1] = Con::getIntArg(pEvent->iValue);
 
             // State
-            argv[2] = Con::getIntArg(pEvent->fValues[0]);
+            argv[2] = Con::getFloatArg(pEvent->fValues[0]);
 
             // Direction
             dSprintf(buffer, sizeof(buffer), "%f %f %f", pEvent->fValues[1], pEvent->fValues[2], pEvent->fValues[3]);

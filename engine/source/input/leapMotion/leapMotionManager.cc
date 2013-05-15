@@ -24,6 +24,10 @@
 #include "input/leapMotion/leapMotionManager.h"
 #endif
 
+#ifndef _PLATFORM_MEMORY_H_
+#include "platform/platformMemory.h"
+#endif 
+
 #ifndef _CONSOLETYPES_H_
 #include "console/consoleTypes.h"
 #endif
@@ -293,45 +297,43 @@ void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 
 void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
 {
+    if (!fingers.count())
+        return;
+    
+    mFingerEvents.clear();
 
-    const Leap::Screen screen = mController->calibratedScreens()[0];
+    InputEvent fingerPositionEvent;
+    fingerPositionEvent.deviceInst = 0;
+    fingerPositionEvent.objInst = 0;
+    fingerPositionEvent.modifier = 0;
+    fingerPositionEvent.deviceType = LeapMotionDeviceType;
+    fingerPositionEvent.objType = LM_FINGERPOS;    
+    fingerPositionEvent.action = SI_LEAP;
     
     for (int f = 0; f < fingers.count(); ++f)
-    {        
-        // get x, y coordinates on the first screen
-        const Leap::Vector intersection = screen.intersect( fingers[f], true, 1.0f );
-        
-        // if the user is not pointing at the screen all components of
-        // the returned vector will be Not A Number (NaN)
-        // isValid() returns true only if all components are finite
-        if (!intersection.isValid())
-            return;
-        
-        F32 x = screen.widthPixels() * intersection.x;
-        
-        // flip y coordinate to standard top-left origin
-        F32 y = screen.heightPixels() * (1.0f - intersection.y);
-        
-        // Move the cursor
-        Point2I location((S32)x, (S32)y);
-                
-        // Build the event
-        InputEvent fingerPositionEvent;
-        
-        fingerPositionEvent.deviceInst = 0;
-        fingerPositionEvent.iValue = f;
-        fingerPositionEvent.fValues[0] = location.x;//fingers[f].tipPosition().x;
-        fingerPositionEvent.fValues[1] = location.y;//fingers[f].tipPosition().y;
-        fingerPositionEvent.fValues[2] = 0;//fingers[f].tipPosition().z;
-        fingerPositionEvent.deviceType = LeapMotionDeviceType;
-        fingerPositionEvent.objType = LM_FINGERPOS;
-        fingerPositionEvent.objInst = f;
-        fingerPositionEvent.action = SI_LEAP;
-        fingerPositionEvent.modifier = 0;
+    {   
+        char charHolder[10];
+        Leap::Vector tipPosition = fingers[f].tipPosition();
 
-        // Post
-        Game->postEvent(fingerPositionEvent);
+        dItoa((S32)tipPosition.x, charHolder);
+        dStrcat(fingerPositionEvent.fingersX, charHolder);
+        dStrcat(fingerPositionEvent.fingersX, " ");
+
+        dItoa((S32)tipPosition.y, charHolder);
+        dStrcat(fingerPositionEvent.fingersY, charHolder);
+        dStrcat(fingerPositionEvent.fingersY, " ");
+
+        dItoa((S32)tipPosition.z, charHolder);
+        dStrcat(fingerPositionEvent.fingersZ, charHolder);
+        dStrcat(fingerPositionEvent.fingersZ, " ");
+
+        dItoa(f, charHolder);
+        dStrcat(fingerPositionEvent.fingerIDs, charHolder);
+        dStrcat(fingerPositionEvent.fingerIDs, " ");        
     }
+    
+    // Post
+    Game->postEvent(fingerPositionEvent);
 }
 
 //-----------------------------------------------------------------------------
