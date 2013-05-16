@@ -48,6 +48,10 @@
 #include "leapMotionUtil.h"
 #endif
 
+#ifndef _VECTOR2_H_
+#include "2d/core/Vector2.h"
+#endif
+
 #include "input/leapMotion/LeapMotionManager_ScriptBinding.h"
 
 //-----------------------------------------------------------------------------
@@ -476,6 +480,8 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     if (!frame.isValid())
         return;
 
+    mLastFrame = frame;
+
     // Get gestures
     const Leap::GestureList gestures = frame.gestures();
 
@@ -557,6 +563,69 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
 
 //-----------------------------------------------------------------------------
 
+Vector2 LeapMotionManager::getPointFromProjection(Point3F position)
+{
+    // Get the screen and projection
+    const Leap::Vector fingerPosition(position.x, position.y, position.z);
+    const Leap::Screen screen = mController->calibratedScreens()[0];
+    const Leap::Vector projectedPosition = screen.project(fingerPosition, true, 1.0f);    
+
+    // if the user is not pointing at the screen all components of
+    // the returned vector will be Not A Number (NaN)
+    // isValid() returns true only if all components are finite
+    if (!projectedPosition.isValid())
+        return Vector2("");
+        
+    // Get the screen coordinates
+    F32 x = screen.widthPixels() * projectedPosition.x;
+        
+    // flip y coordinate to standard top-left origin
+    F32 y = screen.heightPixels() * (1.0f - projectedPosition.y);
+    
+    // Build the screenPosition and return it
+    Vector2 screenPosition;
+    screenPosition.x = x;
+    screenPosition.y = y;
+
+    return screenPosition;
+}
+
+//-----------------------------------------------------------------------------
+
+Vector2 LeapMotionManager::getPointFromIntersection(S32 fingerID)
+{
+    // Get the finger via ID and check for validity
+    Leap::Finger lastFinger = mLastFrame.fingers()[fingerID];
+
+    if (!lastFinger.isValid())
+        return Vector2("");
+
+    // Get the screen and intersection
+    const Leap::Screen screen = mController->calibratedScreens()[0];
+    const Leap::Vector intersection = screen.intersect( lastFinger, true, 1.0f );
+    
+    // if the user is not pointing at the screen all components of
+    // the returned vector will be Not A Number (NaN)
+    // isValid() returns true only if all components are finite
+    if (!intersection.isValid())
+        return Vector2("");
+        
+    // Get the screen coordinates
+    F32 x = screen.widthPixels() * intersection.x;
+        
+    // flip y coordinate to standard top-left origin
+    F32 y = screen.heightPixels() * (1.0f - intersection.y);
+    
+    // Build the screenPosition and return it
+    Vector2 screenPosition;
+    screenPosition.x = x;
+    screenPosition.y = y;
+
+    return screenPosition;
+}
+
+//-----------------------------------------------------------------------------
+
 void LeapMotionManager::MotionListener::onInit(const Leap::Controller& controller)
 {
     //Con::printf("MotionListener::onInit()");
@@ -587,10 +656,14 @@ void LeapMotionManager::MotionListener::onDisconnect (const Leap::Controller& co
     gLeapMotionManager->setActive(false);
 }
 
+//-----------------------------------------------------------------------------
+
 void LeapMotionManager::MotionListener::onFocusGained(const Leap::Controller& controller)
 {
     gLeapMotionManager->setActive(true);
 }
+
+//-----------------------------------------------------------------------------
 
 void LeapMotionManager::MotionListener::onFocusLost(const Leap::Controller& controller)
 {

@@ -89,6 +89,9 @@ protected:
     /// Is the Manager acting like a mouse
     bool mMouseControl;
 
+    /// Last stored frame
+    Leap::Frame mLastFrame;
+
 public:
     static bool smEnableDevice;
 
@@ -152,6 +155,8 @@ public:
     void processHandPointables(const Leap::FingerList& fingers);
     void processGestures(const Leap::GestureList& gestures);
     void generateMouseEvent(const Leap::Controller& controller);
+    Vector2 getPointFromProjection(Point3F position);
+    Vector2 getPointFromIntersection(S32 fingerID);
 };
 
 static LeapMotionManager* gLeapMotionManager;

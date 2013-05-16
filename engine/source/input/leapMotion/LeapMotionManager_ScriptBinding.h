@@ -130,3 +130,47 @@ ConsoleFunction(configureLeapGesture, bool, 3, 3,   "(gestureString, value) Modi
         }
     }
 }
+
+ConsoleFunction(getPointFromProjection, const char*, 4, 5, "(x, y, z) - Gets the closest point on the screen to a point in space using Leap::Screen::project().\n"
+                                                             "@param x The x component of the finger position.\n"
+                                                             "@param y The y component of the finger position.\n"
+                                                             "@param z The z component of the finger position.\n\n"
+                                                             "@return An \"x y\" position of where the finger intersects with the screen.")
+{
+    // The new position.
+    Point3F pos;
+
+    if(argc == 4)
+    {
+        dSscanf(argv[1], "%g %g %g", &pos.x, &pos.y, &pos.z);
+    }
+    else if (argc == 2)
+    {
+        pos.x = dAtof(argv[1]);
+        pos.y = dAtof(argv[2]);
+        pos.z = dAtof(argv[3]);
+    }
+    else
+    {
+        Con::warnf("getPointFromProjection() - Invalid number of parameters!");
+        return "";
+    }
+
+   return gLeapMotionManager->getPointFromProjection(pos).scriptThis();
+   
+   
+}
+
+ConsoleFunction(getPointFromIntersection, const char*, 2, 2, "(fingerID) - Gets the point of intersection between the screen and a ray "
+                                                             "projected from a Pointable object using the Screen::intersect() function\n"
+                                                             "@param fingerID The finger ID, which will be grabbed from the last frame.\n\n"
+                                                             "@return An \"x y\" position of where the finger intersects with the screen.")
+{
+    if(argc < 2)
+    {
+        Con::warnf("getPointFromIntersection() - Invalid number of parameters!");
+        return "";
+    }
+
+    return gLeapMotionManager->getPointFromIntersection(dAtoi(argv[1])).scriptThis();
+}
