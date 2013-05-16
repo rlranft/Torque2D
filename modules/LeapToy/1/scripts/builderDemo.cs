@@ -31,6 +31,8 @@ function LeapToy::createBuilderLevel( %this )
     // Set the manipulation mode.
     Sandbox.useManipulation( off );
     
+    %this.CenterZ = 100;
+    
     // Swap action maps
     FingerMap.pop();
     BreakoutMap.pop();
@@ -159,16 +161,16 @@ function LeapToy::trackFingerPosBuilder(%this, %ids, %fingersX, %fingersY, %fing
         %screenPosition = getPointFromProjection(%position);
         
         // This uses intersection
-        //%screenPosition = getPointFromIntersection(%id);
+        //%screenPosition = getPointFromIntersection(%id);        
 
         %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
-        %this.showFingerBuilder(%id, %worldPosition);
+        %this.showFingerBuilder(%id, %worldPosition, %position.z);
     }
 }
 
 //-----------------------------------------------------------------------------
 
-function LeapToy::showFingerBuilder(%this, %id, %worldPosition)
+function LeapToy::showFingerBuilder(%this, %id, %worldPosition, %zpos)
 {
     echo("Finger " SPC %id SPC ":" SPC %worldPosition);
     
@@ -180,7 +182,6 @@ function LeapToy::showFingerBuilder(%this, %id, %worldPosition)
     if (!%finger.visible)
     {
         %finger.visible = true;
-        %finger.setCollisionSuppress(false);
         %finger.setPosition(%worldPosition);
         %this.movePosition[%id] = %worldPosition;
     }
@@ -190,7 +191,20 @@ function LeapToy::showFingerBuilder(%this, %id, %worldPosition)
        %finger.moveTo(%worldPosition, VectorLen(%distance) * 10, true, false);
        %this.movePosition[%id] = %worldPosition;
     }
-    
+    %size = 2;
+    if( %zpos > LeapToy.CenterZ )
+    {
+       %finger.setCollisionSuppress(true);
+       // set the size to be bigger to give the illusion it is in front of the play area
+       %size = (%zpos/LeapToy.CenterZ) * 2;
+       %finger.setBlendColor(1.0, 1.0, 1.0, 0.5);
+    }
+    else
+    {
+       %finger.setCollisionSuppress(false);
+       %finger.setBlendColor("Yellow");
+    }
+    %finger.setSize(%size, %size);
     %this.schedule(200, "checkFingerBuilder", %id, %worldPosition);
 }
 
