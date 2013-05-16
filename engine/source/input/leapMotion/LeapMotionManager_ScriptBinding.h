@@ -131,7 +131,7 @@ ConsoleFunction(configureLeapGesture, bool, 3, 3,   "(gestureString, value) Modi
     }
 }
 
-ConsoleFunction(getPointFromProjection, const char*, 4, 5, "(x, y, z) - Gets the closest point on the screen to a point in space using Leap::Screen::project().\n"
+ConsoleFunction(getPointFromProjection, const char*, 2, 4, "(x, y, z) - Gets the closest point on the screen to a point in space using Leap::Screen::project().\n"
                                                              "@param x The x component of the finger position.\n"
                                                              "@param y The y component of the finger position.\n"
                                                              "@param z The z component of the finger position.\n\n"
@@ -140,11 +140,11 @@ ConsoleFunction(getPointFromProjection, const char*, 4, 5, "(x, y, z) - Gets the
     // The new position.
     Point3F pos;
 
-    if(argc == 4)
+    if(argc == 2)
     {
         dSscanf(argv[1], "%g %g %g", &pos.x, &pos.y, &pos.z);
     }
-    else if (argc == 2)
+    else if (argc == 4)
     {
         pos.x = dAtof(argv[1]);
         pos.y = dAtof(argv[2]);
