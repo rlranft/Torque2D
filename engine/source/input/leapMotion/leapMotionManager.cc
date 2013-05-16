@@ -310,7 +310,9 @@ void LeapMotionManager::processHandPointables(const Leap::PointableList& pointab
     pointablePositionEvent.action = SI_LEAP;
     
     for (int f = 0; f < pointables.count(); ++f)
-    {   
+    {
+        Leap::Pointable pointable = pointables[f];
+        
         char charHolder[10];
         Leap::Vector tipPosition = pointables[f].tipPosition();
 
@@ -498,11 +500,15 @@ void LeapMotionManager::process(const Leap::Controller& controller)
 
             processHand(hand, h);
             
-            const Leap::PointableList pointables = hand.pointables();
-
-            if (pointables.count())
-                processHandPointables(pointables);
         }
+    }
+    
+    if (frame.pointables().count())
+    {
+        const Leap::PointableList pointables = frame.pointables();
+        
+        if (pointables.count())
+            processHandPointables(pointables);
     }
 }
 
