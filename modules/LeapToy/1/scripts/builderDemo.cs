@@ -144,17 +144,26 @@ function LeapToy::reactToKeyTapBuilder(%this, %id, %position, %direction)
 // Constantly polling callback based on the finger position on a hand
 // %id - Ordered hand ID based on when it was added to the tracking device
 // %position - 3 point vector based on where the finger is located in "Leap Space"
-function LeapToy::trackFingerPosBuilder(%this, %id, %position)
+function LeapToy::trackFingerPosBuilder(%this, %ids, %fingersX, %fingersY, %fingersZ)
 {
-   echo("position: " @ %position);
     if (!%this.enableFingerTracking)
         return;
 
-    %screenPosition = %position._0 SPC %position._1;
+    for(%i = 0; %i < getWordCount(%ids); %i++)
+    {
+        %id = getWord(%ids, %i);
+        
+        // The next two lines of code use projection. To use intersection
+        // comment out both lines, then uncomment the getPointFromIntersection call.
+        %position = getWord(%fingersX, %i) SPC getWord(%fingersY, %i) SPC getWord(%fingersZ, %i);
+        %screenPosition = getPointFromProjection(%position);
+        
+        // This uses intersection
+        //%screenPosition = getPointFromIntersection(%id);
 
-    %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
-
-    %this.showFingerBuilder(%id, %worldPosition);
+        %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
+        %this.showFingerBuilder(%id, %worldPosition);
+    }
 }
 
 //-----------------------------------------------------------------------------
