@@ -299,45 +299,40 @@ void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 
 //-----------------------------------------------------------------------------
 
-void LeapMotionManager::processHandPointables(S32 handIndex, const Leap::FingerList& fingers)
+void LeapMotionManager::processHandPointables(const Leap::PointableList& pointables)
 {
-    if (!fingers.count())
-        return;
+    InputEvent pointablePositionEvent;
+    pointablePositionEvent.deviceInst = 0;
+    pointablePositionEvent.objInst = 0;
+    pointablePositionEvent.modifier = 0;
+    pointablePositionEvent.deviceType = LeapMotionDeviceType;
+    pointablePositionEvent.objType = LM_FINGERPOS;    
+    pointablePositionEvent.action = SI_LEAP;
     
-    mFingerEvents.clear();
-
-    InputEvent fingerPositionEvent;
-    fingerPositionEvent.deviceInst = 0;
-    fingerPositionEvent.objInst = 0;
-    fingerPositionEvent.modifier = 0;
-    fingerPositionEvent.deviceType = LeapMotionDeviceType;
-    fingerPositionEvent.objType = LM_FINGERPOS;    
-    fingerPositionEvent.action = SI_LEAP;
-    
-    for (int f = 0; f < fingers.count(); ++f)
+    for (int f = 0; f < pointables.count(); ++f)
     {   
         char charHolder[10];
-        Leap::Vector tipPosition = fingers[f].tipPosition();
+        Leap::Vector tipPosition = pointables[f].tipPosition();
 
         dItoa((S32)tipPosition.x, charHolder);
-        dStrcat(fingerPositionEvent.fingersX, charHolder);
-        dStrcat(fingerPositionEvent.fingersX, " ");
+        dStrcat(pointablePositionEvent.fingersX, charHolder);
+        dStrcat(pointablePositionEvent.fingersX, " ");
 
         dItoa((S32)tipPosition.y, charHolder);
-        dStrcat(fingerPositionEvent.fingersY, charHolder);
-        dStrcat(fingerPositionEvent.fingersY, " ");
+        dStrcat(pointablePositionEvent.fingersY, charHolder);
+        dStrcat(pointablePositionEvent.fingersY, " ");
 
         dItoa((S32)tipPosition.z, charHolder);
-        dStrcat(fingerPositionEvent.fingersZ, charHolder);
-        dStrcat(fingerPositionEvent.fingersZ, " ");
+        dStrcat(pointablePositionEvent.fingersZ, charHolder);
+        dStrcat(pointablePositionEvent.fingersZ, " ");
 
-        dItoa(f + handIndex, charHolder);
-        dStrcat(fingerPositionEvent.fingerIDs, charHolder);
-        dStrcat(fingerPositionEvent.fingerIDs, " ");        
+        dItoa(pointables[f].id(), charHolder);
+        dStrcat(pointablePositionEvent.fingerIDs, charHolder);
+        dStrcat(pointablePositionEvent.fingerIDs, " ");        
     }
     
     // Post
-    Game->postEvent(fingerPositionEvent);
+    Game->postEvent(pointablePositionEvent);
 }
 
 //-----------------------------------------------------------------------------
@@ -503,9 +498,10 @@ void LeapMotionManager::process(const Leap::Controller& controller)
 
             processHand(hand, h);
             
-            const Leap::FingerList fingers = hand.fingers();
+            const Leap::PointableList pointables = hand.pointables();
 
-            processHandPointables(h, fingers);
+            if (pointables.count())
+                processHandPointables(pointables);
         }
     }
 }
@@ -566,9 +562,9 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
 Vector2 LeapMotionManager::getPointFromProjection(Point3F position)
 {
     // Get the screen and projection
-    const Leap::Vector fingerPosition(position.x, position.y, position.z);
+    const Leap::Vector pointablePosition(position.x, position.y, position.z);
     const Leap::Screen screen = mController->calibratedScreens()[0];
-    const Leap::Vector projectedPosition = screen.project(fingerPosition, true, 1.0f);    
+    const Leap::Vector projectedPosition = screen.project(pointablePosition, true, 1.0f);    
 
     // if the user is not pointing at the screen all components of
     // the returned vector will be Not A Number (NaN)
@@ -592,17 +588,17 @@ Vector2 LeapMotionManager::getPointFromProjection(Point3F position)
 
 //-----------------------------------------------------------------------------
 
-Vector2 LeapMotionManager::getPointFromIntersection(S32 fingerID)
+Vector2 LeapMotionManager::getPointFromIntersection(S32 pointableID)
 {
     // Get the finger via ID and check for validity
-    Leap::Finger lastFinger = mLastFrame.fingers()[fingerID];
+    Leap::Pointable lastPointable = mLastFrame.pointable(pointableID);
 
-    if (!lastFinger.isValid())
+    if (!lastPointable.isValid())
         return Vector2("");
 
     // Get the screen and intersection
     const Leap::Screen screen = mController->calibratedScreens()[0];
-    const Leap::Vector intersection = screen.intersect( lastFinger, true, 1.0f );
+    const Leap::Vector intersection = screen.intersect( lastPointable, true, 1.0f );
     
     // if the user is not pointing at the screen all components of
     // the returned vector will be Not A Number (NaN)

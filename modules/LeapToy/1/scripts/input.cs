@@ -211,7 +211,7 @@ function LeapToy::trackFingerPos(%this, %ids, %fingersX, %fingersY, %fingersZ)
     for(%i = 0; %i < getWordCount(%ids); %i++)
     {
         %id = getWord(%ids, %i);
-        
+
         %position = getWord(%fingersX, %i) SPC getWord(%fingersY, %i) SPC getWord(%fingersZ, %i);
         %screenPosition = getPointFromProjection(%position);
         //%screenPosition = getPointFromIntersection(%id);
