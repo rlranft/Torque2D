@@ -210,20 +210,10 @@ function LeapToy::trackFingerPos(%this, %ids, %fingersX, %fingersY, %fingersZ)
 
     for(%i = 0; %i < getWordCount(%ids); %i++)
     {
-        if (%i == 0 || %i == 1)
-        {
-            %x = getWord(%fingersX, %i);
-            %y = getWord(%fingersY, %i);
-            %z = getWord(%fingersZ, %i);
-            echo("Finger" SPC %i+1 SPC ":" SPC %x SPC %y SPC %z);
-        }
+        %screenPosition = getPointFromIntersection(getWord(%ids, %i));
+        %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
+        %this.showFingerCircle(%id, %worldPosition);        
     }
-
-//    %screenPosition = %position._0 SPC %position._1;
-
-//    %worldPosition = SandboxWindow.getWorldPoint(%screenPosition);
-
-//    %this.showFingerCircle(%id, %worldPosition);
 }
 
 //-----------------------------------------------------------------------------
