@@ -152,7 +152,7 @@ public:
     bool configureLeapGesture(const char* configString, const F32 value);
     void process(const Leap::Controller& controller);
     void processHand(const Leap::Hand& hand, S32 id);
-    void processHandPointables(const Leap::FingerList& fingers);
+    void processHandPointables(S32 handIndex, const Leap::FingerList& fingers);
     void processGestures(const Leap::GestureList& gestures);
     void generateMouseEvent(const Leap::Controller& controller);
     Vector2 getPointFromProjection(Point3F position);

@@ -299,7 +299,7 @@ void LeapMotionManager::processHand(const Leap::Hand& hand, S32 id)
 
 //-----------------------------------------------------------------------------
 
-void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
+void LeapMotionManager::processHandPointables(S32 handIndex, const Leap::FingerList& fingers)
 {
     if (!fingers.count())
         return;
@@ -331,7 +331,7 @@ void LeapMotionManager::processHandPointables(const Leap::FingerList& fingers)
         dStrcat(fingerPositionEvent.fingersZ, charHolder);
         dStrcat(fingerPositionEvent.fingersZ, " ");
 
-        dItoa(f, charHolder);
+        dItoa(f + handIndex, charHolder);
         dStrcat(fingerPositionEvent.fingerIDs, charHolder);
         dStrcat(fingerPositionEvent.fingerIDs, " ");        
     }
@@ -505,7 +505,7 @@ void LeapMotionManager::process(const Leap::Controller& controller)
             
             const Leap::FingerList fingers = hand.fingers();
 
-            processHandPointables(fingers);
+            processHandPointables(h, fingers);
         }
     }
 }
