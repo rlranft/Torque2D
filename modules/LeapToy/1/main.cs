@@ -29,6 +29,7 @@ function LeapToy::create( %this )
     exec("./scripts/breakoutDemo.cs");
     exec("./scripts/fingerDemo.cs");
     exec("./scripts/builderDemo.cs");
+    exec("./scripts/helpText.cs");
     
     exec("./scripts/DealsDamageBehavior.cs");
     exec("./scripts/TakesDamageBehavior.cs");
@@ -94,7 +95,9 @@ function LeapToy::destroy( %this )
     
     %this.selectedObjects.clear();
     %this.selectedObjects.delete();
-    
+    // Clean up the help text
+    if (isObject(HelpTextScene))
+      HelpTextScene.delete();
     // Clean up the ActionMaps
     %this.destroyInput();
 }
@@ -108,7 +111,9 @@ function LeapToy::reset( %this )
     GestureMap.pop();
     BreakoutMap.pop();
     BuilderMap.pop();
-    
+    // Clean up the help text if there is one
+    %this.clearHelpTextScene();    
+      
      // Clear the scene.
     SandboxScene.clear();
     

@@ -40,6 +40,8 @@ function LeapToy::initializeInput( %this )
     // Create keyboard bindings
     ToyMap.bindObj(keyboard, tab, toggleCursorMode, %this);
     ToyMap.bindObj(keyboard, escape, showToolBox, %this);
+    // Help text binding
+    ToyMap.bindObj(keyboard, h, toggleHelpTextScene, %this);
 
     // Debugging keybinds
     ToyMap.bindObj(keyboard, space, simulateCircle, %this);

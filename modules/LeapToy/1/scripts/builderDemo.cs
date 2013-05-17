@@ -1,3 +1,15 @@
+//-----------------------------------------------------------------------------
+// Copyright (c) 2013 GarageGames, LLC
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
 //
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -23,15 +35,29 @@ function LeapToy::createBuilderLevel( %this )
     %this.createCircleSprite();
 
     // Create circle gesture visual.
-    %this.createBuilderFingers();
-    
+    %this.createBuilderFingers();    
+        
     // Set the gravity.
     SandboxScene.setGravity( 0, -9.8 );
         
     // Set the manipulation mode.
     Sandbox.useManipulation( off );
+    // create the help text scene
+    %helpText = new SimSet();
+    %helpText.add(new ScriptObject() { Text = "Press TAB to toggle between Cursor and Finger control."; });
+    %helpText.add(new ScriptObject() { Text = "Finger Control: "; });
+    %helpText.add(new ScriptObject() { Text = "   Reach in to enable finger collision."; });
+    %helpText.add(new ScriptObject() { Text = "   Fingers will turn yellow when collision is enabled."; });
+    %helpText.add(new ScriptObject() { Text = "Cursor Control: "; });
+    %helpText.add(new ScriptObject() { Text = "   Key tap creates a new block."; });
+    %helpText.add(new ScriptObject() { Text = "   Circle Gesture selects blocks within the circle."; });
+    %helpText.add(new ScriptObject() { Text = "   Screen Tap deletes the selected blocks."; });
+    %helpText.add(new ScriptObject() { Text = "Press H to return to the demo."; });
+    %this.createHelpTextScene(%helpText);
+    //add key binding for help
+    // BuilderMap.bindObj(keyboard, h, toggleHelpTextScene, %this);
     
-    %this.CenterZ = 100;
+    %this.CenterZ = 125;
     
     // Swap action maps
     FingerMap.pop();
