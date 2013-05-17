@@ -329,6 +329,16 @@ void SceneObject::initPersistFields()
 
 //-----------------------------------------------------------------------------
 
+void SceneObject::initCallbacks()
+{
+	declareCallback("onUpdate");
+	declareCallback("onWake");
+	declareCallback("onSleep");
+	declareCallback("onMoveToComplete");
+}
+
+//-----------------------------------------------------------------------------
+
 bool SceneObject::onAdd()
 {
     // Call Parent.
@@ -630,7 +640,7 @@ void SceneObject::postIntegrate(const F32 totalTime, const F32 elapsedTime, Debu
     if ( mUpdateCallback )
     {
         PROFILE_SCOPE(SceneObject_onUpdateCallback);
-        Con::executef(this, 1, "onUpdate");
+		callback("onUpdate");
     }
 
     // Are we using the sleeping callback?
@@ -649,9 +659,9 @@ void SceneObject::postIntegrate(const F32 totalTime, const F32 elapsedTime, Debu
 
             // Perform the appropriate callback.
             if ( currentAwakeState )
-                Con::executef(this, 1, "onWake");
+				callback("onWake");
             else
-                Con::executef(this, 1, "onSleep");
+				callback("onSleep");
         }
     }
 }
@@ -1618,6 +1628,13 @@ bool SceneObject::moveTo( const Vector2& targetWorldPoint, const F32 speed, cons
     mMoveToEventId = Sim::postEvent(this, pEvent, Sim::getCurrentTime() + time );
 
     return true;
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleCallback(SceneObject, onMoveToComplete, SceneObject::onMoveToCompleteCallbackData)
+{
+    Con::executef( object, 2, "onMoveToComplete", data->mTargetWorldPoint.scriptThis() );
 }
 
 //-----------------------------------------------------------------------------

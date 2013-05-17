@@ -248,6 +248,7 @@ public:
     virtual void            onRemove();
     virtual void            onDestroyNotify( SceneObject* pSceneObject );
     static void             initPersistFields();
+    static void				initCallbacks();
 
     /// Integration.
     virtual void            preIntegrate( const F32 totalTime, const F32 elapsedTime, DebugStats* pDebugStats );
@@ -388,6 +389,12 @@ public:
     inline F32              getAngularDamping(void) const               { if ( mpScene ) return mpBody->GetAngularDamping(); else return mBodyDefinition.angularDamping; }
 
     /// Move/Rotate to.
+	class onMoveToCompleteCallbackData : public ConsoleBaseCallbackData {
+	public:
+		onMoveToCompleteCallbackData(const Vector2& targetWorldPoint)
+			: mTargetWorldPoint(targetWorldPoint) {}
+		Vector2 mTargetWorldPoint;
+	};
     bool                    moveTo( const Vector2& targetWorldPoint, const F32 speed, const bool autoStop = true, const bool warpToTarget = true );
     bool                    rotateTo( const F32 targetAngle, const F32 speed, const bool autoStop = true, const bool warpToTarget = true );
     void                    cancelMoveTo( const bool autoStop = true );

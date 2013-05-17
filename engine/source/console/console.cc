@@ -289,8 +289,11 @@ void init()
    // Setup the console types.
    ConsoleBaseType::initialize();
 
-   // And finally, the ACR...
+   // Now connect the ACR...
    AbstractClassRep::initialize();
+
+   // We can now connect the external/explicity callbacks
+   AbstractConsoleCallbackConstructor::connectAllCallbacks();
 }
 
 //--------------------------------------

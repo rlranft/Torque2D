@@ -98,8 +98,7 @@ bool SimObject::registerObject()
 
    AssertFatal(!ret || isProperlyAdded(), "Object did not call SimObject::onAdd()");
 
-    if ( isMethod( "onAdd" ) )
-        Con::executef( this, 1, "onAdd" );
+   callback("onAdd");
 
    return ret;
 }
@@ -110,9 +109,8 @@ void SimObject::unregisterObject()
 {
     // Sanity!
     AssertISV( getScriptCallbackGuard() == 0, "SimObject::unregisterObject: Object is being unregistered whilst performing a script callback!" );
-
-    if ( isMethod( "onRemove" ) )
-        Con::executef( this, 1, "onRemove" );
+	
+	callback("onRemove");
 
    mFlags.set(Removed);
 
@@ -1422,6 +1420,14 @@ void SimObject::initPersistFields()
 
 //-----------------------------------------------------------------------------
 
+void SimObject::initCallbacks()
+{
+	declareCallback("onAdd");
+	declareCallback("onRemove");
+}
+
+//-----------------------------------------------------------------------------
+
 SimObject* SimObject::clone( const bool copyDynamicFields )
 {
     // Craete cloned object.
@@ -1786,4 +1792,20 @@ ConsoleMethod(SimObject, isTimerActive, bool, 2, 2, "() - Checks whether the per
                                                     "@return Whether the periodic timer is active for this object or not.")
 {
     return object->isPeriodicTimerActive();
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleCallback(SimObject, onAdd, void)
+{
+    if ( object->isMethod( "onAdd" ) )
+        Con::executef( object, 1, "onAdd" );
+}
+
+//-----------------------------------------------------------------------------
+
+ConsoleCallback(SimObject, onRemove, void)
+{
+    if ( object->isMethod( "onRemove" ) )
+        Con::executef( object, 1, "onRemove" );
 }

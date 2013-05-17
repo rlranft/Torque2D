@@ -31,6 +31,8 @@
 
 AbstractClassRep *                 AbstractClassRep::classLinkList = NULL;
 static AbstractClassRep::FieldList sg_tempFieldList;
+static Vector<AbstractClassRep::CallbackType> sg_tempCallbackTypes;
+
 U32                                AbstractClassRep::NetClassCount  [NetClassGroupsCount][NetClassTypesCount] = {{0, },};
 U32                                AbstractClassRep::NetClassBitSize[NetClassGroupsCount][NetClassTypesCount] = {{0, },};
 
@@ -188,10 +190,13 @@ void AbstractClassRep::initialize()
       // sg_tempFieldList is used as a staging area for field lists
       // (see addField, addGroup, etc.)
       sg_tempFieldList.setSize(0);
+	  // sg_tempCallbackTypes is another staging area
+	  // (see declareCallbacks)
+	  sg_tempCallbackTypes.setSize(0);
 
       walk->init();
 
-      // So if we have things in it, copy it over...
+      // So if we have things in sg_tempFieldList, copy it over...
       if (sg_tempFieldList.size() != 0)
       {
          if( !walk->mFieldList.size())
@@ -200,8 +205,15 @@ void AbstractClassRep::initialize()
             destroyFieldValidators( sg_tempFieldList );
       }
 
+      // if we have things in sg_tempCallbackTypes, copy it over...
+      if (sg_tempCallbackTypes.size() != 0)
+      {
+	     walk->mCallbackTypes = sg_tempCallbackTypes;
+      }
+
       // And of course delete it every round.
       sg_tempFieldList.clear();
+	  sg_tempCallbackTypes.clear();
    }
 
    // Calculate counts and bit sizes for the various NetClasses.
@@ -562,8 +574,67 @@ bool ConsoleObject::removeField(const char* in_pFieldname)
    return false;
 }
 
+bool ConsoleObject::declareCallback(const char* callbackName)
+{
+	StringTableEntry stName = StringTable->insert(callbackName);
+	for (S32 i = 0; i < sg_tempCallbackTypes.size(); i++) {
+		if (sg_tempCallbackTypes[i].mName == stName) {
+			// write error: trying to redefine a callback type
+			return false;
+		}
+	}
+
+	AbstractClassRep::CallbackType cbt;
+	cbt.mName = stName;
+	sg_tempCallbackTypes.push_back(cbt);
+	return true;
+}
+
+bool ConsoleObject::callbackRecursively(AbstractClassRep* ACR, StringTableEntry stCallbackName, const ConsoleBaseCallbackData& callbackData)
+{
+	if (! ACR) {
+		// TODO: warn no callback was connected to callbackName or perhaps the callback doesn't even exist
+		return false;
+	}
+
+	Vector<AbstractClassRep::CallbackEntry> mCallbacks = ACR->mCallbacks;
+	AbstractClassRep::CallbackEntry* theCallback = NULL;
+	for (S32 i = 0; i < mCallbacks.size(); i++) {
+		if (mCallbacks[i].mType->mName == stCallbackName) {
+			theCallback = &mCallbacks[i];
+			break;
+		}
+	}
+
+	if (theCallback == NULL) {
+		AbstractClassRep* parent = ACR->getParentClass();
+		return callbackRecursively(parent, stCallbackName, callbackData);
+	}
+
+	// TODO: casted to SimObject but we're in ConsoleObject
+	theCallback->mFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
+	return true;
+}
+
+bool ConsoleObject::callback(const char* callbackName, const ConsoleBaseCallbackData& callbackData)
+{
+	StringTableEntry stCallbackName = StringTable->insert(callbackName);
+	return callbackRecursively(getClassRep(), stCallbackName, callbackData);
+}
+
+bool ConsoleObject::callback(const char* callbackName)
+{
+	StringTableEntry stCallbackName = StringTable->insert(callbackName);
+	return callbackRecursively(getClassRep(), stCallbackName, voidCallbackData);
+}
+
 //--------------------------------------
 void ConsoleObject::initPersistFields()
+{
+}
+
+//--------------------------------------
+void ConsoleObject::initCallbacks()
 {
 }
 

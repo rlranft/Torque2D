@@ -38,6 +38,9 @@
 #ifndef _CONSOLE_H_
 #include "console/console.h"
 #endif
+#ifndef _CONSOLEBASECALLBACK_H_
+#include "console/consoleBaseCallback.h"
+#endif
 #ifndef TINYXML_INCLUDED
 #include "persistence/tinyXML/tinyxml.h"
 #endif
@@ -243,6 +246,25 @@ public:
 
     bool mDynamicGroupExpand;
 
+	struct CallbackType {
+		StringTableEntry mName;
+		// calback data some day
+	};
+
+	/// list of callback signatures such as "onAddToScene" or "onWhatever".
+	/// one list of callbacks per class.
+	/// eventually this will take a "callback data" signature as well so each
+	/// callback can enforce the "marshalling" data structure it expects.
+	Vector<CallbackType> mCallbackTypes;
+
+	struct CallbackEntry {
+		const CallbackType* mType;
+		ConsoleCallbackFunc mFunc;
+	};
+
+	/// list of callbacks for this class.
+	Vector<CallbackEntry> mCallbacks;
+
     static U32  NetClassCount [NetClassGroupsCount][NetClassTypesCount];
     static U32  NetClassBitSize[NetClassGroupsCount][NetClassTypesCount];
 
@@ -411,6 +433,7 @@ public:
 
         // Finally, do any class specific initialization...
         T::initPersistFields();
+		T::initCallbacks();
         T::consoleInit();
     }
 
@@ -680,11 +703,23 @@ protected:
     static bool removeField(const char* in_pFieldname);
 
     /// @}
+
+	static bool declareCallback(const char* callbackName);
+
+	bool ConsoleObject::callbackRecursively(AbstractClassRep* ACR, StringTableEntry callbackName, const ConsoleBaseCallbackData& callbackData);
+	bool callback(const char* callbackName, const ConsoleBaseCallbackData& callbackData);
+	bool callback(const char* callbackName);
+
 public:
     /// Register dynamic fields in a subclass of ConsoleObject.
     ///
     /// @see addField(), addFieldV(), addDepricatedField(), addGroup(), endGroup()
     static void initPersistFields();
+
+    /// Register callbacks in a subclass of ConsoleObject.
+    ///
+    /// @see declareCallback()
+    static void initCallbacks();
 
     /// Register global constant variables and do other one-time initialization tasks in
     /// a subclass of ConsoleObject.

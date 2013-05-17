@@ -34,6 +34,7 @@
 class SimObject;
 struct EnumTable;
 class Namespace;
+class ConsoleBaseCallbackData;
 
 /// Indicates that warnings about undefined script variables should be displayed.
 ///
@@ -820,6 +821,17 @@ public:
 
 #  define ConsoleMethodGroupEnd(className, groupName) \
       static ConsoleConstructor className##groupName##__GroupEnd(#className,#groupName,NULL);
+
+// Console callback macro
+#  define ConsoleCallback(className, methodName, callbackDataClass)																						\
+	static inline void cb##className##methodName(className* object, const callbackDataClass* data);														\
+	static void cb##className##methodName##caster(SimObject* object, const char* _callbackName, const ConsoleBaseCallbackData* data) {					\
+		AssertFatal( dynamic_cast<const callbackDataClass*>(data), #callbackDataClass " passed to " #methodName " is not a ConsoleBaseCallbackData!" );	\
+		AssertFatal( dynamic_cast<className*>(object), "SimObject passed to " #methodName " is not a " #className "!" );								\
+		cb##className##methodName(dynamic_cast<className*>(object), dynamic_cast<const callbackDataClass*>(data));										\
+	}																																					\
+	static ConsoleCallbackConstructor<className> className##methodName##cb(#methodName, cb##className##methodName##caster);								\
+	static inline void cb##className##methodName(className* object, const callbackDataClass* data)
 
 #else
 

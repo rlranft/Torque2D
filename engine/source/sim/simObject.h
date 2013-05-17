@@ -724,6 +724,7 @@ public:
     /// @}
 
     static void initPersistFields();
+    static void initCallbacks();
     SimObject* clone( const bool copyDynamicFields );
     virtual void copyTo(SimObject* object);
 
