@@ -344,6 +344,7 @@
     <ClCompile Include="..\..\source\collection\nameTags.cpp" />
     <ClCompile Include="..\..\source\collection\undo.cc" />
     <ClCompile Include="..\..\source\collection\vector.cc" />
+    <ClCompile Include="..\..\source\console\consoleBaseCallback.cc" />
     <ClCompile Include="..\..\source\console\consoleBaseType.cc" />
     <ClCompile Include="..\..\source\console\consoleDictionary.cc" />
     <ClCompile Include="..\..\source\console\consoleExprEvalState.cc" />
@@ -791,6 +792,7 @@
     <ClInclude Include="..\..\source\component\behaviors\behaviorComponent_ScriptBinding.h" />
     <ClInclude Include="..\..\source\component\behaviors\behaviorInstance_ScriptBinding.h" />
     <ClInclude Include="..\..\source\component\behaviors\behaviorTemplate_ScriptBinding.h" />
+    <ClInclude Include="..\..\source\console\consoleBaseCallback.h" />
     <ClInclude Include="..\..\source\console\consoleBaseType.h" />
     <ClInclude Include="..\..\source\console\consoleDictionary.h" />
     <ClInclude Include="..\..\source\console\consoleExprEvalState.h" />

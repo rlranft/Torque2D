@@ -1332,6 +1332,9 @@
     <ClCompile Include="..\..\source\gui\containers\guiGridCtrl.cc">
       <Filter>gui\containers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\source\console\consoleBaseCallback.cc">
+      <Filter>console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\audio\audio.h">
@@ -2756,6 +2759,9 @@
     </ClInclude>
     <ClInclude Include="..\..\source\gui\containers\guiGridCtrl.h">
       <Filter>gui\containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\console\consoleBaseCallback.h">
+      <Filter>console</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
