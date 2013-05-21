@@ -44,7 +44,7 @@ function LeapToy::create( %this )
     %this.enableKeyTapGesture = false;
     %this.enableHandRotation = false;
     %this.enableFingerTracking = true;
-    %this.currentLevel = "Finger Tracking";
+    %this.currentLevel = "Builder Demo";
     
     addFlagOption( "Enable Swipe Gesture", "setEnableSwipeGesture", LeapToy.enableSwipeGesture, false, "Turns on swipe gesture recognition" );
     addFlagOption( "Enable Circle Gesture", "setEnableCircleGesture", LeapToy.enableCircleGesture, false, "Turns on circle gesture recognition" );
@@ -54,7 +54,7 @@ function LeapToy::create( %this )
     addFlagOption( "Enable Finger Tracking", "setenableFingerTracking", LeapToy.enableFingerTracking, false, "Turns on tracking of finger position" );
     
     %options = "Gestures,Breakout,Finger Tracking,Builder Demo";
-    addSelectionOption(%options, "Level", 2, setLevel, true, "Choose which Leap Motion Demo to play");
+    addSelectionOption(%options, "Level", 4, setLevel, true, "Choose which Leap Motion Demo to play");
 
     // Set the sandbox drag mode availability.
     Sandbox.allowManipulation( pull );

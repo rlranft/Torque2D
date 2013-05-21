@@ -42,6 +42,17 @@ function LeapToy::createFingerLevel( %this )
     GestureMap.pop();
     BreakoutMap.pop();
     FingerMap.push();
+    
+    // Create the help text scene
+    %helpText = new SimSet();
+    %helpText.add(new ScriptObject() { Text = "This demo will track pointables."; });
+    %helpText.add(new ScriptObject() { Text = " "; });
+    %helpText.add(new ScriptObject() { Text = "Whenever the Leap Motion device detects a finger"; });    
+    %helpText.add(new ScriptObject() { Text = "or tool, a circle will appear on screen."; });
+    %helpText.add(new ScriptObject() { Text = " "; });
+    %helpText.add(new ScriptObject() { Text = "Press H to return to the demo."; });
+    %this.createHelpTextScene(%helpText);
+    %helpText.delete();
 }
 
 //-----------------------------------------------------------------------------

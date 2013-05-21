@@ -45,6 +45,16 @@ function LeapToy::createBreakoutLevel( %this )
     GestureMap.pop();
     FingerMap.pop();
     BreakoutMap.push();
+    
+    // Create the help text scene
+    %helpText = new SimSet();
+    %helpText.add(new ScriptObject() { Text = "Roll your hand back and forth to control the paddle"; });
+    %helpText.add(new ScriptObject() { Text = " "; });
+    %helpText.add(new ScriptObject() { Text = "When a block is hit twice, it will be destroyed"; });
+    %helpText.add(new ScriptObject() { Text = " "; });
+    %helpText.add(new ScriptObject() { Text = "Press H to return to the demo."; });
+    %this.createHelpTextScene(%helpText);
+    %helpText.delete();
 }
 
 //-----------------------------------------------------------------------------

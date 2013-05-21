@@ -24,72 +24,78 @@ function LeapToy::createBuilderLevel( %this )
 {
     // Create background.
     %this.createBackground();
-    
+
     // Create the ground.
     %this.createGround();
 
     // Create the pyramid.
     %this.createPyramid();
-    
+
     // Create circle gesture visual.
     %this.createCircleSprite();
 
     // Create circle gesture visual.
     %this.createBuilderFingers();    
-        
+
     // Set the gravity.
     SandboxScene.setGravity( 0, -9.8 );
-        
+
     // Set the manipulation mode.
     Sandbox.useManipulation( off );
-    // create the help text scene
+
+    // Create the help text scene
     %helpText = new SimSet();
     %helpText.add(new ScriptObject() { Text = "Press TAB to toggle between Cursor and Finger control."; });
+    %helpText.add(new ScriptObject() { Text = " "; });
     %helpText.add(new ScriptObject() { Text = "Finger Control: "; });
     %helpText.add(new ScriptObject() { Text = "   Reach in to enable finger collision."; });
     %helpText.add(new ScriptObject() { Text = "   Fingers will turn yellow when collision is enabled."; });
+    %helpText.add(new ScriptObject() { Text = " "; });
     %helpText.add(new ScriptObject() { Text = "Cursor Control: "; });
     %helpText.add(new ScriptObject() { Text = "   Key tap creates a new block."; });
     %helpText.add(new ScriptObject() { Text = "   Circle Gesture selects blocks within the circle."; });
     %helpText.add(new ScriptObject() { Text = "   Screen Tap deletes the selected blocks."; });
+    %helpText.add(new ScriptObject() { Text = " "; });
     %helpText.add(new ScriptObject() { Text = "Press H to return to the demo."; });
     %this.createHelpTextScene(%helpText);
-    //add key binding for help
-    // BuilderMap.bindObj(keyboard, h, toggleHelpTextScene, %this);
-    
+    %helpText.delete();
+
     %this.CenterZ = 125;
-    
+
     // Swap action maps
     FingerMap.pop();
     BreakoutMap.pop();
     GestureMap.pop();
-    // enable builder map
+
+    // Enable builder map
     BuilderMap.push();
 }
 
 function LeapToy::createBuilderBlock(%this, %position)
 {
-   // Set the block size.
-   %blockSize = LeapToy.BlockSize;
-   
-   %blockFrames = "0 2 4 6";
-   %randomNumber = getRandom(0, 4);
-   // Create the sprite.
-   %obj = new Sprite()
-   {
-       class = "Block";
-       flipped = false;
-   };
-   %obj.setSceneLayer(3);
-   %obj.setPosition( %position.x, %position.y );
-   %obj.setSize( %blockSize );
-   %obj.setImage( "LeapToy:objectsBlocks" );
-   %obj.setImageFrame( getWord(%blockFrames, %randomNumber) );
-   %obj.setDefaultFriction( 1.0 );
-   %obj.createPolygonBoxCollisionShape( %blockSize, %blockSize );
+    // Set the block size.
+    %blockSize = LeapToy.BlockSize;
 
-   // Add to the scene.
-   SandboxScene.add( %obj );
+    %blockFrames = "0 2 4 6";
+    %randomNumber = getRandom(0, 4);
+
+    // Create the sprite.
+    %obj = new Sprite()
+    {
+        class = "Block";
+        flipped = false;
+    };
+
+    %obj.setSceneLayer(3);
+    %obj.setPosition( %position.x, %position.y );
+    %obj.setSize( %blockSize );
+    %obj.setImage( "LeapToy:objectsBlocks" );
+    %obj.setImageFrame( getWord(%blockFrames, %randomNumber) );
+    %obj.setDefaultFriction( 1.0 );
+    %obj.createPolygonBoxCollisionShape( %blockSize, %blockSize );
+
+    // Add to the scene.
+    SandboxScene.add( %obj );
 }
 
 
@@ -106,18 +112,18 @@ function LeapToy::reactToCircleBuilder(%this, %id, %progress, %radius, %isClockw
 {
     if (!%this.enableCircleGesture)
         return;
-    
+
     if (isLeapCursorControlled())
     {
-       if (%progress > 0 && %state == 3)
-       {
-           %this.grabObjectsInCircle();
-           %this.schedule(300, "hideCircleSprite");
-       }
-       else if (%progress > 0 && %state != 3)
-       {
-           %this.showCircleSprite(%radius/5, %isClockwise);
-       }
+        if (%progress > 0 && %state == 3)
+        {
+            %this.grabObjectsInCircle();
+            %this.schedule(300, "hideCircleSprite");
+        }
+        else if (%progress > 0 && %state != 3)
+        {
+            %this.showCircleSprite(%radius/5, %isClockwise);
+        }
     }
 }
 
@@ -132,8 +138,6 @@ function LeapToy::reactToSwipeBuilder(%this, %id, %state, %direction, %speed)
 {
     if (!%this.enableSwipeGesture)
         return;
-
-
 }
 
 //-----------------------------------------------------------------------------
@@ -217,6 +221,7 @@ function LeapToy::showFingerBuilder(%this, %id, %worldPosition, %zpos)
        %finger.moveTo(%worldPosition, VectorLen(%distance) * 10, true, false);
        %this.movePosition[%id] = %worldPosition;
     }
+    
     %size = 2;
     if( %zpos > LeapToy.CenterZ )
     {
@@ -230,6 +235,7 @@ function LeapToy::showFingerBuilder(%this, %id, %worldPosition, %zpos)
        %finger.setCollisionSuppress(false);
        %finger.setBlendColor("Yellow");
     }
+    
     %finger.setSize(%size, %size);
     %this.schedule(200, "checkFingerBuilder", %id, %worldPosition);
 }
@@ -260,7 +266,7 @@ function LeapToy::createBuilderFingers(%this)
         %finger = new Sprite();        
         %finger.setName(%name);
         %finger.Position = "-10 5";
-        // %finger.setBodyType("Kinematic");
+        
         %finger.Size = 2;
         %finger.Image = "LeapToy:circleThree";
         %finger.Visible = false; 

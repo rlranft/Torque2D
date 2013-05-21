@@ -22,70 +22,67 @@
 
 function LeapToy::createHelpTextScene(%this, %helptext)
 {
-   %this.clearHelpTextScene();
+    %this.clearHelpTextScene();
       
-   %this.helpTextScene = new Scene(HelpTextScene);
-   
-   // create the background
-   %background = new Sprite();
-   %background.setSize( 40, 30 );
-   %background.setImage("ToyAssets:skyBackground");
-   %background.setSceneLayer(20);
-   HelpTextScene.add(%background);
-   // check if we have text
-   if (%helptext.getCount() > 0)
-   {
-      %startingy = 0 + ((%helptext.getCount()/2) *0.6);
-      %spacing = 0.75;
-      %textsize = 0.6;
-      // iterate through the text lines
-      for (%x = 0; %x < %helptext.getCount(); %x++)
-      {                  
-         %object = new ImageFont();         
-         %object.Image = "ToyAssets:Font";
-         %object.FontSize = %textsize SPC %textsize;
-         %object.TextAlignment = "Left";
-         %positiony = %startingy - (%x * %spacing);
-         %object.Position = "-17" SPC %positiony;
-         %object.Text = %helptext.getObject(%x).Text;
-         HelpTextScene.add(%object);
-      }
-      // since we had text let's put up the help prompt.
-      %helpPrompt = new ImageFont();       
-      %helpPrompt.Image = "ToyAssets:Font";
-      %helpPrompt.FontSize = "0.7 0.7";
-      %helpPrompt.TextAlignment = "Center";      
-      %helpPrompt.Position = "0 -12";
-      %helpPrompt.Text = "Press H for help";
-      SandboxScene.add(%helpPrompt);      
-   }   
+    %this.helpTextScene = new Scene(HelpTextScene);
+
+    // Create the background
+    %background = new Sprite();
+    %background.setSize( 40, 30 );
+    %background.setImage("ToyAssets:skyBackground");
+    %background.setSceneLayer(20);
+    HelpTextScene.add(%background);
+    
+    // Check if we have text
+    if (%helptext.getCount() > 0)
+    {
+        %startingy = 0 + ((%helptext.getCount()/2) *0.6);
+        %spacing = 0.75;
+        %textsize = 0.6;
+        
+        // Iterate through the text lines
+        for (%x = 0; %x < %helptext.getCount(); %x++)
+        {                  
+            %object = new ImageFont();         
+            %object.Image = "ToyAssets:Font";
+            %object.FontSize = %textsize SPC %textsize;
+            %object.TextAlignment = "Left";
+            %positiony = %startingy - (%x * %spacing);
+            %object.Position = "-17" SPC %positiony;
+            %object.Text = %helptext.getObject(%x).Text;
+            HelpTextScene.add(%object);
+        }
+        
+        // Since we had text let's put up the help prompt.
+        %helpPrompt = new ImageFont();       
+        %helpPrompt.Image = "ToyAssets:Font";
+        %helpPrompt.FontSize = "0.7 0.7";
+        %helpPrompt.TextAlignment = "Center";      
+        %helpPrompt.Position = "0 -12";
+        %helpPrompt.Text = "Press H for help";
+        SandboxScene.add(%helpPrompt);      
+    }   
 }
 
 function LeapToy::toggleHelpTextScene(%this, %val)
 {
-   if (!isObject(HelpTextScene) || !%val)
-      return;
-   
-   if (SandboxWindow.getScene() $= %this.helpTextScene)
-   {
-      SandboxWindow.setScene(SandboxScene);
-   }
-   else
-   {
-      SandboxWindow.setScene(HelpTextScene);
-   }
+    if (!isObject(HelpTextScene) || !%val)
+        return;
+
+    if (SandboxWindow.getScene() $= %this.helpTextScene)
+        SandboxWindow.setScene(SandboxScene);    
+    else
+        SandboxWindow.setScene(HelpTextScene);    
 }
 
 function LeapToy::clearHelpTextScene(%this)
 {
-   if (!isObject(HelpTextScene))
-      return;
-      
-   if (SandboxWindow.getScene() $= %this.helpTextScene)
-   {
-      SandboxWindow.setScene(SandboxScene);
-   }
-   
-   HelpTextScene.clear();
-   HelpTextScene.delete();
+    if (!isObject(HelpTextScene))
+        return;
+
+    if (SandboxWindow.getScene() $= %this.helpTextScene)
+        SandboxWindow.setScene(SandboxScene);    
+
+    HelpTextScene.clear();
+    HelpTextScene.delete();
 }
