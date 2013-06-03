@@ -331,6 +331,7 @@ void SceneObject::initPersistFields()
 
 void SceneObject::initCallbacks()
 {
+	Parent::initCallbacks();
 	declareCallback("onUpdate");
 	declareCallback("onWake");
 	declareCallback("onSleep");
@@ -1632,7 +1633,7 @@ bool SceneObject::moveTo( const Vector2& targetWorldPoint, const F32 speed, cons
 
 //-----------------------------------------------------------------------------
 
-ConsoleCallback(SceneObject, onMoveToComplete, SceneObject::onMoveToCompleteCallbackData)
+ConsoleCallback(SceneObject, onMoveToComplete, void, SceneObject::onMoveToCompleteCallbackData)
 {
     Con::executef( object, 2, "onMoveToComplete", data->mTargetWorldPoint.scriptThis() );
 }

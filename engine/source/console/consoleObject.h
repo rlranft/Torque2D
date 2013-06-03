@@ -38,9 +38,6 @@
 #ifndef _CONSOLE_H_
 #include "console/console.h"
 #endif
-#ifndef _CONSOLEBASECALLBACK_H_
-#include "console/consoleBaseCallback.h"
-#endif
 #ifndef TINYXML_INCLUDED
 #include "persistence/tinyXML/tinyxml.h"
 #endif
@@ -49,6 +46,7 @@
 
 class Namespace;
 class ConsoleObject;
+class ConsoleBaseCallbackData;
 
 //-----------------------------------------------------------------------------
 
@@ -246,8 +244,31 @@ public:
 
     bool mDynamicGroupExpand;
 
-	struct CallbackType {
+	enum ReturnType {
+	   StringReturn,
+	   IntReturn,
+	   FloatReturn,
+	   VoidReturn,
+	   BoolReturn
+   };
+
+   typedef const char* (*StringConsoleCallbackFunc)(SimObject* object, const char* callbackName, const ConsoleBaseCallbackData* data);
+   typedef S32         (*IntConsoleCallbackFunc)   (SimObject* object, const char* callbackName, const ConsoleBaseCallbackData* data);
+   typedef F32         (*FloatConsoleCallbackFunc) (SimObject* object, const char* callbackName, const ConsoleBaseCallbackData* data);
+   typedef void        (*VoidConsoleCallbackFunc)  (SimObject* object, const char* callbackName, const ConsoleBaseCallbackData* data);
+   typedef bool        (*BoolConsoleCallbackFunc)  (SimObject* object, const char* callbackName, const ConsoleBaseCallbackData* data);
+
+   union CallbackFunctionByReturnType {
+	   StringConsoleCallbackFunc stringConsoleCallbackFunc;   ///< A function/method that returns a string.
+	   IntConsoleCallbackFunc    intConsoleCallbackFunc;      ///< A function/method that returns an int.
+	   FloatConsoleCallbackFunc  floatConsoleCallbackFunc;    ///< A function/method that returns a float.
+	   VoidConsoleCallbackFunc   voidConsoleCallbackFunc;     ///< A function/method that returns nothing.
+	   BoolConsoleCallbackFunc   boolConsoleCallbackFunc;     ///< A function/method that returns a bool.
+   };
+
+	struct DeclaredCallback {
 		StringTableEntry mName;
+		ReturnType mReturnType;
 		// calback data some day
 	};
 
@@ -255,15 +276,15 @@ public:
 	/// one list of callbacks per class.
 	/// eventually this will take a "callback data" signature as well so each
 	/// callback can enforce the "marshalling" data structure it expects.
-	Vector<CallbackType> mCallbackTypes;
+	Vector<DeclaredCallback> mDeclaredCallbacks;
 
-	struct CallbackEntry {
-		const CallbackType* mType;
-		ConsoleCallbackFunc mFunc;
+	struct ConnectedCallbackEntry {
+		const DeclaredCallback* mDeclared;
+		CallbackFunctionByReturnType mFunc;
 	};
 
 	/// list of callbacks for this class.
-	Vector<CallbackEntry> mCallbacks;
+	Vector<ConnectedCallbackEntry> mConnectedCallbacks;
 
     static U32  NetClassCount [NetClassGroupsCount][NetClassTypesCount];
     static U32  NetClassBitSize[NetClassGroupsCount][NetClassTypesCount];
@@ -704,10 +725,24 @@ protected:
 
     /// @}
 
-	static bool declareCallback(const char* callbackName);
+	static bool declareCallback(const char* callbackName, AbstractClassRep::ReturnType returnType = AbstractClassRep::VoidReturn);
 
-	bool ConsoleObject::callbackRecursively(AbstractClassRep* ACR, StringTableEntry callbackName, const ConsoleBaseCallbackData& callbackData);
-	bool callback(const char* callbackName, const ConsoleBaseCallbackData& callbackData);
+	void validCallbackDeclared(AbstractClassRep* classRep, StringTableEntry stCallbackName, AbstractClassRep::ReturnType returnType);
+	bool callbackRecursively(AbstractClassRep* ACR, StringTableEntry callbackName, const ConsoleBaseCallbackData& callbackData, AbstractClassRep::ReturnType, void* returnData);
+	bool callbackHelper(const char* callbackName, AbstractClassRep::ReturnType returnType, const ConsoleBaseCallbackData& callbackData, void* returnValue);
+
+	// callbacks for each return type and with callbackData
+	bool callback(const char* callbackName, const char** returnType, const ConsoleBaseCallbackData& callbackData);
+	bool callback(const char* callbackName, S32* returnType,   const ConsoleBaseCallbackData& callbackData);
+	bool callback(const char* callbackName, F32* returnType,   const ConsoleBaseCallbackData& callbackData);
+	bool callback(const char* callbackName, bool* returnType,  const ConsoleBaseCallbackData& callbackData);
+	bool callback(const char* callbackName,                    const ConsoleBaseCallbackData& callbackData);
+
+	// callbacks for each return type and without callbackData
+	bool callback(const char* callbackName, const char** returnType);
+	bool callback(const char* callbackName, S32* returnType);
+	bool callback(const char* callbackName, F32* returnType);
+	bool callback(const char* callbackName, bool* returnType);
 	bool callback(const char* callbackName);
 
 public:

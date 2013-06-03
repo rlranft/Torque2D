@@ -1422,6 +1422,7 @@ void SimObject::initPersistFields()
 
 void SimObject::initCallbacks()
 {
+	Parent::initCallbacks();
 	declareCallback("onAdd");
 	declareCallback("onRemove");
 }
@@ -1796,7 +1797,7 @@ ConsoleMethod(SimObject, isTimerActive, bool, 2, 2, "() - Checks whether the per
 
 //-----------------------------------------------------------------------------
 
-ConsoleCallback(SimObject, onAdd, void)
+ConsoleCallback(SimObject, onAdd, void, void)
 {
     if ( object->isMethod( "onAdd" ) )
         Con::executef( object, 1, "onAdd" );
@@ -1804,7 +1805,7 @@ ConsoleCallback(SimObject, onAdd, void)
 
 //-----------------------------------------------------------------------------
 
-ConsoleCallback(SimObject, onRemove, void)
+ConsoleCallback(SimObject, onRemove, void, void)
 {
     if ( object->isMethod( "onRemove" ) )
         Con::executef( object, 1, "onRemove" );

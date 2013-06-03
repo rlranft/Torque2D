@@ -27,6 +27,10 @@
 #include "console/consoleObject.h"
 #endif
 
+#ifndef _CONSOLEBASECALLBACK_H_
+#include "console/consoleBaseCallback.h"
+#endif
+
 #ifndef _SIM_FIELD_DICTIONARY_H_
 #include "sim/simFieldDictionary.h"
 #endif

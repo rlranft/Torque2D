@@ -20,6 +20,7 @@
 // IN THE SOFTWARE.
 //-----------------------------------------------------------------------------
 
+#include "console/consoleTypes.h"
 #include "console/consoleBaseCallback.h"
 #include "string/stringTable.h"
 
@@ -28,10 +29,47 @@ VoidCallbackData voidCallbackData;
 
 AbstractConsoleCallbackConstructor* AbstractConsoleCallbackConstructor::first = NULL;
 
-AbstractConsoleCallbackConstructor::AbstractConsoleCallbackConstructor(const char *callbackName, ConsoleCallbackFunc func)
+AbstractConsoleCallbackConstructor::AbstractConsoleCallbackConstructor(const char *callbackName, AbstractClassRep::StringConsoleCallbackFunc sfunc)
 {
    mCallbackName = StringTable->insert(callbackName);
-   mCallbackFunc = func;
+   mReturnType = AbstractClassRep::StringReturn;
+   mCallbackFunction.stringConsoleCallbackFunc = sfunc;
+   next = first;
+   first = this;
+}
+
+AbstractConsoleCallbackConstructor::AbstractConsoleCallbackConstructor(const char *callbackName, AbstractClassRep::IntConsoleCallbackFunc ifunc)
+{
+   mCallbackName = StringTable->insert(callbackName);
+   mReturnType = AbstractClassRep::IntReturn;
+   mCallbackFunction.intConsoleCallbackFunc = ifunc;
+   next = first;
+   first = this;
+}
+
+AbstractConsoleCallbackConstructor::AbstractConsoleCallbackConstructor(const char *callbackName, AbstractClassRep::FloatConsoleCallbackFunc ffunc)
+{
+   mCallbackName = StringTable->insert(callbackName);
+   mReturnType = AbstractClassRep::FloatReturn;
+   mCallbackFunction.floatConsoleCallbackFunc = ffunc;
+   next = first;
+   first = this;
+}
+
+AbstractConsoleCallbackConstructor::AbstractConsoleCallbackConstructor(const char *callbackName, AbstractClassRep::VoidConsoleCallbackFunc vfunc)
+{
+   mCallbackName = StringTable->insert(callbackName);
+   mReturnType = AbstractClassRep::VoidReturn;
+   mCallbackFunction.voidConsoleCallbackFunc = vfunc;
+   next = first;
+   first = this;
+}
+
+AbstractConsoleCallbackConstructor::AbstractConsoleCallbackConstructor(const char *callbackName, AbstractClassRep::BoolConsoleCallbackFunc bfunc)
+{
+   mCallbackName = StringTable->insert(callbackName);
+   mReturnType = AbstractClassRep::BoolReturn;
+   mCallbackFunction.boolConsoleCallbackFunc = bfunc;
    next = first;
    first = this;
 }

@@ -3781,21 +3781,21 @@ ConsoleMethod(SceneObject, safeDelete, void, 2, 2, "() - Safely deletes object.\
 
 //-----------------------------------------------------------------------------
 
-ConsoleCallback(SceneObject, onUpdate, void)
+ConsoleCallback(SceneObject, onUpdate, void, void)
 {
     Con::executef(object, 1, "onUpdate");
 }
 
 //-----------------------------------------------------------------------------
 
-ConsoleCallback(SceneObject, onWake, void)
+ConsoleCallback(SceneObject, onWake, void, void)
 {
     Con::executef(object, 1, "onWake");
 }
 
 //-----------------------------------------------------------------------------
 // VoidCallbackData
-ConsoleCallback(SceneObject, onSleep, void)
+ConsoleCallback(SceneObject, onSleep, void, void)
 {
     Con::executef(object, 1, "onSleep");
 }

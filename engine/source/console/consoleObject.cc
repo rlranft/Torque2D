@@ -31,7 +31,7 @@
 
 AbstractClassRep *                 AbstractClassRep::classLinkList = NULL;
 static AbstractClassRep::FieldList sg_tempFieldList;
-static Vector<AbstractClassRep::CallbackType> sg_tempCallbackTypes;
+static Vector<AbstractClassRep::DeclaredCallback> sg_tempDeclaredCallbacks;
 
 U32                                AbstractClassRep::NetClassCount  [NetClassGroupsCount][NetClassTypesCount] = {{0, },};
 U32                                AbstractClassRep::NetClassBitSize[NetClassGroupsCount][NetClassTypesCount] = {{0, },};
@@ -190,9 +190,9 @@ void AbstractClassRep::initialize()
       // sg_tempFieldList is used as a staging area for field lists
       // (see addField, addGroup, etc.)
       sg_tempFieldList.setSize(0);
-	  // sg_tempCallbackTypes is another staging area
+	  // sg_tempDeclaredCallbacks is another staging area
 	  // (see declareCallbacks)
-	  sg_tempCallbackTypes.setSize(0);
+	  sg_tempDeclaredCallbacks.setSize(0);
 
       walk->init();
 
@@ -205,15 +205,15 @@ void AbstractClassRep::initialize()
             destroyFieldValidators( sg_tempFieldList );
       }
 
-      // if we have things in sg_tempCallbackTypes, copy it over...
-      if (sg_tempCallbackTypes.size() != 0)
+      // if we have things in sg_tempDeclaredCallbacks, copy it over...
+      if (sg_tempDeclaredCallbacks.size() != 0)
       {
-	     walk->mCallbackTypes = sg_tempCallbackTypes;
+		  walk->mDeclaredCallbacks = sg_tempDeclaredCallbacks;
       }
 
       // And of course delete it every round.
       sg_tempFieldList.clear();
-	  sg_tempCallbackTypes.clear();
+	  sg_tempDeclaredCallbacks.clear();
    }
 
    // Calculate counts and bit sizes for the various NetClasses.
@@ -574,58 +574,157 @@ bool ConsoleObject::removeField(const char* in_pFieldname)
    return false;
 }
 
-bool ConsoleObject::declareCallback(const char* callbackName)
+bool ConsoleObject::declareCallback(const char* callbackName, AbstractClassRep::ReturnType returnType)
 {
 	StringTableEntry stName = StringTable->insert(callbackName);
-	for (S32 i = 0; i < sg_tempCallbackTypes.size(); i++) {
-		if (sg_tempCallbackTypes[i].mName == stName) {
-			// write error: trying to redefine a callback type
+	for (S32 i = 0; i < sg_tempDeclaredCallbacks.size(); i++) {
+		if (sg_tempDeclaredCallbacks[i].mName == stName) {
+			// write error: trying to redefine a callback type (only one per name)
 			return false;
 		}
 	}
 
-	AbstractClassRep::CallbackType cbt;
+	AbstractClassRep::DeclaredCallback cbt;
 	cbt.mName = stName;
-	sg_tempCallbackTypes.push_back(cbt);
+	cbt.mReturnType = returnType;
+	sg_tempDeclaredCallbacks.push_back(cbt);
 	return true;
 }
 
-bool ConsoleObject::callbackRecursively(AbstractClassRep* ACR, StringTableEntry stCallbackName, const ConsoleBaseCallbackData& callbackData)
+void ConsoleObject::validCallbackDeclared(AbstractClassRep* classRep, StringTableEntry stCallbackName, AbstractClassRep::ReturnType returnType)
 {
-	if (! ACR) {
-		// TODO: warn no callback was connected to callbackName or perhaps the callback doesn't even exist
-		return false;
+	// look for the named callback to be declared  at this level of the class tree.  if we find it, also check the return type is valid.
+	for (S32 i = 0; i < classRep->mDeclaredCallbacks.size(); i++) {
+		if (classRep->mDeclaredCallbacks[i].mName == stCallbackName) {
+			AssertFatal(classRep->mDeclaredCallbacks[i].mReturnType == returnType,
+				avar("Tried to use callback() for '%s' with the wrong return type.", stCallbackName))
+
+			return;
+		}
 	}
 
-	Vector<AbstractClassRep::CallbackEntry> mCallbacks = ACR->mCallbacks;
-	AbstractClassRep::CallbackEntry* theCallback = NULL;
-	for (S32 i = 0; i < mCallbacks.size(); i++) {
-		if (mCallbacks[i].mType->mName == stCallbackName) {
-			theCallback = &mCallbacks[i];
+	// As we work up to each superclass, check that we haven't gone past the top 
+	AssertFatal(0, avar("Tried to use callback() with an undeclared callback type '%s'.", stCallbackName))
+}
+
+bool ConsoleObject::callbackRecursively(AbstractClassRep* classRep, StringTableEntry stCallbackName, const ConsoleBaseCallbackData& callbackData, AbstractClassRep::ReturnType returnType, void* returnData)
+{
+
+	// As we work up to each superclass, check that we haven't gone past the top
+	// if so, there were no connected callbacks to invoke.
+	if (!classRep)
+		return false;
+
+	// see if any callbacks are attached.
+	AbstractClassRep::ConnectedCallbackEntry* theCallback = NULL;
+	for (S32 i = 0; i < classRep->mConnectedCallbacks.size(); i++) {
+		if (classRep->mConnectedCallbacks[i].mDeclared->mName == stCallbackName) {
+			theCallback = &classRep->mConnectedCallbacks[i];
 			break;
 		}
 	}
 
-	if (theCallback == NULL) {
-		AbstractClassRep* parent = ACR->getParentClass();
-		return callbackRecursively(parent, stCallbackName, callbackData);
+	// if we didn't find any connected callback, try our superclass.
+	if (theCallback == NULL)
+		return callbackRecursively(classRep->getParentClass(), stCallbackName, callbackData, returnType, returnData);
+
+	switch(theCallback->mDeclared->mReturnType) {
+	case AbstractClassRep::IntReturn :
+	{
+		S32 returnS32 = theCallback->mFunc.intConsoleCallbackFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
+		if (returnData)
+			(*static_cast<S32*>(returnData)) = returnS32;
+		break;
+	}
+	case AbstractClassRep::FloatReturn :
+	{
+		F32 returnF32 = theCallback->mFunc.floatConsoleCallbackFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
+		if (returnData)
+			(*static_cast<F32*>(returnData)) = returnF32;
+		break;
+	}
+	case AbstractClassRep::StringReturn :
+	{
+		const char* returnCharPtr = theCallback->mFunc.stringConsoleCallbackFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
+		if (returnData)
+			(*static_cast<const char**>(returnData)) = returnCharPtr;
+		break;
+	}
+	case AbstractClassRep::BoolReturn :
+	{
+		bool returnBool = theCallback->mFunc.boolConsoleCallbackFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
+		if (returnData)
+			(*static_cast<bool*>(returnData)) = returnBool;
+		break;
+	}
+	case AbstractClassRep::VoidReturn :
+	{
+		theCallback->mFunc.voidConsoleCallbackFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
+		break;
+	}
+	default :
+		AssertFatal(0, avar("Tried to use callback() of '%s' with an uknown return type.", stCallbackName))
 	}
 
-	// TODO: casted to SimObject but we're in ConsoleObject
-	theCallback->mFunc(dynamic_cast<SimObject*>(this), stCallbackName, &callbackData);
 	return true;
+}
+
+
+bool ConsoleObject::callbackHelper(const char* callbackName, AbstractClassRep::ReturnType returnType, const ConsoleBaseCallbackData& callbackData, void* returnValue)
+{
+	StringTableEntry stCallbackName = StringTable->insert(callbackName);
+	validCallbackDeclared(getClassRep(), stCallbackName, returnType);
+	return callbackRecursively(getClassRep(), stCallbackName, callbackData, returnType, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, S32* returnValue, const ConsoleBaseCallbackData& callbackData)
+{
+	return callbackHelper(callbackName, AbstractClassRep::IntReturn, callbackData, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, F32* returnValue, const ConsoleBaseCallbackData& callbackData)
+{
+	return callbackHelper(callbackName, AbstractClassRep::FloatReturn, callbackData, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, const char** returnValue, const ConsoleBaseCallbackData& callbackData)
+{
+	return callbackHelper(callbackName, AbstractClassRep::StringReturn, callbackData, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, bool* returnValue, const ConsoleBaseCallbackData& callbackData)
+{
+	return callbackHelper(callbackName, AbstractClassRep::BoolReturn, callbackData, returnValue);
 }
 
 bool ConsoleObject::callback(const char* callbackName, const ConsoleBaseCallbackData& callbackData)
 {
-	StringTableEntry stCallbackName = StringTable->insert(callbackName);
-	return callbackRecursively(getClassRep(), stCallbackName, callbackData);
+	return callbackHelper(callbackName, AbstractClassRep::VoidReturn, callbackData, NULL);
+}
+
+bool ConsoleObject::callback(const char* callbackName, S32* returnValue)
+{
+	return callbackHelper(callbackName, AbstractClassRep::IntReturn, voidCallbackData, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, F32* returnValue)
+{
+	return callbackHelper(callbackName, AbstractClassRep::FloatReturn, voidCallbackData, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, const char** returnValue)
+{
+	return callbackHelper(callbackName, AbstractClassRep::StringReturn, voidCallbackData, returnValue);
+}
+
+bool ConsoleObject::callback(const char* callbackName, bool* returnValue)
+{
+	return callbackHelper(callbackName, AbstractClassRep::BoolReturn, voidCallbackData, returnValue);
 }
 
 bool ConsoleObject::callback(const char* callbackName)
 {
-	StringTableEntry stCallbackName = StringTable->insert(callbackName);
-	return callbackRecursively(getClassRep(), stCallbackName, voidCallbackData);
+	return callbackHelper(callbackName, AbstractClassRep::VoidReturn, voidCallbackData, NULL);
 }
 
 //--------------------------------------
