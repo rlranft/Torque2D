@@ -482,7 +482,7 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     // Get gestures
     const Leap::GestureList gestures = frame.gestures();
 
-    if (!gestures.empty())
+    if (!gestures.isEmpty())
         processGestures(gestures);
 
     if (getMouseControlToggle())
@@ -492,7 +492,7 @@ void LeapMotionManager::process(const Leap::Controller& controller)
     }
 
     // Is a hand present?
-    if ( !frame.hands().empty() ) 
+    if ( !frame.hands().isEmpty() ) 
     {
         for (int h = 0; h < frame.hands().count(); ++h)
         {
@@ -516,10 +516,11 @@ void LeapMotionManager::process(const Leap::Controller& controller)
 
 void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
 {
-    const Leap::ScreenList screens = controller.calibratedScreens();
+    
+    const Leap::ScreenList screens = controller.locatedScreens();
 
     // make sure we have a detected screen
-    if (screens.empty())
+    if (screens.isEmpty())
         return;
 
     const Leap::Screen screen = screens[0];
@@ -528,12 +529,12 @@ void LeapMotionManager::generateMouseEvent(Leap::Controller const & controller)
     const Leap::Frame frame = controller.frame();
     const Leap::HandList hands = frame.hands();
 
-    if (hands.empty())
+    if (hands.isEmpty())
         return;
 
     const Leap::PointableList pointables = hands[0].pointables();
 
-    if (pointables.empty())
+    if (pointables.isEmpty())
         return;
 
     const Leap::Pointable firstPointable = pointables[0];
@@ -569,7 +570,7 @@ Vector2 LeapMotionManager::getPointFromProjection(Point3F position)
 {
     // Get the screen and projection
     const Leap::Vector pointablePosition(position.x, position.y, position.z);
-    const Leap::Screen screen = mController->calibratedScreens()[0];
+    const Leap::Screen screen = mController->locatedScreens()[0];
     const Leap::Vector projectedPosition = screen.project(pointablePosition, true, 1.0f);    
 
     // if the user is not pointing at the screen all components of
@@ -603,7 +604,7 @@ Vector2 LeapMotionManager::getPointFromIntersection(S32 pointableID)
         return Vector2("");
 
     // Get the screen and intersection
-    const Leap::Screen screen = mController->calibratedScreens()[0];
+    const Leap::Screen screen = mController->locatedScreens()[0];
     const Leap::Vector intersection = screen.intersect( lastPointable, true, 1.0f );
     
     // if the user is not pointing at the screen all components of
